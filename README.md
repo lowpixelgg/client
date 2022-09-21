@@ -20,7 +20,7 @@ The rocket client layout is abstract and dark-themed by the team's internal deci
 
 
 <p align="left">
-  <img src="https://cdn.discordapp.com/attachments/1006782741746040884/1022034857888587827/main.png" width="800" />
+  <img src="https://cdn.discordapp.com/attachments/967917396738318386/1022037245345148998/main.png" width="800" />
 </p>
 
 ## Contributing
