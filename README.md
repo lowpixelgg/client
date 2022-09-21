@@ -19,8 +19,8 @@ A Rocket Community é um projeto de alto nível voltado para a plataforma do MTA
 The rocket client layout is abstract and dark-themed by the team's internal decision we believe that a dark desktop version of the client is the best approach that pleases the eye.
 
 
-<p align="center">
-  <img src="https://cdn.discordapp.com/attachments/1006782741746040884/1022034857888587827/main.png" />
+<p align="left">
+  <img src="https://cdn.discordapp.com/attachments/1006782741746040884/1022034857888587827/main.png" width="800" />
 </p>
 
 ## Contributing
