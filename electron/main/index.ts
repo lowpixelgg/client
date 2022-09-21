@@ -38,8 +38,13 @@ async function createWindow() {
   win = new BrowserWindow({
     title: 'Rocket Client',
     icon: join(process.env.PUBLIC, 'favicon.svg'),
+    width: 980,
+    height: 552,
+    frame: false,
+    resizable: false,
     webPreferences: {
       preload,
+      devTools: true,
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -49,7 +54,7 @@ async function createWindow() {
     win.loadFile(indexHtml)
   } else {
     win.loadURL(url)
-    // win.webContents.openDevTools()
+    win.webContents.openDevTools()
   }
 
   // Test actively push message to the Electron-Renderer
@@ -65,6 +70,16 @@ async function createWindow() {
 }
 
 app.whenReady().then(createWindow)
+
+
+ipcMain.on("window-take-minimized", () => {
+  win.minimize()
+});
+
+ipcMain.on("window-take-closed", () => {
+  win.close()
+});
+
 
 app.on('window-all-closed', () => {
   win = null
@@ -88,18 +103,18 @@ app.on('activate', () => {
   }
 })
 
-// new window example arg: new windows url
-ipcMain.handle('open-win', (event, arg) => {
-  const childWindow = new BrowserWindow({
-    webPreferences: {
-      preload,
-    },
-  })
+// // new window example arg: new windows url
+// ipcMain.handle('open-win', (event, arg) => {
+//   const childWindow = new BrowserWindow({
+//     webPreferences: {
+//       preload,
+//     },
+//   })
 
-  if (app.isPackaged) {
-    childWindow.loadFile(indexHtml, { hash: arg })
-  } else {
-    childWindow.loadURL(`${url}/#${arg}`)
-    // childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
-  }
-})
+//   if (app.isPackaged) {
+//     childWindow.loadFile(indexHtml, { hash: arg })
+//   } else {
+//     childWindow.loadURL(`${url}/#${arg}`)
+//     // childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
+//   }
+// })
