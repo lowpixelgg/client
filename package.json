@@ -3,8 +3,8 @@
   "productName": "Electron",
   "private": true,
   "version": "2.0.0",
-  "description": "Vite React Electron boilerplate.",
-  "author": "草鞋没号 <308487730@qq.com>",
+  "description": "Rocket Client",
+  "author": "Vítor Ribeiro <buss.vitorsheik@gmail.com>",
   "license": "MIT",
   "main": "dist/electron/main/index.js",
   "scripts": {
