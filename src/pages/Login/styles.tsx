@@ -1,12 +1,20 @@
 import styled from "styled-components";
-import logo from "../../assets/logos/dreams.png"
+import logo from "../../assets/logos/dreams.png";
 
 export const Container = styled.div`
-  position: absolute;
+  position: relative;
   width: 100%;
-  height: calc(100% - 22px);
-  background: radial-gradient(50% 50% at 50% 50%, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.274) 100%);
+  height: 100vh;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.274) 100%
+  );
   z-index: 10;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
 
   #logo {
     position: absolute;
@@ -17,51 +25,56 @@ export const Container = styled.div`
     background-size: cover;
     background-image: url(${logo});
   }
-  
+
   @keyframes floating {
-        0% {
-          transform: translateY(0);
-        }
-        50% {
-          transform: translateY(-15px);
-        }
-        100% {
-          transform: translateY(0);
+    0% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-15px);
+    }
+    100% {
+      transform: translateY(0);
     }
   }
 
   #right-content {
-    position: absolute;
-
+    position: relative;
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
     /* left: 542.32px;
     top: 289.41px; */
 
     & .rectangle_border {
       position: absolute;
-      left: 542.32px;
-      top: 262px;
+
+      top: 80px;
       animation: floating 5s ease-in-out infinite alternate;
     }
 
     & .rectangle_image {
-      position: absolute;
-      left: 542.32px;
-      top: 289.41px;
+      /* position: absolute; */
+      /* left: 542.32px;
+      top: 289.41px; */
     }
 
     & .rectangle_union {
-      position: absolute;
-      left: 684.42px;
-      top: 154px;
+      /* position: absolute; */
+      /* left: 684.42px;
+      top: 154px; */
       animation: floating 8s ease-in-out infinite alternate;
+    }
+
+    @media (max-width: 768px) {
+      display: none;
     }
   }
 
-
-
   #login {
     display: flex;
-    position: absolute;
     width: fit-content;
     height: fit-content;
     flex-direction: column;
@@ -69,26 +82,27 @@ export const Container = styled.div`
     align-items: center;
     gap: 10px;
 
+    /* position: absolute;
     left: 62px;
-    top: 200px;
+    top: 200px; */
   }
 
   .forgotPass {
     line-height: 10px;
     text-align: right;
     width: 100%;
-    font-family: 'Inter';
+    font-family: "Inter";
     font-style: normal;
     font-size: 13px;
     font-weight: 400;
-  
-    & a{
+
+    & a {
       color: #767677;
       text-decoration: none;
     }
 
-    & span{
-      color: #C1C1C2;
+    & span {
+      color: #c1c1c2;
     }
   }
 
@@ -96,37 +110,36 @@ export const Container = styled.div`
     line-height: 20px;
     text-align: center;
     width: 60%;
-    font-family: 'Inter';
+    font-family: "Inter";
     font-style: normal;
     font-size: 13px;
     font-weight: 400;
     margin-top: 20px;
-  
-    & a{
+
+    & a {
       color: #767677;
       text-decoration: none;
     }
 
-    & span{
-      color: #C1C1C2;
+    & span {
+      color: #c1c1c2;
     }
   }
-
 
   #footer {
     position: absolute;
     text-decoration: none;
-    bottom: 0;
-    margin-left: 20px;
+    bottom: 16px;
+    left: 20px;
 
     & a {
       float: left;
       display: block;
-      font-family: 'Inter';
+      font-family: "Inter";
       font-style: normal;
       font-weight: 400;
       font-size: 14px;
-      transition: all ease-in-out .3s;
+      transition: all ease-in-out 0.3s;
       color: #767677;
       text-align: center;
       padding: 20px 10px;
@@ -135,7 +148,7 @@ export const Container = styled.div`
 
     & a:hover {
       color: #cecece;
-      transition: all ease-in-out .4s;
+      transition: all ease-in-out 0.4s;
     }
   }
-`
+`;

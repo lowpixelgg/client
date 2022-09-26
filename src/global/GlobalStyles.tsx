@@ -1,13 +1,14 @@
 import { createGlobalStyle } from "styled-components";
 
-import background from "../assets/images/background_login.png"
+import background from "../assets/images/background_login.png";
 
 export const GlobalStyles = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
     border: 0;
-    
+    user-select: none;
+    -webkit-user-drag: none;
   }
 
 
@@ -18,4 +19,4 @@ export const GlobalStyles = createGlobalStyle`
     overflow: hidden;
   }
 
-`
+`;
