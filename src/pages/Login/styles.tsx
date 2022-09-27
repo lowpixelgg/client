@@ -125,30 +125,4 @@ export const Container = styled.div`
       color: #c1c1c2;
     }
   }
-
-  #footer {
-    position: absolute;
-    text-decoration: none;
-    bottom: 16px;
-    left: 20px;
-
-    & a {
-      float: left;
-      display: block;
-      font-family: "Inter";
-      font-style: normal;
-      font-weight: 400;
-      font-size: 14px;
-      transition: all ease-in-out 0.3s;
-      color: #767677;
-      text-align: center;
-      padding: 20px 10px;
-      text-decoration: none;
-    }
-
-    & a:hover {
-      color: #cecece;
-      transition: all ease-in-out 0.4s;
-    }
-  }
 `;

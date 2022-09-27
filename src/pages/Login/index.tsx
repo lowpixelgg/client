@@ -1,12 +1,25 @@
 import { Container } from "./styles";
 import { Input } from "../../components/Input/index";
 import { Button } from "../../components/Button/index";
-import { HtmlHTMLAttributes, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "@/components/Footer";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const buttonAction = () => {
+    setLoading(true);
+
+    if (email && pass) {
+      navigate("/init");
+    }
+
+    setLoading(false);
+  };
 
   return (
     <Container>
@@ -35,8 +48,8 @@ export const Login = () => {
 
         <Button
           loading={loading}
-          active={email.length && pass.length > 0 ? true : false}
-          onClick={() => setLoading(true)}
+          active={email.length > 0 && pass.length > 0}
+          onClick={() => buttonAction()}
         >
           Continuar
         </Button>
@@ -62,11 +75,7 @@ export const Login = () => {
         <img className="rectangle_image" src="./src/assets/rectangle_img.png" />
       </div>
 
-      <div id="footer">
-        <a href="/">Support</a>
-        <a href="/">Terms</a>
-        <a href="/">Status</a>
-      </div>
+      <Footer />
     </Container>
   );
 };
