@@ -4,6 +4,7 @@ import { Button } from "../../components/Button/index";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Footer } from "@/components/Footer";
+import { motion } from "framer-motion";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
@@ -23,9 +24,21 @@ export const Login = () => {
 
   return (
     <Container>
-      <div id="logo"></div>
+      <motion.div
+        id="logo"
+        initial={{ opacity: 0.4 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeIn", duration: 0.6 }}
+      />
 
-      <div id="login">
+      <motion.div
+        id="login"
+        initial={{ opacity: 0.4 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeIn", duration: 0.6, delay: 0.2 }}
+      >
         <Input
           masked={false}
           placeholder="Email Adress"
@@ -67,13 +80,19 @@ export const Login = () => {
             <span>Register now</span>
           </a>
         </div>
-      </div>
+      </motion.div>
 
-      <div id="right-content">
+      <motion.div
+        id="right-content"
+        initial={{ opacity: 0.2 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeIn", duration: 0.6, delay: 0.2 }}
+      >
         <img className="rectangle_union" src="./src/assets/Union.png" />
         <img className="rectangle_border" src="./src/assets/rectangle.png" />
         <img className="rectangle_image" src="./src/assets/rectangle_img.png" />
-      </div>
+      </motion.div>
 
       <Footer />
     </Container>

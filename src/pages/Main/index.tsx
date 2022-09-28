@@ -10,7 +10,7 @@ import { SiDiscord } from "react-icons/si";
 import { TbDownload } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
 import { Button } from "@/components/Button";
-
+import { motion, AnimatePresence } from "framer-motion";
 import PostImage from "@/assets/images/iniciojornada2.png";
 import AvatarImg from "@/assets/images/avatar1.png";
 import { Footer } from "@/components/Footer";
@@ -50,19 +50,35 @@ export const Main = () => {
   return (
     <Container>
       <div className="status">
-        <p>
+        <motion.p
+          initial={{ opacity: 0.4 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ ease: "easeIn", duration: 0.6 }}
+        >
           <RiMoonFill size={14} color="#FAA61A" />
           <span>Server is updating</span>
-        </p>
+        </motion.p>
 
-        <p>
+        <motion.p
+          initial={{ opacity: 0.4 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ ease: "easeIn", duration: 0.6, delay: 0.3 }}
+        >
           <MdPeopleAlt size={16} color="#72767D" />
           <span>3/1000</span>
-        </p>
+        </motion.p>
       </div>
 
       <div className="main">
-        <div className="post">
+        <motion.div
+          className="post"
+          initial={{ opacity: 0.2 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ ease: "easeIn", duration: 0.4 }}
+        >
           <h1 className="post--title">
             <MdVerified size={20} color="#3BA55C" />
             <span>Newswire:</span>
@@ -84,7 +100,7 @@ export const Main = () => {
             <span>Continuar Lendo</span>
             <RiExternalLinkLine size={18} />
           </Button>
-        </div>
+        </motion.div>
 
         <div className="sidebar">
           <div className="avatar">
@@ -93,67 +109,102 @@ export const Main = () => {
             <span style={{ background: "#3BA55C" }} />
           </div>
 
-          <nav>
-            <button>
+          <motion.nav
+            exit={{ opacity: 0.4 }}
+            transition={{ ease: "easeIn", duration: 0.4 }}
+          >
+            <motion.button
+              initial={{ opacity: 0.2 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeIn", duration: 0.4 }}
+            >
               <RiSettings3Fill className="icon--settings" size={22} />
-            </button>
+            </motion.button>
 
             <span className="line" />
 
-            <button>
+            <motion.button
+              initial={{ opacity: 0.2 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeIn", duration: 0.4, delay: 0.1 }}
+            >
               <BsLink
                 className="icon--link"
                 size={22}
                 style={{ margin: "-4px 0" }}
               />
-            </button>
+            </motion.button>
 
-            <button>
+            <motion.button
+              initial={{ opacity: 0.2 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeIn", duration: 0.4, delay: 0.2 }}
+            >
               <BsTwitter className="icon--twitter" size={18} />
-            </button>
+            </motion.button>
 
-            <button>
+            <motion.button
+              initial={{ opacity: 0.2 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeIn", duration: 0.4, delay: 0.3 }}
+            >
               <BsInstagram className="icon--insta" size={18} />
-            </button>
+            </motion.button>
 
-            <button>
+            <motion.button
+              initial={{ opacity: 0.2 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeIn", duration: 0.4, delay: 0.4 }}
+            >
               <BsYoutube className="icon--youtube" size={18} />
-            </button>
+            </motion.button>
 
-            <button>
+            <motion.button
+              initial={{ opacity: 0.2 }}
+              animate={{ opacity: 1 }}
+              transition={{ ease: "easeIn", duration: 0.4, delay: 0.5 }}
+            >
               <SiDiscord className="icon--discord" size={20} />
-            </button>
-          </nav>
+            </motion.button>
+          </motion.nav>
         </div>
       </div>
 
       <div className="download">
-        {actionBtn !== "Jogar" && (
-          <div className="downloadBar">
-            <span className="downloadBar--bar">
-              <strong
-                className="downloadBar--percent"
-                style={{ left: `${downloadFill}%` }}
-              >
-                {downloadFill}%
-              </strong>
+        <AnimatePresence>
+          {actionBtn !== "Jogar" && (
+            <motion.div
+              initial={{ opacity: 0.2 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ ease: "easeIn", duration: 0.4 }}
+              className="downloadBar"
+            >
+              <span className="downloadBar--bar">
+                <strong
+                  className="downloadBar--percent"
+                  style={{ left: `${downloadFill}%` }}
+                >
+                  {downloadFill}%
+                </strong>
 
-              <span
-                className="downloadBar--fill"
-                style={{ width: `${downloadFill}%` }}
-              />
+                <span
+                  className="downloadBar--fill"
+                  style={{ width: `${downloadFill}%` }}
+                />
 
-              <p
-                className="downloadBar--icon"
-                style={{ left: `${downloadFill}%` }}
-              >
-                🎉
-              </p>
-            </span>
+                <p
+                  className="downloadBar--icon"
+                  style={{ left: `${downloadFill}%` }}
+                >
+                  🎉
+                </p>
+              </span>
 
-            <p className="downloadBar--status">1,6/2GB 10MB/s</p>
-          </div>
-        )}
+              <p className="downloadBar--status">1,6/2GB 10MB/s</p>
+            </motion.div>
+          )}
+        </AnimatePresence>
 
         <Button
           active={actionBtn !== "baixando"}
