@@ -1,14 +1,19 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  height: 96%;
+  width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: space-around;
   gap: 24px;
-  padding: 0 32px;
+  padding: 8px 32px;
   overflow-y: auto;
   position: relative;
+
+  @media screen and (max-height: 650px) {
+    justify-content: flex-start;
+  }
 
   * {
     transition: 0.2s ease;
@@ -169,6 +174,7 @@ export const Container = styled.div`
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     gap: 12px;
   }
 
@@ -180,19 +186,40 @@ export const Container = styled.div`
     flex-wrap: wrap;
     gap: 4px;
 
-    .downloadBar--percent {
-      color: #f8f9fa;
-      font-family: "Poppins", sans-serif;
-      font-weight: 600;
-      font-size: 0.75em;
-      align-self: flex-start;
-    }
-
     .downloadBar--bar {
       width: 100%;
       height: 4px;
       background: #323538;
       border-radius: 2px;
+      position: relative;
+
+      .downloadBar--fill {
+        position: absolute;
+        left: 0;
+        height: 100%;
+        background: linear-gradient(90deg, #3f70dd 0%, #b377f3 100%);
+        border-radius: 2px;
+        transition: 0.3s linear;
+      }
+
+      .downloadBar--percent {
+        position: absolute;
+        top: -24px;
+        margin-left: -8px;
+        color: #f8f9fa;
+        font-family: "Poppins", sans-serif;
+        font-weight: 600;
+        font-size: 0.75em;
+        align-self: flex-start;
+        transition: 0.3s linear;
+      }
+
+      .downloadBar--icon {
+        position: absolute;
+        top: -10px;
+        margin-left: -8px;
+        transition: 0.3s linear;
+      }
     }
 
     .downloadBar--status {
@@ -221,6 +248,7 @@ export const Container = styled.div`
   }
 
   #footer {
+    margin-left: -16px;
     position: static;
 
     a {

@@ -8,13 +8,45 @@ import { MdPeopleAlt, MdVerified } from "react-icons/md";
 import { BsLink, BsTwitter, BsInstagram, BsYoutube } from "react-icons/bs";
 import { SiDiscord } from "react-icons/si";
 import { TbDownload } from "react-icons/tb";
+import { FaPlay } from "react-icons/fa";
 import { Button } from "@/components/Button";
 
 import PostImage from "@/assets/images/iniciojornada2.png";
 import AvatarImg from "@/assets/images/avatar1.png";
 import { Footer } from "@/components/Footer";
+import { useState } from "react";
 
 export const Main = () => {
+  const [actionBtn, setActionBtn] = useState("baixar");
+  const [downloadFill, setDownloadFill] = useState(0);
+
+  const handleAction = () => {
+    switch (actionBtn) {
+      case "baixar":
+        setActionBtn("baixando");
+
+        let init = downloadFill;
+        const timer = setInterval(() => {
+          if (init < 100) {
+            setDownloadFill(init + 1);
+            init++;
+          } else {
+            clearInterval(timer);
+            setDownloadFill(0);
+            setActionBtn("Update");
+          }
+        }, 300);
+        break;
+
+      case "Update":
+        setActionBtn("Jogar");
+        break;
+
+      default:
+        break;
+    }
+  };
+
   return (
     <Container>
       <div className="status">
@@ -96,17 +128,45 @@ export const Main = () => {
       </div>
 
       <div className="download">
-        <div className="downloadBar">
-          <strong className="downloadBar--percent">0%</strong>
+        {actionBtn !== "Jogar" && (
+          <div className="downloadBar">
+            <span className="downloadBar--bar">
+              <strong
+                className="downloadBar--percent"
+                style={{ left: `${downloadFill}%` }}
+              >
+                {downloadFill}%
+              </strong>
 
-          <span className="downloadBar--bar" />
+              <span
+                className="downloadBar--fill"
+                style={{ width: `${downloadFill}%` }}
+              />
 
-          <p className="downloadBar--status">1,6/2GB 10MB/s</p>
-        </div>
+              <p
+                className="downloadBar--icon"
+                style={{ left: `${downloadFill}%` }}
+              >
+                🎉
+              </p>
+            </span>
 
-        <Button active className="download--action">
-          <span>Baixar</span>
-          <TbDownload size={20} color="#f8f9fa" />
+            <p className="downloadBar--status">1,6/2GB 10MB/s</p>
+          </div>
+        )}
+
+        <Button
+          active={actionBtn !== "baixando"}
+          disabled={actionBtn === "baixando"}
+          className="download--action"
+          onClick={() => handleAction()}
+        >
+          <span>{actionBtn}</span>
+          {actionBtn === "Jogar" ? (
+            <FaPlay size={16} color="#f8f9fa" />
+          ) : (
+            <TbDownload size={20} color="#f8f9fa" />
+          )}
         </Button>
       </div>
 
