@@ -118,7 +118,7 @@ export const Main = () => {
               animate={{ opacity: 1 }}
               transition={{ ease: "easeIn", duration: 0.4 }}
             >
-              <RiSettings3Fill className="icon--settings" size={20} />
+              <RiSettings3Fill className="icon--settings" size={18} />
             </motion.button>
 
             <span className="line" />
@@ -130,7 +130,7 @@ export const Main = () => {
             >
               <BsLink
                 className="icon--link"
-                size={20}
+                size={18}
                 style={{ margin: "-4px 0" }}
               />
             </motion.button>
@@ -140,7 +140,7 @@ export const Main = () => {
               animate={{ opacity: 1 }}
               transition={{ ease: "easeIn", duration: 0.4, delay: 0.2 }}
             >
-              <BsTwitter className="icon--twitter" size={18} />
+              <BsTwitter className="icon--twitter" size={16} />
             </motion.button>
 
             <motion.button
@@ -148,7 +148,7 @@ export const Main = () => {
               animate={{ opacity: 1 }}
               transition={{ ease: "easeIn", duration: 0.4, delay: 0.3 }}
             >
-              <BsInstagram className="icon--insta" size={16} />
+              <BsInstagram className="icon--insta" size={14} />
             </motion.button>
 
             <motion.button
@@ -156,7 +156,7 @@ export const Main = () => {
               animate={{ opacity: 1 }}
               transition={{ ease: "easeIn", duration: 0.4, delay: 0.4 }}
             >
-              <BsYoutube className="icon--youtube" size={16} />
+              <BsYoutube className="icon--youtube" size={14} />
             </motion.button>
 
             <motion.button
@@ -164,7 +164,7 @@ export const Main = () => {
               animate={{ opacity: 1 }}
               transition={{ ease: "easeIn", duration: 0.4, delay: 0.5 }}
             >
-              <SiDiscord className="icon--discord" size={18} />
+              <SiDiscord className="icon--discord" size={16} />
             </motion.button>
           </motion.nav>
         </div>
