@@ -1,16 +1,18 @@
-import { Fragment } from "react";
+import { BrowserRouter } from "react-router-dom";
 import { GlobalStyles } from "./global/GlobalStyles";
-import { Framebar } from "./components/Framebar"
-import Router from "./routes"
+import { Framebar } from "./components/Framebar";
+import Router from "./routes";
 
 const App = () => {
   return (
-    <Fragment>
+    <BrowserRouter>
       <Framebar />
-      <GlobalStyles />
-      <Router />
-    </Fragment>
-  )
-}
 
-export default App
+      <GlobalStyles />
+
+      <Router />
+    </BrowserRouter>
+  );
+};
+
+export default App;

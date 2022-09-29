@@ -1,18 +1,44 @@
 import { Container } from "./styles";
 import { Input } from "../../components/Input/index";
 import { Button } from "../../components/Button/index";
-import { HtmlHTMLAttributes, useState } from "react";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Footer } from "@/components/Footer";
+import { motion } from "framer-motion";
 
 export const Login = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const buttonAction = () => {
+    setLoading(true);
+
+    if (email && pass) {
+      navigate("/init");
+    }
+
+    setLoading(false);
+  };
 
   return (
     <Container>
-      <div id="logo"></div>
+      <motion.div
+        id="logo"
+        initial={{ opacity: 0.4 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeIn", duration: 0.6 }}
+      />
 
-      <div id="login">
+      <motion.div
+        id="login"
+        initial={{ opacity: 0.4 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeIn", duration: 0.6, delay: 0.2 }}
+      >
         <Input
           masked={false}
           placeholder="Email Adress"
@@ -35,8 +61,8 @@ export const Login = () => {
 
         <Button
           loading={loading}
-          active={email.length && pass.length > 0 ? true : false}
-          onClick={() => setLoading(true)}
+          active={email.length > 0 && pass.length > 0}
+          onClick={() => buttonAction()}
         >
           Continuar
         </Button>
@@ -54,19 +80,21 @@ export const Login = () => {
             <span>Register now</span>
           </a>
         </div>
-      </div>
+      </motion.div>
 
-      <div id="right-content">
+      <motion.div
+        id="right-content"
+        initial={{ opacity: 0.2 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ ease: "easeIn", duration: 0.6, delay: 0.2 }}
+      >
         <img className="rectangle_union" src="./src/assets/Union.png" />
         <img className="rectangle_border" src="./src/assets/rectangle.png" />
         <img className="rectangle_image" src="./src/assets/rectangle_img.png" />
-      </div>
+      </motion.div>
 
-      <div id="footer">
-        <a href="/">Support</a>
-        <a href="/">Terms</a>
-        <a href="/">Status</a>
-      </div>
+      <Footer />
     </Container>
   );
 };
