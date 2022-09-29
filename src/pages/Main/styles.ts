@@ -6,8 +6,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  gap: 24px;
-  padding: 8px 32px;
+  gap: 20px;
+  padding: 8px 32px 0 32px;
   overflow-y: auto;
   position: relative;
 
@@ -24,7 +24,8 @@ export const Container = styled.div`
     align-items: center;
     gap: 12px;
     color: #72767d;
-    font-size: 0.75em;
+    font-size: 0.625em;
+    font-weight: 500;
     font-family: "Poppins", sans-serif;
 
     p {
@@ -47,7 +48,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 12px;
+    gap: 8px;
 
     .post--title {
       display: flex;
@@ -55,24 +56,31 @@ export const Container = styled.div`
       gap: 4px;
       color: #f8f9fa;
       font-family: "Poppins", sans-serif;
-      font-size: 1.25em;
+      font-size: 1em;
       font-weight: 600;
     }
 
     .post--image {
       width: 100%;
+
+      @media screen and (max-height: 560px) {
+        max-height: 220px;
+        width: auto;
+        max-width: 100%;
+      }
     }
 
     .post--desc {
       width: 90%;
-      font-size: 0.875em;
+      font-size: 0.75em;
       color: #767677;
-      font-family: "Roboto", sans-serif;
+      font-family: "Inter", sans-serif;
       user-select: text;
     }
 
     .post--button {
       width: auto;
+      min-width: 140px;
 
       .box {
         padding: 8px 0;
@@ -85,7 +93,7 @@ export const Container = styled.div`
         justify-content: center;
         align-items: flex-end;
         gap: 4px;
-        font-size: 0.875em;
+        font-size: 0.75em;
       }
     }
   }
@@ -176,6 +184,7 @@ export const Container = styled.div`
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
+    padding: 0 8px;
   }
 
   .downloadBar {
@@ -199,26 +208,26 @@ export const Container = styled.div`
         height: 100%;
         background: linear-gradient(90deg, #3f70dd 0%, #b377f3 100%);
         border-radius: 2px;
-        transition: 0.3s linear;
+        transition: 0.1s linear;
       }
 
       .downloadBar--percent {
         position: absolute;
         top: -24px;
-        margin-left: -8px;
+        margin-left: -4px;
         color: #f8f9fa;
         font-family: "Poppins", sans-serif;
         font-weight: 600;
-        font-size: 0.75em;
+        font-size: 0.625em;
         align-self: flex-start;
-        transition: 0.3s linear;
+        transition: 0.1s linear;
       }
 
       .downloadBar--icon {
         position: absolute;
         top: -10px;
         margin-left: -8px;
-        transition: 0.3s linear;
+        transition: 0.1s linear;
       }
     }
 
@@ -226,7 +235,7 @@ export const Container = styled.div`
       font-family: "Inter", sans-serif;
       align-self: flex-end;
       color: #767677;
-      font-size: 0.75em;
+      font-size: 0.625em;
       font-weight: 500;
     }
   }
@@ -252,7 +261,12 @@ export const Container = styled.div`
     position: static;
 
     a {
-      padding: 4px 8px;
+      padding: 0 8px;
+      font-size: 0.75em;
+    }
+
+    @media screen and (max-height: 560px) {
+      margin-top: -8px;
     }
   }
 
@@ -286,6 +300,20 @@ export const Container = styled.div`
         padding: 8px;
         background: #212529;
         border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+        animation: open 0.2s ease-in;
+        transform-origin: top center;
+      }
+
+      @keyframes open {
+        0% {
+          opacity: 0;
+          transform: scaleY(0.4);
+        }
+        100% {
+          opacity: 1;
+          transform: scaleY(1);
+        }
       }
     }
   }
