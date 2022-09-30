@@ -6,8 +6,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  gap: 20px;
-  padding: 8px 32px 0 32px;
+  gap: 8px;
+  padding: 16px 24px 0 24px;
   overflow-y: auto;
   position: relative;
 
@@ -24,7 +24,7 @@ export const Container = styled.div`
     align-items: center;
     gap: 12px;
     color: #72767d;
-    font-size: 0.625em;
+    font-size: 0.75em;
     font-weight: 500;
     font-family: "Poppins", sans-serif;
 
@@ -44,7 +44,7 @@ export const Container = styled.div`
 
   .post {
     max-width: 780px;
-    width: 60%;
+    width: 70%;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -106,7 +106,7 @@ export const Container = styled.div`
 
     .avatar {
       display: flex;
-      width: 48px;
+      width: 60px;
       border: 4px solid #212529;
       border-radius: 50%;
       position: relative;
@@ -159,8 +159,8 @@ export const Container = styled.div`
           color: #219ebc;
         }
 
-        .icon--twitter {
-          color: #00acee;
+        .icon--twitch {
+          color: #6441a5;
         }
 
         .icon--insta {
@@ -179,12 +179,13 @@ export const Container = styled.div`
   }
 
   .download {
+    margin-top: 32px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
-    padding: 0 8px;
+    padding-left: 8px;
   }
 
   .downloadBar {
@@ -242,7 +243,7 @@ export const Container = styled.div`
 
   .download--action {
     width: auto;
-    min-width: 120px;
+    min-width: 140px;
 
     .box {
       border-radius: 8px;
@@ -262,7 +263,6 @@ export const Container = styled.div`
 
     a {
       padding: 0 8px;
-      font-size: 0.75em;
     }
 
     @media screen and (max-height: 560px) {
