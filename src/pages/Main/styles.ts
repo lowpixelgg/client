@@ -6,8 +6,8 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  gap: 24px;
-  padding: 8px 32px 0 32px;
+  gap: 8px;
+  padding: 16px 24px 0 24px;
   overflow-y: auto;
   position: relative;
 
@@ -159,8 +159,8 @@ export const Container = styled.div`
           color: #219ebc;
         }
 
-        .icon--twitter {
-          color: #00acee;
+        .icon--twitch {
+          color: #6441a5;
         }
 
         .icon--insta {
@@ -179,12 +179,13 @@ export const Container = styled.div`
   }
 
   .download {
+    margin-top: 32px;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 12px;
-    padding: 0 8px;
+    padding-left: 8px;
   }
 
   .downloadBar {
