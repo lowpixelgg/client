@@ -32,6 +32,11 @@ export const GlobalStyles = createGlobalStyle`
     height: 100vh;
   }
 
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
   button {
     background: none;
     border: none;
