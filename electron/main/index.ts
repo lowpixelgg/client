@@ -41,7 +41,7 @@ async function createWindow() {
     title: "Rocket Client",
     icon: join(process.env.PUBLIC, "favicon.svg"),
     width: 980,
-    height: 552,
+    height: 560,
     frame: false,
     resizable: true,
     webPreferences: {

@@ -7,12 +7,21 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
-  gap: 32px;
+  gap: 24px;
   font-family: "Inter", sans-serif;
   color: #f8f9fa;
 
   max-width: 748px;
   margin: 0 auto;
+
+  @media screen and (max-height: 600px) {
+    justify-content: flex-start;
+    overflow-y: auto;
+  }
+
+  @media screen and (max-width: 840px) {
+    padding-top: 48px;
+  }
 
   .head {
     max-width: 100%;
@@ -182,11 +191,5 @@ export const Container = styled.div`
       font-size: 0.625em;
       color: #767677;
     }
-  }
-
-  @media screen and (max-height: 600px) {
-    justify-content: flex-start;
-    overflow-y: auto;
-    padding: 16px 0;
   }
 `;

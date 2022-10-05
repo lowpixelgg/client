@@ -22,7 +22,7 @@ export const SettingsLayout = () => {
       <nav className={`${showNav && "active"}`}>
         <h1>Settings</h1>
 
-        <NavLink to="/settings">Minha Conta</NavLink>
+        <NavLink to="/settings/account">Minha Conta</NavLink>
 
         <NavLink to="/settings/privacy">
           <span>Privacidade</span>

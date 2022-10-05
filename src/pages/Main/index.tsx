@@ -37,7 +37,7 @@ export const Main = () => {
               initial={{ opacity: 0.2 }}
               animate={{ opacity: 1 }}
               transition={{ ease: "easeIn", duration: 0.4 }}
-              onClick={() => navigate("/settings")}
+              onClick={() => navigate("/settings/account")}
             >
               <RiSettings3Fill className="icon--settings" size={18} />
             </motion.button>
