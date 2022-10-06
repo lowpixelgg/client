@@ -43,6 +43,12 @@ export const GlobalStyles = createGlobalStyle`
     cursor: pointer;
   }
 
+  .font--Satoshi {
+    font-family: 'Satoshi', sans-serif;
+  }
+  .font--Cabinet {
+    font-family: 'Cabinet Grotesk', sans-serif;
+  }
   .font--Inter {
     font-family: 'Inter', sans-serif;
   }

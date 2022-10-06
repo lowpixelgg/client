@@ -11,7 +11,7 @@ export const Container = styled.div`
   font-family: "Inter", sans-serif;
   color: #f8f9fa;
 
-  max-width: 748px;
+  max-width: 680px;
   margin: 0 auto;
 
   @media screen and (max-height: 600px) {
@@ -31,7 +31,7 @@ export const Container = styled.div`
     gap: 4px;
 
     h1 {
-      font-size: 1.125em;
+      font-size: 1em;
     }
 
     p {
@@ -47,6 +47,8 @@ export const Container = styled.div`
       rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     display: flex;
     flex-direction: column;
+    border-radius: 8px;
+    overflow: hidden;
 
     .userContainer--banner {
       width: 100%;
@@ -82,7 +84,7 @@ export const Container = styled.div`
 
         h3 {
           font-weight: 600;
-          font-size: 1.125em;
+          font-size: 1em;
         }
 
         span {
@@ -115,7 +117,7 @@ export const Container = styled.div`
       padding: 0 16px 8px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 16px;
 
       .row {
         width: 100%;
@@ -131,6 +133,7 @@ export const Container = styled.div`
           align-items: center;
           gap: 8px;
           border-radius: 4px;
+          font-size: 0.75em;
         }
       }
 

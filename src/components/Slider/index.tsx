@@ -15,6 +15,7 @@ export const CustomSlider = ({ label }: CustomSliderProps) => {
           height: 6,
           "& .MuiSlider-track": {
             background: "#5865F2",
+            border: "none",
           },
           "& .MuiSlider-rail": { background: "#4F545C" },
           "& 	.MuiSlider-thumb": {
@@ -22,9 +23,6 @@ export const CustomSlider = ({ label }: CustomSliderProps) => {
             height: 24,
             background: "#f8f8fa",
             borderRadius: "4px",
-          },
-          "& .MuiSlider-thumb:hover .Mui-focusVisible , .Mui-focusVisible": {
-            boxShadow: "none",
           },
         }}
       />

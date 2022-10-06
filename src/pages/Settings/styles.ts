@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { createGlobalStyle } from "styled-components";
 
 export const Container = styled.div`
   width: 100%;
@@ -84,5 +84,29 @@ export const Container = styled.div`
         display: flex;
       }
     }
+  }
+`;
+
+export const CustomMuiStyles = createGlobalStyle`
+  .MuiPaper-root {
+    background: #131316 !important;
+  }
+
+  ul.MuiMenu-list {
+    padding: 8px;
+
+    & > li {
+      margin: 4px 0;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+  }
+
+  li.Mui-selected {
+    background: #2F3037 !important;
+  }
+
+  .MuiSlider-thumb {
+    box-shadow: none !important;
   }
 `;

@@ -24,7 +24,7 @@ export const CustomSelect = ({ Items }: CustomSelectProps) => {
     >
       {Items.map((item, index) => {
         return (
-          <MenuItem value={index}>
+          <MenuItem value={index} key={index}>
             <span>{item}</span>
           </MenuItem>
         );

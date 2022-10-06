@@ -1,10 +1,17 @@
 import { NavLink } from "react-router-dom";
 import { Outlet } from "react-router-dom";
-import { Container } from "./styles";
+import { Container, CustomMuiStyles } from "./styles";
 import { MdArrowForwardIos } from "react-icons/md";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 
 import { IoMenu, IoClose } from "react-icons/io5";
 import { useState } from "react";
+
+const darkTheme = createTheme({
+  palette: {
+    mode: "dark",
+  },
+});
 
 export const SettingsLayout = () => {
   const [showNav, setShowNav] = useState(false);
@@ -38,16 +45,20 @@ export const SettingsLayout = () => {
         <NavLink to="/settings/graphics">Vídeo e gráficos</NavLink>
 
         <NavLink to="/settings/language">
-          <span>Idioma e teclado</span>
+          <span>Idioma</span>
           <MdArrowForwardIos size={16} />
         </NavLink>
 
         <hr />
 
-        <NavLink to="/settings/language">Copy ID</NavLink>
+        <a>Copy ID</a>
       </nav>
 
-      <Outlet />
+      <ThemeProvider theme={darkTheme}>
+        <CustomMuiStyles />
+
+        <Outlet />
+      </ThemeProvider>
     </Container>
   );
 };

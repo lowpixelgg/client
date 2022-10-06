@@ -2,6 +2,7 @@ import { AnimatePresence } from "framer-motion";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { Account } from "./pages/Account";
 import { Graphics } from "./pages/Graphics";
+import { Language } from "./pages/Language";
 import { Login } from "./pages/Login";
 import { Main } from "./pages/Main";
 import { Mta } from "./pages/Mta";
@@ -27,6 +28,8 @@ const Routing = () => {
           <Route path="/settings/mta" element={<Mta />} />
 
           <Route path="/settings/graphics" element={<Graphics />} />
+
+          <Route path="/settings/language" element={<Language />} />
         </Route>
       </Routes>
     </AnimatePresence>

@@ -14,7 +14,12 @@ export const Voice = () => {
       <div className="row">
         <div className="col">
           <label>DISPOSITIVO DE ENTRADA</label>
-          <CustomSelect Items={["VoiceMeeter Output (VB-Audio- VoiceMe)"]} />
+          <CustomSelect
+            Items={[
+              "VoiceMeeter Output (VB-Audio- VoiceMe)",
+              "VoiceMeeter Output (VB-Audio- VoiceMe)",
+            ]}
+          />
         </div>
 
         <div className="col">
