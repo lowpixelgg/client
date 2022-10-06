@@ -63,6 +63,21 @@ export const Container = styled.div`
     }
   }
 
+  & > div {
+    animation: pageFade 0.4s ease-in;
+  }
+
+  @keyframes pageFade {
+    from {
+      opacity: 0;
+      filter: blur(1px);
+    }
+    to {
+      opacity: 1;
+      filter: blur(0);
+    }
+  }
+
   @media screen and (max-width: 840px) {
     .menu {
       display: flex;
