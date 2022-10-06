@@ -3,18 +3,22 @@ import { RiSettings3Fill } from "react-icons/ri";
 import { BsLink, BsTwitch, BsInstagram, BsYoutube } from "react-icons/bs";
 import { SiDiscord } from "react-icons/si";
 import { motion } from "framer-motion";
-import AvatarImg from "@/assets/images/avatar1.png";
 import { Footer } from "@/components/Footer";
 import { TopStatus } from "./TopStatus";
 import { Post } from "./Post";
 import { Download } from "./Download";
 
 import { shell } from "electron";
+import { useNavigate } from "react-router-dom";
+import { Avatar } from "@/components/Avatar";
 
 export const Main = () => {
   const redirect = (url: string) => {
     shell.openExternal(url);
   };
+
+  const navigate = useNavigate();
+
   return (
     <Container>
       <TopStatus />
@@ -23,11 +27,7 @@ export const Main = () => {
         <Post />
 
         <div className="sidebar">
-          <div className="avatar">
-            <img src={AvatarImg} />
-
-            <span style={{ background: "#3BA55C" }} />
-          </div>
+          <Avatar />
 
           <motion.nav
             exit={{ opacity: 0.4 }}
@@ -37,6 +37,7 @@ export const Main = () => {
               initial={{ opacity: 0.2 }}
               animate={{ opacity: 1 }}
               transition={{ ease: "easeIn", duration: 0.4 }}
+              onClick={() => navigate("/settings/account")}
             >
               <RiSettings3Fill className="icon--settings" size={18} />
             </motion.button>

@@ -32,12 +32,23 @@ export const GlobalStyles = createGlobalStyle`
     height: 100vh;
   }
 
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+
   button {
     background: none;
     border: none;
     cursor: pointer;
   }
 
+  .font--Satoshi {
+    font-family: 'Satoshi', sans-serif;
+  }
+  .font--Cabinet {
+    font-family: 'Cabinet Grotesk', sans-serif;
+  }
   .font--Inter {
     font-family: 'Inter', sans-serif;
   }
