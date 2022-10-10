@@ -42,8 +42,11 @@ async function createWindow() {
     icon: join(process.env.PUBLIC, "favicon.svg"),
     width: 980,
     height: 560,
+    minHeight: 520,
+    minWidth: 800,
     frame: false,
     resizable: true,
+    center: true,
     webPreferences: {
       preload,
       devTools: true,
@@ -75,6 +78,14 @@ app.whenReady().then(createWindow);
 
 ipcMain.on("window-take-minimized", () => {
   win.minimize();
+});
+
+ipcMain.on("window-take-toggleMaximized", () => {
+  if (win.isMaximized()) {
+    win.unmaximize();
+  } else {
+    win.maximize();
+  }
 });
 
 ipcMain.on("window-take-closed", () => {

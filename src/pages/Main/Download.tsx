@@ -5,13 +5,13 @@ import { FaPlay } from "react-icons/fa";
 import { Button } from "@/components/Button";
 
 export const Download = () => {
-  const [actionBtn, setActionBtn] = useState("baixar");
+  const [actionBtn, setActionBtn] = useState("Baixar");
   const [downloadFill, setDownloadFill] = useState(0);
 
   const handleAction = () => {
     switch (actionBtn) {
-      case "baixar":
-        setActionBtn("baixando");
+      case "Baixar":
+        setActionBtn("Baixando");
 
         let init = downloadFill;
         const timer = setInterval(() => {

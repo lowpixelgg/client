@@ -5,13 +5,13 @@ export const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
   gap: 8px;
-  padding: 16px 24px 0 24px;
+  padding: 12px 24px;
   overflow-y: auto;
   position: relative;
 
-  @media screen and (max-height: 650px) {
+  @media screen and (max-height: 480px) {
     justify-content: flex-start;
   }
 
@@ -24,7 +24,7 @@ export const Container = styled.div`
     align-items: center;
     gap: 12px;
     color: #72767d;
-    font-size: 0.75em;
+    font-size: 0.625em;
     font-weight: 500;
     font-family: "Poppins", sans-serif;
 
@@ -48,7 +48,7 @@ export const Container = styled.div`
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    gap: 8px;
+    gap: 10px;
 
     .post--title {
       display: flex;
@@ -56,22 +56,28 @@ export const Container = styled.div`
       gap: 4px;
       color: #f8f9fa;
       font-family: "Poppins", sans-serif;
-      font-size: 1em;
+      font-size: 0.9375em;
       font-weight: 600;
     }
 
     .post--image {
-      width: 100%;
+      max-width: 100%;
+      width: auto;
+      height: 35vh;
+      min-height: 240px;
 
-      @media screen and (max-height: 560px) {
-        max-height: 220px;
-        width: auto;
-        max-width: 100%;
+      @media screen and (min-height: 600px) {
+        height: auto;
+        max-height: 320px;
+      }
+      @media screen and (max-width: 600px) {
+        height: auto;
+        min-height: auto;
       }
     }
 
     .post--desc {
-      width: 90%;
+      width: 80%;
       font-size: 0.75em;
       color: #767677;
       font-family: "Inter", sans-serif;
@@ -92,7 +98,7 @@ export const Container = styled.div`
         display: flex;
         justify-content: center;
         align-items: flex-end;
-        gap: 4px;
+        gap: 6px;
         font-size: 0.75em;
       }
     }
@@ -156,7 +162,7 @@ export const Container = styled.div`
   }
 
   .download {
-    margin-top: 32px;
+    margin-top: 16px;
     width: 100%;
     display: flex;
     align-items: center;
@@ -220,9 +226,10 @@ export const Container = styled.div`
 
   .download--action {
     width: auto;
-    min-width: 140px;
+    min-width: 120px;
 
     .box {
+      height: 36px;
       border-radius: 8px;
     }
 
@@ -231,6 +238,8 @@ export const Container = styled.div`
       justify-content: center;
       align-items: center;
       gap: 8px;
+      font-size: 0.875em;
+      font-family: "Inter", sans-serif;
     }
   }
 

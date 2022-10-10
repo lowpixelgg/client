@@ -16,17 +16,19 @@ export const Graphics = () => {
       <div className="row sizes">
         <div className="col">
           <label>RESOLUÇÃO</label>
-          <CustomSelect Items={["1600x900x32"]} />
+          <CustomSelect Items={["1600x900x32", "1280x720", "854x480"]} />
         </div>
 
         <div className="col">
           <label>COMPORTAMENTO</label>
-          <CustomSelect Items={["Tela cheia em janela"]} />
+          <CustomSelect
+            Items={["Tela cheia em janela", "Tela cheia", "Modo janela"]}
+          />
         </div>
 
         <div className="col">
           <label>PROPORÇÃO</label>
-          <CustomSelect Items={["4:3"]} />
+          <CustomSelect Items={["4:3", "16:9"]} />
         </div>
       </div>
 
@@ -43,24 +45,24 @@ export const Graphics = () => {
       <div className="row options">
         <div className="col">
           <label>VSYNC</label>
-          <CustomSelect Items={["OFF"]} />
+          <CustomSelect Items={["OFF", "ON"]} />
         </div>
 
         <div className="col">
           <label>ANTI SERRILHAMENTO</label>
-          <CustomSelect Items={["3X"]} />
+          <CustomSelect Items={["3X", "2X", "1X", "OFF"]} />
         </div>
 
         <div className="col">
           <label>MOTION BLUR</label>
-          <CustomSelect Items={["OFF"]} />
+          <CustomSelect Items={["OFF", "ON"]} />
         </div>
       </div>
 
       <div className="row options">
         <div className="col">
           <label>TEXTURAS</label>
-          <CustomSelect Items={["ULTRA"]} />
+          <CustomSelect Items={["ULTRA", "LOW"]} />
         </div>
 
         <div className="col">
@@ -72,7 +74,7 @@ export const Graphics = () => {
 
         <div className="col">
           <label>SHADERS</label>
-          <CustomSelect Items={["LOW"]} />
+          <CustomSelect Items={["LOW", "ULTRA"]} />
         </div>
       </div>
     </Container>

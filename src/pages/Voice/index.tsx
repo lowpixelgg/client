@@ -39,7 +39,7 @@ export const Voice = () => {
       </div>
 
       <div className="row mic">
-        <label>TESTAR MICROFONE</label>
+        <h1>TESTAR MICROFONE</h1>
 
         <p>
           Está tendo problemas com o microfone? Cante alguma coisa em seu

@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   width: 100%;
   height: 100%;
-  padding: 4px 0;
+  padding: 16px 0;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -32,6 +32,7 @@ export const Container = styled.div`
 
     h1 {
       font-size: 1em;
+      font-weight: 500;
     }
 
     p {
@@ -68,8 +69,10 @@ export const Container = styled.div`
     align-items: flex-start;
     gap: 8px;
 
-    label {
-      font-size: 0.875em;
+    h1 {
+      font-size: 0.75em;
+      font-weight: 500;
+      color: #f8f9fa;
     }
 
     p {
@@ -80,7 +83,8 @@ export const Container = styled.div`
   }
 
   & > h1 {
-    font-size: 1em;
+    font-size: 0.875em;
+    font-weight: 500;
     margin: 16px 0 -12px;
   }
 `;

@@ -2,13 +2,13 @@ import styled from "styled-components";
 
 export const Container = styled.div`
   display: flex;
-  width: 60px;
+  width: 56px;
   border: 4px solid #212529;
   border-radius: 50%;
   position: relative;
 
   span {
-    width: 20px;
+    width: 18px;
     aspect-ratio: 1;
     position: absolute;
     bottom: -2px;
