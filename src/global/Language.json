@@ -44,7 +44,7 @@
     ],
     "Voice": [
       "Configuração de voz",
-      "Configure seu microfone e aplico efeitos de ruido ou outros.",
+      "Configure seu microfone e aplique efeitos de ruido ou outros.",
       "DISPOSITIVO DE ENTRADA",
       "DISPOSITIVO DE SAÍDA",
       "VOLUME DE ENTRADA",
@@ -63,7 +63,7 @@
       "VARIAÇÃO DE USO:",
       "TIP: Nós recomendamos fortemente que você deixe sempre o máximo e a minima iguais ou muito perto, usar uma variação muito grande de uso pode afetar o carregamento e execução de alguns sistemas importantes.",
       "Arquivos e instalação",
-      "Antes de baixar ou até mesmo se seu HD estiver cheio de arquivos você pode mudar o local de instalação da Rocket, mas CUIDADO alterar a sua pasta e não mudar a localização poderá afetar seu jogo.",
+      "Antes de baixar ou até mesmo se seu HD estiver cheio de arquivos você pode mudar o local de instalação da Rocket, mas CUIDADO!, alterar a sua pasta e não mudar a localização poderá afetar seu jogo.",
       "Alterar Local",
       "COMPORTAMENTO",
       ["Sempre minimizar quando abrir"],
@@ -96,6 +96,204 @@
     "Language": [
       "Idioma",
       "Use seu idioma de preferencia, lembrando que estas configurações serão atualizadas no jogo também, então tome cuidado."
+    ]
+  },
+  "pt": {
+    "footer": ["Apoio", "Termos", "Status"],
+    "Login": [
+      "Email",
+      "Senha",
+      "Continuar",
+      "Esqueceu sua senha?",
+      "Clique aqui!",
+      "Não tem conta?",
+      "Registar-me"
+    ],
+    "Main": [
+      "Atualizar servidor",
+      "Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+      "Continuar a ler",
+      "Baixar",
+      "Baixando",
+      "Atualizar",
+      "Jogar"
+    ],
+    "Config": [
+      "Configurações",
+      "Minha Conta",
+      "Privacidade",
+      "Voz e vídeo",
+      "Multi Theft Auto",
+      "Vídeo e gráficos",
+      "Idioma",
+      "Copiar ID"
+    ],
+    "Account": [
+      "Minha conta:",
+      "Veja as suas informações pessoais e mude algumas.",
+      "Editar o perfil do utilizador",
+      "NOME DE UTILIZADOR",
+      "Editar",
+      "E-MAIL",
+      "TELEFONE",
+      "Senha e autenticação",
+      "Mudar a minha senha",
+      "Definir V2E",
+      "Tip: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic t"
+    ],
+    "Voice": [
+      "Definição de voz",
+      "Configurar seu microfone e aplicar ruído ou outros efeitos.",
+      "DISPOSITIVO DE ENTRADA",
+      "DISPOSITIVO DE SAÍDA",
+      "VOLUME DE ENTRADA",
+      "VOLUME DE SAÍDA",
+      "TESTAR MICROFONE",
+      "Está tendo problemas com o microfone? Cante algo no seu dispositivo, se pudermos ouvir reproduziremos com a barra abaixo.",
+      "Efeitos de voz",
+      "SUPRESSÃO DE RUÍDOS",
+      "FILTRO DE RUÍDOS"
+    ],
+    "MTA": [
+      "Multi Theft Auto",
+      "Que tal mudar o comportamento do seu jogo? Utilize as definições abaixo para obter a melhor experiência com o servidor.",
+      "MÁXIMO DE RAM",
+      "MÍNIMO DE RAM",
+      "VARIAÇÃO NA UTILIZAÇÃO:",
+      "TIP: Recomendamos vivamente que deixe sempre o máximo e mínimo igual ou muito próximo, utilizando uma grande variação de utilização pode afetar o carregamento e execução de alguns sistemas importantes.",
+      "Arquivos e instalação",
+      "Antes de descarregar ou mesmo se o seu HD estiver cheio de ficheiros, pode alterar a localização da instalação do foguetão, mas TENHA CUIDADO, alterando a pasta e não alterando a localização pode afetar o seu jogo.",
+      "Alterar Localização",
+      "COMPORTAMENTO",
+      ["Minimizar sempre ao abrir"],
+      ["Use Ubershaders para carregar"]
+    ],
+    "Graphics": [
+      "Vídeo e gráficos",
+      "Vamos preparar os seus gráficos, por que jogar lagando é uma porcaria! Todas as definições abaixo são aplicadas quando começas o jogo.",
+      "RESOLUÇÃO",
+      ["1600x900x32", "1280x720", "854x480"],
+      "COMPORTAMENTO",
+      ["Ecrã completo em janela", "Ecrã completo", "Modo janela"],
+      "PROPORÇÃO",
+      ["4:3", "16:9"],
+      "BRILHO",
+      "DISTANCIA DO HORIZONTE",
+      "VSYNC",
+      ["OFF", "ON"],
+      "ANTI SERRILHAMENTO",
+      ["3X", "2X", "1X", "OFF"],
+      "MOTION BLUR",
+      ["OFF", "ON"],
+      "TEXTURAS",
+      ["ULTRA", "LOW"],
+      "CARREGAMENTO DE ROUPAS DO CJ",
+      ["RÁPIDO"],
+      "SHADERS",
+      ["LOW", "ULTRA"]
+    ],
+    "Language": [
+      "Idioma",
+      "Use o seu idioma preferido, lembrando que estas definições também serão atualizadas no jogo, por isso tenha cuidado."
+    ]
+  },
+  "eng": {
+    "footer": ["Support", "Terms", "Status"],
+    "Login": [
+      "Email",
+      "Password",
+      "Continue",
+      "forgot you password?",
+      "Click here!",
+      "Without an account now?",
+      "Sign-up"
+    ],
+    "Main": [
+      "Server is updating",
+      "Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+      "read more",
+      "Download",
+      "downloading",
+      "Update",
+      "Play"
+    ],
+    "Config": [
+      "Settings",
+      "Account",
+      "privacy",
+      "voice & video",
+      "Multi Theft Auto",
+      "Video & Graphics",
+      "Language",
+      "Copy ID"
+    ],
+    "Account": [
+      "Account:",
+      "Take a look at your personal information and change some of it.",
+      "Edit your user profile",
+      "USERNAME",
+      "Edit",
+      "E-MAIL",
+      "PHONE",
+      "Password and Authentication",
+      "Change password",
+      "configure V2E",
+      "Tip: Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic t"
+    ],
+    "Voice": [
+      "Voice configuration",
+      "Set up your microphone and apply noise or other effects.",
+      "INPUT DEVICE",
+      "OUTPUT DEVICE",
+      "INPUT VOLUME",
+      "OUTPUT VOLUME",
+      "MIC TEST",
+      "Having mic issues? Sing something into your device, if we can hear it we will play it back with the bar below.",
+      "Voice Effects",
+      "NOISE SUPPRESSION",
+      "NOISE FILTER"
+    ],
+    "MTA": [
+      "Multi Theft Auto",
+      "How about changing the behavior of your game? Use the settings below for the best server experience.",
+      "MAX RAM",
+      "MIN RAM",
+      "USAGE VARIATION:",
+      "TIP: We strongly recommend that you always leave the maximum and minimum the same or very close, using too much variation in usage can affect the loading and running of some important systems.",
+      "Files & Installation",
+      "Before downloading or even if your hard drive is full of files you can change Rocket's installation location, but BE CAREFUL, changing your folder and not changing the location may affect your game.",
+      "Change Location",
+      "BEHAVIOR",
+      ["Always minimizing when opening"],
+      ["Use Ubershaders for loading"]
+    ],
+    "Graphics": [
+      "Video & Graphics",
+      "Let's prepare your graphics, because playing lagging sucks! All the settings below are applied when you start the game.",
+      "RESOLUTION",
+      ["1600x900x32", "1280x720", "854x480"],
+      "BEHAVIOR",
+      ["Full screen window", "Full screen", "Window mode"],
+      "PROPORTION",
+      ["4:3", "16:9"],
+      "BRIGHTNESS",
+      "HORIZON DISTANCE",
+      "VSYNC",
+      ["OFF", "ON"],
+      "ANTI-ALIASING",
+      ["3X", "2X", "1X", "OFF"],
+      "MOTION BLUR",
+      ["OFF", "ON"],
+      "TEXTURES",
+      ["ULTRA", "LOW"],
+      "LOADING OF CJ CLOTHES",
+      ["FAST"],
+      "SHADERS",
+      ["LOW", "ULTRA"]
+    ],
+    "Language": [
+      "Language",
+      "Use your preferred language, remembering that these settings will also be updated in the game, so be careful."
     ]
   }
 }

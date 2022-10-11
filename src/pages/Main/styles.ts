@@ -234,6 +234,7 @@ export const Container = styled.div`
     }
 
     button {
+      padding: 0 8px;
       display: flex;
       justify-content: center;
       align-items: center;
