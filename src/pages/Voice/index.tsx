@@ -2,18 +2,22 @@ import { Slider } from "@mui/material";
 import { Container } from "./styles";
 import { CustomSlider } from "@/components/Slider";
 import { CustomSelect } from "@/components/Select";
+import { useContext } from "react";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
 
 export const Voice = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   return (
     <Container>
       <div className="head">
-        <h1>Configuração de voz</h1>
-        <p>Configure seu microfone e aplico efeitos de ruido ou outros.</p>
+        <h1>{langObj.Voice[0]}</h1>
+        <p>{langObj.Voice[1]}</p>
       </div>
 
       <div className="row">
         <div className="col">
-          <label>DISPOSITIVO DE ENTRADA</label>
+          <label>{langObj.Voice[2]}</label>
           <CustomSelect
             Items={[
               "VoiceMeeter Output (VB-Audio- VoiceMe)",
@@ -23,43 +27,39 @@ export const Voice = () => {
         </div>
 
         <div className="col">
-          <label>DISPOSITIVO DE SAÍDA</label>
+          <label>{langObj.Voice[3]}</label>
           <CustomSelect Items={["VoiceMeeter Input (VB-Audio- VoiceMee)"]} />
         </div>
       </div>
 
       <div className="row">
         <div className="col">
-          <CustomSlider label="VOLUME DE ENTRADA" />
+          <CustomSlider label={langObj.Voice[4]} />
         </div>
 
         <div className="col">
-          <CustomSlider label="VOLUME DE SAÌDA" />
+          <CustomSlider label={langObj.Voice[5]} />
         </div>
       </div>
 
       <div className="row mic">
-        <h1>TESTAR MICROFONE</h1>
+        <h1>{langObj.Voice[6]}</h1>
 
-        <p>
-          Está tendo problemas com o microfone? Cante alguma coisa em seu
-          dispositivo, se nós conseguirmos ouvir reproduziremos com a barra
-          abaixo.
-        </p>
+        <p>{langObj.Voice[7]}</p>
 
         <MicSlider />
       </div>
 
-      <h1>Efeitos de voz</h1>
+      <h1>{langObj.Voice[8]}</h1>
 
       <div className="row">
         <div className="col">
-          <label>SUPRESSÃO DE RUIDOS</label>
+          <label>{langObj.Voice[9]}</label>
           <CustomSelect Items={["Sem supressão"]} />
         </div>
 
         <div className="col">
-          <label>FILTRO DE RUIDOS</label>
+          <label>{langObj.Voice[10]}</label>
           <CustomSelect Items={["OpenCoded"]} />
         </div>
       </div>

@@ -3,26 +3,27 @@ import { CustomSlider } from "@/components/Slider";
 import DirectionsImg from "@/assets/images/groupDirection.svg";
 import { TextField } from "@mui/material";
 import { CustomSelect } from "@/components/Select";
+import { useContext } from "react";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
 
 export const Mta = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   return (
     <Container>
       <div className="head">
-        <h1>Multi Theft Auto</h1>
-        <p>
-          Que tal mudar como seu jogo se comporta? Use as configurações abaixo
-          para obter a melhor experencia com o servidor.
-        </p>
+        <h1>{langObj.MTA[0]}</h1>
+        <p>{langObj.MTA[1]}</p>
       </div>
 
       <div className="ram">
         <div className="sliders">
           <div className="row">
-            <CustomSlider label="MAXIMO DE RAM" />
+            <CustomSlider label={langObj.MTA[2].toString()} />
           </div>
 
           <div className="row">
-            <CustomSlider label="MINIMO DE RAM" />
+            <CustomSlider label={langObj.MTA[3].toString()} />
           </div>
         </div>
 
@@ -35,34 +36,26 @@ export const Mta = () => {
         <img className="directions" src={DirectionsImg} />
 
         <div className="var">
-          <label>VARIAÇÃO DE USO:</label>
+          <label>{langObj.MTA[4]}</label>
           <p>3,62GB</p>
         </div>
       </div>
 
-      <p className="tip">
-        TIP: Nós recomendamos fortemente que você deixe sempre o máximo e a
-        minima iguais ou muito perto, usar uma variação muito grande de uso pode
-        afetar o carregamento e execução de alguns sistemas importantes.
-      </p>
+      <p className="tip">{langObj.MTA[5]}</p>
 
       <div className="install">
-        <h1>Arquivos e instalação</h1>
-        <p>
-          Antes de baixar ou até mesmo se seu HD estiver cheio de arquivos você
-          pode mudar o local de instalação da Rocket, mas CUIDADO alterar a sua
-          pasta e não mudar a localização poderá afetar seu jogo.
-        </p>
+        <h1>{langObj.MTA[6]}</h1>
+        <p>{langObj.MTA[7]}</p>
         <div>
           <CustomInput />
-          <button>Alterar Local</button>
+          <button>{langObj.MTA[8]}</button>
         </div>
       </div>
 
       <div className="comp">
-        <label>COMPORTAMENTO</label>
-        <CustomSelect Items={["Sempre minimizar quando abrir"]} />
-        <CustomSelect Items={["Use Ubershaders para carregamento"]} />
+        <label>{langObj.MTA[9]}</label>
+        <CustomSelect Items={[...langObj.MTA[10]]} />
+        <CustomSelect Items={[...langObj.MTA[11]]} />
       </div>
     </Container>
   );

@@ -1,10 +1,14 @@
 import { motion } from "framer-motion";
-import PostImage from "@/assets/images/rocket_newswireilegalxlegal.png";
+import PostImage from "@/assets/images/iniciojornada2.png";
 import { RiExternalLinkLine } from "react-icons/ri";
 import CheckIcon from "@/assets/icons/Check.svg";
 import { Button } from "@/components/Button";
+import { useContext } from "react";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
 
 export const Post = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   return (
     <motion.div
       className="post"
@@ -20,16 +24,10 @@ export const Post = () => {
 
       <img className="post--image" src={PostImage} />
 
-      <p className="post--desc">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting.
-      </p>
+      <p className="post--desc">{langObj.Main[1]}</p>
 
       <Button className="post--button" active>
-        <span>Continuar Lendo</span>
+        <span>{langObj.Main[2]}</span>
         <RiExternalLinkLine size={16} />
       </Button>
     </motion.div>

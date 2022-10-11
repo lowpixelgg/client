@@ -1,11 +1,15 @@
+import { useContext } from "react";
 import styled from "styled-components";
+import { LanguageContext, LangContextTypes } from "@/global/LanguageContext";
 
 export const Footer = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   return (
     <Container id="footer">
-      <a href="/">Support</a>
-      <a href="/">Terms</a>
-      <a href="/">Status</a>
+      <a href="/">{langObj.footer[0]}</a>
+      <a href="/">{langObj.footer[1]}</a>
+      <a href="/">{langObj.footer[2]}</a>
     </Container>
   );
 };

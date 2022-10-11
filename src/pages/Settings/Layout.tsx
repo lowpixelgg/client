@@ -10,6 +10,9 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, ClickAwayListener, Snackbar } from "@mui/material";
 
+import { useContext } from "react";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
+
 const darkTheme = createTheme({
   palette: {
     mode: "dark",
@@ -17,6 +20,8 @@ const darkTheme = createTheme({
 });
 
 export const SettingsLayout = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   const [showNav, setShowNav] = useState(false);
   const [alertTip, setAlertTip] = useState(false);
 
@@ -39,36 +44,36 @@ export const SettingsLayout = () => {
 
       <nav className={`${showNav && "active"}`}>
         <div className="head">
-          <h1>Settings</h1>
+          <h1>{langObj.Config[0]}</h1>
 
           <Link to="/init">
             <IoMdClose size={24} color="#f8f9fa" />
           </Link>
         </div>
 
-        <NavLink to="/settings/account">Minha Conta</NavLink>
+        <NavLink to="/settings/account">{langObj.Config[1]}</NavLink>
 
         <NavLink to="/settings/privacy">
-          <span>Privacidade</span>
+          <span>{langObj.Config[2]}</span>
           <MdArrowForwardIos size={14} />
         </NavLink>
 
         <hr />
 
-        <NavLink to="/settings/media">Voz e vídeo</NavLink>
+        <NavLink to="/settings/media">{langObj.Config[3]}</NavLink>
 
-        <NavLink to="/settings/mta">Multi Theft Auto</NavLink>
+        <NavLink to="/settings/mta">{langObj.Config[4]}</NavLink>
 
-        <NavLink to="/settings/graphics">Vídeo e gráficos</NavLink>
+        <NavLink to="/settings/graphics">{langObj.Config[5]}</NavLink>
 
         <NavLink to="/settings/language">
-          <span>Idioma</span>
+          <span>{langObj.Config[6]}</span>
           <MdArrowForwardIos size={14} />
         </NavLink>
 
         <hr />
 
-        <button onClick={CopyId}>Copy ID</button>
+        <button onClick={CopyId}>{langObj.Config[7]}</button>
 
         <Snackbar
           open={alertTip}

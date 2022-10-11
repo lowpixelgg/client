@@ -7,16 +7,56 @@ import PortugalFlag from "../../assets/icons/portugal.png";
 import SpainFlag from "../../assets/icons/spain.png";
 import RussiaFlag from "../../assets/icons/russia.png";
 import TurkeyFlag from "../../assets/icons/turkey.png";
+import { useContext } from "react";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
+
+const LanguageOptions = [
+  {
+    image: BrazilFlag,
+    lang: "Português",
+    country: "Brazil",
+    set: "br",
+  },
+  {
+    image: PortugalFlag,
+    lang: "Português",
+    country: "Portugal",
+    set: "pt",
+  },
+  {
+    image: EuaFlag,
+    lang: "English",
+    country: "United States",
+    set: "eng",
+  },
+  {
+    image: SpainFlag,
+    lang: "Español",
+    country: "España",
+    set: "es",
+  },
+  {
+    image: RussiaFlag,
+    lang: "Русский",
+    country: "Россия",
+    set: "rus",
+  },
+  {
+    image: TurkeyFlag,
+    lang: "Türkçe",
+    country: "Türkiye",
+    set: "tur",
+  },
+];
 
 export const Language = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   return (
     <Container>
       <div className="head">
-        <h1>Idioma</h1>
-        <p>
-          Use seu idioma de preferencia, lembrando que estas configurações serão
-          atualizadas no jogo também, então tome cuidado.
-        </p>
+        <h1>{langObj.Language[0]}</h1>
+        <p>{langObj.Language[1]}</p>
       </div>
 
       <div className="row">
@@ -31,7 +71,8 @@ export const Language = () => {
 const CustomSelect = () => {
   return (
     <Select
-      defaultValue={0}
+      defaultValue={"br"}
+      onChange={(e) => console.log(e.target.value)}
       sx={{
         width: "100%",
         background: "#2F3136",
@@ -46,60 +87,20 @@ const CustomSelect = () => {
           { borderColor: "#202225" },
       }}
     >
-      <MenuItem value={0}>
-        <div className="languageItem">
-          <img src={BrazilFlag} />
+      {LanguageOptions.map((item, index) => {
+        return (
+          <MenuItem value={item.set} key={index}>
+            <div className="languageItem">
+              <img src={item.image} />
 
-          <div>
-            <strong>Português</strong>
-            <p>Brasil</p>
-          </div>
-        </div>
-      </MenuItem>
-
-      <MenuItem value={1}>
-        <div className="languageItem">
-          <img src={EuaFlag} />
-
-          <div>
-            <strong>Inglês</strong>
-            <p>Estados Unidos</p>
-          </div>
-        </div>
-      </MenuItem>
-
-      <MenuItem value={2}>
-        <div className="languageItem">
-          <img src={SpainFlag} />
-
-          <div>
-            <strong>Espanhol</strong>
-            <p>Espanha</p>
-          </div>
-        </div>
-      </MenuItem>
-
-      <MenuItem value={3}>
-        <div className="languageItem">
-          <img src={RussiaFlag} />
-
-          <div>
-            <strong>Russo</strong>
-            <p>Rússia</p>
-          </div>
-        </div>
-      </MenuItem>
-
-      <MenuItem value={4}>
-        <div className="languageItem">
-          <img src={TurkeyFlag} />
-
-          <div>
-            <strong>Turco</strong>
-            <p>Turquia</p>
-          </div>
-        </div>
-      </MenuItem>
+              <div>
+                <strong>{item.lang}</strong>
+                <p>{item.country}</p>
+              </div>
+            </div>
+          </MenuItem>
+        );
+      })}
     </Select>
   );
 };

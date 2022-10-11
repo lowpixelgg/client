@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { Container } from "./styles";
 import { Input } from "../../components/Input/index";
 import { Button } from "../../components/Button/index";
@@ -5,8 +6,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
 
 export const Login = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
@@ -41,7 +45,7 @@ export const Login = () => {
       >
         <Input
           masked={false}
-          placeholder="Email Adress"
+          placeholder={langObj.Login[0]}
           focus={email.length ? true : false}
           icon="user"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +55,7 @@ export const Login = () => {
 
         <Input
           masked={true}
-          placeholder="Password"
+          placeholder={langObj.Login[1]}
           focus={pass.length ? true : false}
           icon="password"
           onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,20 +68,20 @@ export const Login = () => {
           active={email.length > 0 && pass.length > 0}
           onClick={() => buttonAction()}
         >
-          Continuar
+          {langObj.Login[2]}
         </Button>
 
         <div className="forgotPass">
           <a href="/">
-            Forgot the pass?
-            <span> Click Here</span>
+            {langObj.Login[3]}
+            <span> {langObj.Login[4]}</span>
           </a>
         </div>
 
         <div className="createAccount">
           <a href="/">
-            Without an account?
-            <span>Register now</span>
+            {langObj.Login[5]}
+            <span>{langObj.Login[6]}</span>
           </a>
         </div>
       </motion.div>
