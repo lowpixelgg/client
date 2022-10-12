@@ -3,15 +3,19 @@ import { useState } from "react";
 import { TbDownload } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
 import { Button } from "@/components/Button";
+import { useContext } from "react";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
 
 export const Download = () => {
-  const [actionBtn, setActionBtn] = useState("baixar");
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
+  const [actionBtn, setActionBtn] = useState(langObj.Main[3]);
   const [downloadFill, setDownloadFill] = useState(0);
 
   const handleAction = () => {
     switch (actionBtn) {
-      case "baixar":
-        setActionBtn("baixando");
+      case langObj.Main[3]:
+        setActionBtn(langObj.Main[4]);
 
         let init = downloadFill;
         const timer = setInterval(() => {
@@ -21,13 +25,13 @@ export const Download = () => {
           } else {
             clearInterval(timer);
             setDownloadFill(0);
-            setActionBtn("Update");
+            setActionBtn(langObj.Main[5]);
           }
         }, 100);
         break;
 
-      case "Update":
-        setActionBtn("Jogar");
+      case langObj.Main[5]:
+        setActionBtn(langObj.Main[6]);
         break;
 
       default:
@@ -38,7 +42,7 @@ export const Download = () => {
   return (
     <div className="download">
       <AnimatePresence>
-        {actionBtn !== "Jogar" && (
+        {actionBtn !== langObj.Main[6] && (
           <motion.div
             initial={{ opacity: 0.2 }}
             animate={{ opacity: 1 }}
@@ -73,13 +77,13 @@ export const Download = () => {
       </AnimatePresence>
 
       <Button
-        active={actionBtn !== "baixando"}
-        disabled={actionBtn === "baixando"}
+        active={actionBtn !== langObj.Main[4]}
+        disabled={actionBtn === langObj.Main[4]}
         className="download--action"
         onClick={() => handleAction()}
       >
         <span>{actionBtn}</span>
-        {actionBtn === "Jogar" ? (
+        {actionBtn === langObj.Main[6] ? (
           <FaPlay size={16} color="#f8f9fa" />
         ) : (
           <TbDownload size={20} color="#f8f9fa" />

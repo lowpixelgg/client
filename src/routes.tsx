@@ -23,6 +23,8 @@ const Routing = () => {
         <Route element={<SettingsLayout />}>
           <Route path="/settings/account" element={<Account />} />
 
+          <Route path="/settings/privacy" element={<Voice />} />
+
           <Route path="/settings/media" element={<Voice />} />
 
           <Route path="/settings/mta" element={<Mta />} />

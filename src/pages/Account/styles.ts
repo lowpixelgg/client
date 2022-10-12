@@ -7,14 +7,15 @@ export const Container = styled.div`
   flex-direction: column;
   justify-content: space-evenly;
   align-items: flex-start;
-  gap: 24px;
+  gap: 32px;
   font-family: "Inter", sans-serif;
   color: #f8f9fa;
 
-  max-width: 680px;
+  max-width: 748px;
   margin: 0 auto;
 
-  @media screen and (max-height: 600px) {
+  @media screen and (max-height: 550px) {
+    padding: 4px 0 16px;
     justify-content: flex-start;
     overflow-y: auto;
   }
@@ -32,6 +33,7 @@ export const Container = styled.div`
 
     h1 {
       font-size: 1em;
+      font-weight: 500;
     }
 
     p {
@@ -49,6 +51,7 @@ export const Container = styled.div`
     flex-direction: column;
     border-radius: 8px;
     overflow: hidden;
+    flex-shrink: 0;
 
     .userContainer--banner {
       width: 100%;
@@ -105,7 +108,7 @@ export const Container = styled.div`
         background: #5865f2;
         color: #f8f9fa;
         font-weight: 500;
-        padding: 8px 16px;
+        padding: 8px 12px;
         font-size: 0.75em;
         border-radius: 4px;
       }
@@ -113,7 +116,7 @@ export const Container = styled.div`
 
     .userContainer--infos {
       width: 100%;
-      margin-top: 16px;
+      margin-top: 8px;
       padding: 0 16px 8px;
       display: flex;
       flex-direction: column;
@@ -126,12 +129,12 @@ export const Container = styled.div`
         align-items: center;
 
         & > button {
-          padding: 8px 16px;
+          padding: 6px 12px;
           background: #282828;
           color: #f8f9fa;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 4px;
           border-radius: 4px;
           font-size: 0.75em;
         }
@@ -144,13 +147,13 @@ export const Container = styled.div`
         gap: 2px;
 
         h3 {
-          font-size: 0.75em;
+          font-size: 0.625em;
           font-weight: 500;
           color: #676767;
         }
 
         p {
-          font-size: 0.75em;
+          font-size: 0.875em;
           color: #d2d2d2;
         }
       }
@@ -166,7 +169,7 @@ export const Container = styled.div`
     & > div {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 16px;
 
       button:first-child {
         padding: 8px 16px;
@@ -181,13 +184,13 @@ export const Container = styled.div`
 
       button:nth-child(2) {
         color: #676767;
-        font-size: 0.75em;
-        font-weight: 500;
+        font-size: 0.625em;
+        font-weight: 600;
       }
     }
 
     h1 {
-      font-size: 1.125em;
+      font-size: 1em;
     }
 
     p {

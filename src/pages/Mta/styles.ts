@@ -6,9 +6,9 @@ export const Container = styled.div`
   padding: 8px 0;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
+  justify-content: flex-start;
   align-items: flex-start;
-  gap: 12px;
+  gap: 24px;
   font-family: "Inter", sans-serif;
   color: #f8f9fa;
 
@@ -16,7 +16,7 @@ export const Container = styled.div`
   margin: 0 auto;
 
   @media screen and (max-height: 600px) {
-    justify-content: flex-start;
+    padding: 16px 0;
     overflow-y: auto;
   }
 
@@ -34,6 +34,7 @@ export const Container = styled.div`
 
     h1 {
       font-size: 1em;
+      font-weight: 500;
     }
 
     p {
@@ -117,7 +118,8 @@ export const Container = styled.div`
     gap: 12px;
 
     h1 {
-      font-size: 1em;
+      font-size: 0.875em;
+      font-weight: 500;
       margin-bottom: -4px;
     }
 
@@ -144,7 +146,7 @@ export const Container = styled.div`
       flex-shrink: 0;
       font-family: "Inter", sans-serif;
       font-weight: 500;
-      font-size: 0.875em;
+      font-size: 0.75em;
       border-radius: 4px;
     }
   }

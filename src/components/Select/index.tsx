@@ -12,8 +12,8 @@ export const CustomSelect = ({ Items }: CustomSelectProps) => {
         width: "100%",
         background: "#141414",
         color: "#f8f8fa",
-        fontSize: ".875em",
-        "& .MuiSelect-select": { padding: "12px 14px" },
+        fontSize: "0.75em",
+        "& .MuiSelect-select": { padding: "10px 14px" },
         "& .MuiSelect-icon": { color: "#f8f8fa" },
         "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
           borderColor: "#f8f8fa61",

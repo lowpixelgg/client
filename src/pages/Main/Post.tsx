@@ -3,8 +3,12 @@ import PostImage from "@/assets/images/iniciojornada2.png";
 import { RiExternalLinkLine } from "react-icons/ri";
 import CheckIcon from "@/assets/icons/Check.svg";
 import { Button } from "@/components/Button";
+import { useContext } from "react";
+import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
 
 export const Post = () => {
+  const { langObj } = useContext(LanguageContext) as LangContextTypes;
+
   return (
     <motion.div
       className="post"
@@ -14,25 +18,17 @@ export const Post = () => {
       transition={{ ease: "easeIn", duration: 0.4 }}
     >
       <h1 className="post--title">
-        <img src={CheckIcon} style={{ width: 16 }} />
+        <img src={CheckIcon} style={{ width: 14 }} />
         <span>Newswire:</span>
       </h1>
 
       <img className="post--image" src={PostImage} />
 
-      <p className="post--desc">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book. It has survived not only five
-        centuries, but also the leap into electronic typesetting, remaining
-        essentially unchanged. It was popularised in the 1960s with the release
-        of Letraset sheets containing Lorem....
-      </p>
+      <p className="post--desc">{langObj.Main[1]}</p>
 
       <Button className="post--button" active>
-        <span>Continuar Lendo</span>
-        <RiExternalLinkLine size={18} />
+        <span>{langObj.Main[2]}</span>
+        <RiExternalLinkLine size={16} />
       </Button>
     </motion.div>
   );

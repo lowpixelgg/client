@@ -18,13 +18,14 @@ export const Container = styled.div`
     top: 32px;
     left: 8px;
     display: none;
+    z-index: 100;
   }
 
   nav {
     flex-shrink: 0;
     height: 80%;
     max-height: 480px;
-    width: 180px;
+    width: 160px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -33,12 +34,14 @@ export const Container = styled.div`
     font-size: 0.75em;
     color: #adb5bd;
 
-    a {
+    a,
+    & > button {
       width: 100%;
       display: flex;
       justify-content: space-between;
       align-items: center;
       transition: 0.2s ease;
+      color: #adb5bd;
 
       &:hover {
         color: #dee2e6;
@@ -48,11 +51,22 @@ export const Container = styled.div`
       }
     }
 
+    .head {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+
+      a {
+        width: auto;
+      }
+    }
+
     h1 {
       font-family: "Poppins", sans-serif;
       font-weight: 500;
-      font-size: 1.5em;
-      margin-bottom: 32px;
+      font-size: 1.25em;
       color: #f8f9fa;
     }
 
@@ -108,11 +122,12 @@ export const CustomMuiStyles = createGlobalStyle`
   }
 
   ul.MuiMenu-list {
-    padding: 8px;
+    padding: 4px;
 
     & > li {
+      font-size: 0.875em;
       margin: 4px 0;
-      padding: 4px 6px;
+      padding: 4px 8px;
       border-radius: 4px;
     }
   }

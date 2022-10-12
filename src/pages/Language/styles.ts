@@ -62,6 +62,16 @@ export const Container = styled.div`
       }
     }
   }
+
+  .changeAction {
+    margin-top: auto;
+    align-self: flex-end;
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 0.875em;
+    color: #f8f9fa;
+    background: #5865f2;
+  }
 `;
 
 export const CustomMuiStyles = createGlobalStyle`

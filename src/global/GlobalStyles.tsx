@@ -41,6 +41,7 @@ export const GlobalStyles = createGlobalStyle`
     background: none;
     border: none;
     cursor: pointer;
+    font-family: inherit;
   }
 
   .font--Satoshi {

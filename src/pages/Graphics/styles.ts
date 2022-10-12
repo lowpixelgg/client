@@ -16,6 +16,7 @@ export const Container = styled.div`
   margin: 0 auto;
 
   @media screen and (max-height: 600px) {
+    padding: 16px 0;
     overflow-y: auto;
   }
 
@@ -32,6 +33,7 @@ export const Container = styled.div`
 
     h1 {
       font-size: 1em;
+      font-weight: 500;
     }
 
     p {
@@ -86,6 +88,6 @@ export const Container = styled.div`
 
   & > h1 {
     margin: 16px 0 0;
-    font-size: 1em;
+    font-size: 0.875em;
   }
 `;
