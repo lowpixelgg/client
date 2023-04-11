@@ -8,6 +8,8 @@ import { TopStatus } from "./TopStatus";
 import { Post } from "./Post";
 import { Download } from "./Download";
 
+import { useContext, useEffect } from "react";
+
 import { shell } from "electron";
 import { useNavigate } from "react-router-dom";
 import { Avatar } from "@/components/Avatar";
