@@ -118,9 +118,9 @@
       "Email",
       "Senha",
       "Continuar",
-      "Esqueceu sua senha?",
-      "Clique aqui!",
-      "Não tem conta?",
+      "Esqueceste a tua senha?",
+      "Clica aqui!",
+      "Não tens uma conta?",
       "Registar-me"
     ],
     "Main": [
@@ -184,11 +184,11 @@
     ],
     "MTA": [
       "Multi Theft Auto",
-      "Que tal mudar o comportamento do seu jogo? Utilize as definições abaixo para obter a melhor experiência com o servidor.",
+      "Que tal mudares o comportamento do teu jogo? Utiliza as definições abaixo para obter a melhor experiência com o servidor.",
       "MÁXIMO DE RAM",
       "MÍNIMO DE RAM",
       "VARIAÇÃO NA UTILIZAÇÃO:",
-      "TIP: Recomendamos vivamente que deixe sempre o máximo e mínimo igual ou muito próximo, utilizando uma grande variação de utilização pode afetar o carregamento e execução de alguns sistemas importantes.",
+      "TIP: Recomendamos vivamente que deixes sempre o máximo e mínimo igual ou muito próximo, utilizando uma grande variação de utilização pode afetar o carregamento e execução de alguns sistemas importantes.",
       "Arquivos e instalação",
       "Antes de descarregar ou mesmo se o seu HD estiver cheio de ficheiros, pode alterar a localização da instalação do foguetão, mas TENHA CUIDADO, alterando a pasta e não alterando a localização pode afetar o seu jogo.",
       "Alterar Localização",
@@ -198,7 +198,7 @@
     ],
     "Graphics": [
       "Vídeo e gráficos",
-      "Vamos preparar os seus gráficos, por que jogar lagando é uma porcaria! Todas as definições abaixo são aplicadas quando começas o jogo.",
+      "Vamos preparar os teus gráficos, por que jogar lagando é uma porcaria! Todas as definições abaixo são aplicadas quando começas o jogo.",
       "RESOLUÇÃO",
       ["1600x900x32", "1280x720", "854x480"],
       "COMPORTAMENTO",
@@ -222,7 +222,7 @@
     ],
     "Language": [
       "Idioma",
-      "Use a o teu idioma preferido, lembrando que estas definições também serão atualizadas no jogo, por isso tenha cuidado."
+      "Usa o teu idioma preferido, lembra-te que estas definições também serão atualizadas no jogo, por isso cuidado."
     ]
   },
   "eng": {
