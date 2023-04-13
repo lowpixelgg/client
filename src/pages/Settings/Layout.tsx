@@ -27,13 +27,14 @@ export const SettingsLayout = () => {
 
   const [showNav, setShowNav] = useState(false);
   const [alertTip, setAlertTip] = useState(false);
+  const {signOut} = useContext(AuthContext);
 
   const CopyId = () => {
     setAlertTip(true);
     navigator.clipboard.writeText("a6e19347-3927");
   };
 
-  const {signOut} = useContext(AuthContext);
+
 
   return (
     <Container>
