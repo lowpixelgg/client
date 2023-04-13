@@ -9,7 +9,7 @@ export function useProfile<Data = any, Error = any>(slug: string) {
 
       return data.body;
     },
-    { suspense: true }
+    { suspense: false }
   );
 
   return { profile: data, error, isValidating, mutate };

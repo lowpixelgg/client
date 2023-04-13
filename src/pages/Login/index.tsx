@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
 import AuthContext from "@/global/AuthContext";
 import { useEffect } from "react";
+import { shell } from "electron";
 
 export const Login = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
@@ -87,9 +88,9 @@ export const Login = () => {
         </div>
 
         <div className="createAccount">
-          <a href="/">
+          <a href='/'>
             {langObj.Login[5]}
-            <span>{langObj.Login[6]}</span>
+            <span onClick={() => shell.openExternal("https://play.rocketmta.com/register")}>{langObj.Login[6]}</span>
           </a>
         </div>
       </motion.div>
