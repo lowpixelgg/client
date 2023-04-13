@@ -2,7 +2,7 @@
   "br": {
     "footer": ["Suporte", "Termos", "Status"],
     "Login": [
-      "Email",
+      "Email ou Usuário",
       "Senha",
       "Continuar",
       "Esqueceu sua senha?",
@@ -115,7 +115,7 @@
   "pt": {
     "footer": ["Apoio", "Termos", "Status"],
     "Login": [
-      "Email",
+      "Email ou utilizador",
       "Senha",
       "Continuar",
       "Esqueceste a tua senha?",
@@ -228,7 +228,7 @@
   "eng": {
     "footer": ["Support", "Terms", "Status"],
     "Login": [
-      "Email",
+      "Email or Username",
       "Password",
       "Continue",
       "forgot you password?",
