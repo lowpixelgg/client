@@ -7,24 +7,32 @@ import { useNavigate } from "react-router-dom";
 import { Footer } from "@/components/Footer";
 import { motion } from "framer-motion";
 import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
+import AuthContext from "@/global/AuthContext";
+import { useEffect } from "react";
 
 export const Login = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
 
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(""); 
   const [pass, setPass] = useState("");
   const [loading, setLoading] = useState(false);
+  const {signIn, VerifyAuthetication, user}  = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const buttonAction = () => {
+  const buttonAction = async () => {
     setLoading(true);
+    await signIn(email, pass);
+    setLoading(false)
+    // if (email && pass) {
+    //   navigate("/init");
+    // }
 
-    if (email && pass) {
-      navigate("/init");
-    }
-
-    setLoading(false);
+    // setLoading(false);
   };
+
+  useEffect(() => {
+    VerifyAuthetication();
+  }, [])
 
   return (
     <Container>

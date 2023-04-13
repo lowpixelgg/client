@@ -4,6 +4,7 @@ import { Container, CustomMuiStyles } from "./styles";
 import { MdArrowForwardIos } from "react-icons/md";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import { IoMdClose } from "react-icons/io";
+import {TbDoorExit} from 'react-icons/tb'
 
 import { IoMenu, IoClose } from "react-icons/io5";
 import { useState } from "react";
@@ -12,6 +13,8 @@ import { Alert, ClickAwayListener, Snackbar } from "@mui/material";
 
 import { useContext } from "react";
 import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
+
+import AuthContext from "@/global/AuthContext";
 
 const darkTheme = createTheme({
   palette: {
@@ -29,6 +32,8 @@ export const SettingsLayout = () => {
     setAlertTip(true);
     navigator.clipboard.writeText("a6e19347-3927");
   };
+
+  const {signOut} = useContext(AuthContext);
 
   return (
     <Container>
@@ -74,7 +79,7 @@ export const SettingsLayout = () => {
         <hr />
 
         <button onClick={CopyId}>{langObj.Config[7]}</button>
-
+        <span onClick={signOut}>{langObj.Config[8]} </span>
         <Snackbar
           open={alertTip}
           autoHideDuration={2000}
@@ -89,6 +94,7 @@ export const SettingsLayout = () => {
             Id copiado!
           </Alert>
         </Snackbar>
+        
       </nav>
 
       <ThemeProvider theme={darkTheme}>

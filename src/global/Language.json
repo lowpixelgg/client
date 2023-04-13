@@ -27,7 +27,8 @@
       "Multi Theft Auto",
       "Vídeo e gráficos",
       "Idioma",
-      "Copiar ID"
+      "Copiar ID",
+      "Sair da conta"
     ],
     "Account": [
       "Minha conta:",
@@ -126,12 +127,13 @@
       "Multi Theft Auto",
       "Vídeo e gráficos",
       "Idioma",
-      "Copiar ID"
+      "Copiar ID",
+      "Sair da conta"
     ],
     "Account": [
       "Minha conta:",
-      "Veja as suas informações pessoais e mude algumas.",
-      "Editar o perfil do utilizador",
+      "Vê as tuas informações pessoais e muda algumas.",
+      "Edita o perfil do utilizador",
       "NOME DE UTILIZADOR",
       "Editar",
       "E-MAIL",
@@ -143,13 +145,13 @@
     ],
     "Voice": [
       "Definição de voz",
-      "Configurar seu microfone e aplicar ruído ou outros efeitos.",
+      "Configurar o teu microfone e aplica o supressor ruído ou outros efeitos.",
       "DISPOSITIVO DE ENTRADA",
       "DISPOSITIVO DE SAÍDA",
       "VOLUME DE ENTRADA",
       "VOLUME DE SAÍDA",
       "TESTAR MICROFONE",
-      "Está tendo problemas com o microfone? Cante algo no seu dispositivo, se pudermos ouvir reproduziremos com a barra abaixo.",
+      "Estas a ter algum problema com o microfone? Cante algo no teu dispositivo, se pudermos ouvir reproduziremos com a barra abaixo.",
       "Efeitos de voz",
       "SUPRESSÃO DE RUÍDOS",
       "FILTRO DE RUÍDOS"
@@ -194,7 +196,7 @@
     ],
     "Language": [
       "Idioma",
-      "Use o seu idioma preferido, lembrando que estas definições também serão atualizadas no jogo, por isso tenha cuidado."
+      "Use a o teu idioma preferido, lembrando que estas definições também serão atualizadas no jogo, por isso tenha cuidado."
     ]
   },
   "eng": {
@@ -225,7 +227,8 @@
       "Multi Theft Auto",
       "Video & Graphics",
       "Language",
-      "Copy ID"
+      "Copy ID",
+      "Logout"
     ],
     "Account": [
       "Account:",

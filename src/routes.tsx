@@ -8,6 +8,7 @@ import { Main } from "./pages/Main";
 import { Mta } from "./pages/Mta";
 import { SettingsLayout } from "./pages/Settings/Layout";
 import { Voice } from "./pages/Voice";
+import { AuthProvider } from "./global/AuthContext";
 
 const Routing = () => {
   const location = useLocation();
@@ -15,9 +16,9 @@ const Routing = () => {
   const locationArr = location.pathname?.split("/") ?? [];
   return (
     <AnimatePresence mode="wait">
+      <AuthProvider>
       <Routes location={location} key={locationArr[1]}>
         <Route path="/" element={<Login />} />
-
         <Route path="/init" element={<Main />} />
 
         <Route element={<SettingsLayout />}>
@@ -34,6 +35,7 @@ const Routing = () => {
           <Route path="/settings/language" element={<Language />} />
         </Route>
       </Routes>
+      </AuthProvider>
     </AnimatePresence>
   );
 };

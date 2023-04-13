@@ -10,6 +10,10 @@ export const Container = styled.div`
   gap: 32px;
   color: #f8f9fa;
 
+  span:hover {
+    cursor: pointer;
+  }
+
   .menu {
     background: #212529;
     padding: 8px;
