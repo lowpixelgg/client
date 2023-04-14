@@ -8,9 +8,9 @@ import { NewsWire } from '@/global/NewsWire';
 
 export const Post = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(NewsWire[0]);
   const [imageKey, setImageKey] = useState(0);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(langObj.Main[1][0]);
 
   const handlechangeimage = () => {
     if (imageKey >= NewsWire.length - 1) {
@@ -23,11 +23,6 @@ export const Post = () => {
       setText(langObj.Main[1][imageKey + 1])
     }
   };
-
-  useEffect(() => {
-    setImage(NewsWire[0]);
-    setText(langObj.Main[1][0])
-  }, []);
   
   useEffect(() => {
     const interval = setInterval(() => {
