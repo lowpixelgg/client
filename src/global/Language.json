@@ -2,7 +2,7 @@
   "br": {
     "footer": ["Suporte", "Termos", "Status"],
     "Login": [
-      "Email",
+      "Email ou Usuário",
       "Senha",
       "Continuar",
       "Esqueceu sua senha?",
@@ -12,7 +12,20 @@
     ],
     "Main": [
       "Atualizando servidor",
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+      [
+        {
+          "text": "1Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        },
+        {
+          "text": "2Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        },
+        {
+          "text": "3Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        },
+        {
+          "text": "4Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        }
+      ],
       "Continuar Lendo",
       "Baixar",
       "Baixando",
@@ -27,7 +40,8 @@
       "Multi Theft Auto",
       "Vídeo e gráficos",
       "Idioma",
-      "Copiar ID"
+      "Copiar ID",
+      "Sair da conta"
     ],
     "Account": [
       "Minha conta:",
@@ -101,17 +115,30 @@
   "pt": {
     "footer": ["Apoio", "Termos", "Status"],
     "Login": [
-      "Email",
+      "Email ou utilizador",
       "Senha",
       "Continuar",
-      "Esqueceu sua senha?",
-      "Clique aqui!",
-      "Não tem conta?",
+      "Esqueceste a tua senha?",
+      "Clica aqui!",
+      "Não tens uma conta?",
       "Registar-me"
     ],
     "Main": [
       "Atualizar servidor",
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+      [
+        {
+          "text": "1Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        },
+        {
+          "text": "2Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        },
+        {
+          "text": "3Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        },
+        {
+          "text": "4Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+        }
+      ],
       "Continuar a ler",
       "Baixar",
       "Baixando",
@@ -126,12 +153,13 @@
       "Multi Theft Auto",
       "Vídeo e gráficos",
       "Idioma",
-      "Copiar ID"
+      "Copiar ID",
+      "Sair da conta"
     ],
     "Account": [
       "Minha conta:",
-      "Veja as suas informações pessoais e mude algumas.",
-      "Editar o perfil do utilizador",
+      "Vê as tuas informações pessoais e muda algumas.",
+      "Edita o perfil do utilizador",
       "NOME DE UTILIZADOR",
       "Editar",
       "E-MAIL",
@@ -143,24 +171,24 @@
     ],
     "Voice": [
       "Definição de voz",
-      "Configurar seu microfone e aplicar ruído ou outros efeitos.",
+      "Configurar o teu microfone e aplica o supressor ruído ou outros efeitos.",
       "DISPOSITIVO DE ENTRADA",
       "DISPOSITIVO DE SAÍDA",
       "VOLUME DE ENTRADA",
       "VOLUME DE SAÍDA",
       "TESTAR MICROFONE",
-      "Está tendo problemas com o microfone? Cante algo no seu dispositivo, se pudermos ouvir reproduziremos com a barra abaixo.",
+      "Estas a ter algum problema com o microfone? Cante algo no teu dispositivo, se pudermos ouvir reproduziremos com a barra abaixo.",
       "Efeitos de voz",
       "SUPRESSÃO DE RUÍDOS",
       "FILTRO DE RUÍDOS"
     ],
     "MTA": [
       "Multi Theft Auto",
-      "Que tal mudar o comportamento do seu jogo? Utilize as definições abaixo para obter a melhor experiência com o servidor.",
+      "Que tal mudares o comportamento do teu jogo? Utiliza as definições abaixo para obter a melhor experiência com o servidor.",
       "MÁXIMO DE RAM",
       "MÍNIMO DE RAM",
       "VARIAÇÃO NA UTILIZAÇÃO:",
-      "TIP: Recomendamos vivamente que deixe sempre o máximo e mínimo igual ou muito próximo, utilizando uma grande variação de utilização pode afetar o carregamento e execução de alguns sistemas importantes.",
+      "TIP: Recomendamos vivamente que deixes sempre o máximo e mínimo igual ou muito próximo, utilizando uma grande variação de utilização pode afetar o carregamento e execução de alguns sistemas importantes.",
       "Arquivos e instalação",
       "Antes de descarregar ou mesmo se o seu HD estiver cheio de ficheiros, pode alterar a localização da instalação do foguetão, mas TENHA CUIDADO, alterando a pasta e não alterando a localização pode afetar o seu jogo.",
       "Alterar Localização",
@@ -170,7 +198,7 @@
     ],
     "Graphics": [
       "Vídeo e gráficos",
-      "Vamos preparar os seus gráficos, por que jogar lagando é uma porcaria! Todas as definições abaixo são aplicadas quando começas o jogo.",
+      "Vamos preparar os teus gráficos, por que jogar lagando é uma porcaria! Todas as definições abaixo são aplicadas quando começas o jogo.",
       "RESOLUÇÃO",
       ["1600x900x32", "1280x720", "854x480"],
       "COMPORTAMENTO",
@@ -194,13 +222,13 @@
     ],
     "Language": [
       "Idioma",
-      "Use o seu idioma preferido, lembrando que estas definições também serão atualizadas no jogo, por isso tenha cuidado."
+      "Usa o teu idioma preferido, lembra-te que estas definições também serão atualizadas no jogo, por isso cuidado."
     ]
   },
   "eng": {
     "footer": ["Support", "Terms", "Status"],
     "Login": [
-      "Email",
+      "Email or Username",
       "Password",
       "Continue",
       "forgot you password?",
@@ -210,7 +238,12 @@
     ],
     "Main": [
       "Server is updating",
-      "Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+      [
+        "1Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+        "2Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+        "3Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting",
+        "4Lorem ipsum is simply dummy text of the printing and typesetting industry lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting"
+      ],
       "read more",
       "Download",
       "downloading",
@@ -225,7 +258,8 @@
       "Multi Theft Auto",
       "Video & Graphics",
       "Language",
-      "Copy ID"
+      "Copy ID",
+      "Logout"
     ],
     "Account": [
       "Account:",

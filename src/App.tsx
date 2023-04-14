@@ -11,7 +11,6 @@ const App = () => {
         <Framebar />
 
         <GlobalStyles />
-
         <Router />
       </LanguageProvider>
     </BrowserRouter>

@@ -53,13 +53,6 @@ export const Container = styled.div`
     overflow: hidden;
     flex-shrink: 0;
 
-    .userContainer--banner {
-      width: 100%;
-      min-height: 64px;
-      background: #c4c4c4;
-      aspect-ratio: 8;
-    }
-
     .userContainer--head {
       width: 100%;
       padding: 0 16px 8px 16px;
@@ -199,3 +192,19 @@ export const Container = styled.div`
     }
   }
 `;
+
+
+export const Banner = styled.div`
+  width: 100%;
+  min-height: 64px;
+  background-image: ${(props: { image: string }) => `url(${props.image})`};
+  background-position: center;
+  aspect-ratio: 8;
+  background-size: cover;
+  object-fit: cover;
+`
+
+export const Badge = styled.img`
+  width: 18px;
+  height: 18px;
+`

@@ -1,13 +1,26 @@
 import { Avatar } from "@/components/Avatar";
-import { Container } from "./styles";
+import { Container, Banner, Badge } from "./styles";
 import { GrTurbolinux } from "react-icons/gr";
 import { AiFillEdit } from "react-icons/ai";
 import { BiLinkExternal } from "react-icons/bi";
 import { useContext } from "react";
 import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
+import { useEffect, useState } from "react";
+import { shell } from "electron";
+
+import useAccount from "@/services/hooks/useAccount";
+import { useProfile } from "@/services/hooks/userProfile";
 
 export const Account = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
+  
+  const {user} = useAccount();
+
+  if (!user.slug) {
+    return <></>
+  }
+
+  const {profile} = useProfile(user.slug);
 
   return (
     <Container className="avatar">
@@ -17,17 +30,19 @@ export const Account = () => {
       </div>
 
       <div className="userContainer">
-        <div className="userContainer--banner" />
+        <Banner image={user.banner}/>
 
         <div className="userContainer--head">
           <div className="left">
             <Avatar />
 
             <div className="name">
-              <h3>Flashii</h3>
+              <h3>{user.username}</h3>
 
               <span>
-                <GrTurbolinux size={14} color="#5764EE" />
+              {profile?.badges.map((item :object, index: number) => (
+                <Badge src={item.image} key={index}/>
+              ))}
               </span>
             </div>
           </div>
@@ -39,7 +54,7 @@ export const Account = () => {
           <div className="row">
             <div className="left">
               <h3>{langObj.Account[3]}</h3>
-              <p>flashii</p>
+              <p>{user.username}</p>
             </div>
 
             <button>
@@ -51,7 +66,7 @@ export const Account = () => {
           <div className="row">
             <div className="left">
               <h3>{langObj.Account[5]}</h3>
-              <p>****************@gmail.com</p>
+              <p>{user.email}</p>
             </div>
 
             <button>
@@ -78,12 +93,12 @@ export const Account = () => {
         <h1>{langObj.Account[7]}</h1>
 
         <div>
-          <button>
+          <button onClick={() => shell.openExternal("https://play.rocketmta.com/")}>
             <span>{langObj.Account[8]}</span>
             <BiLinkExternal size={16} />
           </button>
 
-          <button>{langObj.Account[9]}</button>
+          <button onClick={() => shell.openExternal("https://play.rocketmta.com/")}>{langObj.Account[9]}</button>
         </div>
 
         <p>{langObj.Account[10]}</p>
