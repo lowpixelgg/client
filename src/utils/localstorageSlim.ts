@@ -2,17 +2,17 @@ import ls from "localstorage-slim";
 
 const set = (k: string, v: string) => {
   if (!k || !v) return;
-  return ls.set(k, v, { encrypt: true });
+  return localStorage.setItem(k,v);
 };
 
 const get = (k: string) => {
   if (!k) return;
-  return ls.get(k, { decrypt: true });
+  return localStorage.getItem(k);
 };
 
 const removeItem = (k: string) => {
   if (!k) return;
-  return ls.remove(k);
+  return localStorage.removeItem(k);
 };
 
 export { set, get, removeItem };
