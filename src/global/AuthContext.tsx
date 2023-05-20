@@ -26,13 +26,8 @@ interface AuthContextData {
   user: object | null;
   setUser: React.Dispatch<React.SetStateAction<object | null>>;
   VerifyAuthetication: () => Promise<void>;
-  signOut : () => Promise<void>;
+  signOut : () => void;
   signIn: (email: string, password: string) => Promise<void>;
-  create: (data: RegisterData) => Promise<void>;
-  activate: (token: string) => Promise<GlobalMessage>;
-  recovery: (token: string, password: string) => Promise<void>;
-  signInWithGoogle: (token: string) => Promise<void>;
-  sendRecoveryEmail: (email: string) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData);
