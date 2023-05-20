@@ -12,8 +12,9 @@ class GameProps {
   public io: Server;
   user: { fname: string; lname: string; serial: any; id: number; };
   rpc: RichPrecense;
+  win: any;
+  constructor (win, rpc: RichPrecense) {
 
-  constructor (rpc: RichPrecense) {
     this.user = {
       fname: "Guest",
       lname: "Guest",
@@ -21,16 +22,22 @@ class GameProps {
       id: 0
     }
 
+    this.win = win;
+
     const httpServer = createServer();
     this.io = new Server(httpServer, {});
     this.rpc = rpc;
     this.events();
   }
 
+  public async getUserToken () {
+    const localStorageValue = await this.win.webContents.executeJavaScript('localStorage.getItem("saturn-api.token")');
+    return localStorageValue;
+  }
+
   private events () {
     this.io.on("connection", (socket) => {
       console.log("a user connected");
-
 
       socket.on("rp_core:configure", (data) => {
         data = JSON.parse(data);
@@ -57,13 +64,10 @@ class GameProps {
         this.rpc.request(`${user.fname} ${user.lname}(${user.id})`, `Em: ${zone} (${slots}/${max})`)
       })
 
-      socket.on("rp_core:onCoreRequestToken", () => {
-        socket.emit("rp_core:onServerSendInformation", () => {
-
-        })
+      socket.on("rp_core:onCoreRequestToken", async () => {
+        socket.emit("rp_core:onServerSendInformation", await this.getUserToken());
       })
     });
-
   }
 }
 

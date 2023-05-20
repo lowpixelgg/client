@@ -10,7 +10,7 @@ export const Post = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
   const [image, setImage] = useState(NewsWire[0]);
   const [imageKey, setImageKey] = useState(0);
-  const [text, setText] = useState(langObj.Main[1][0]);
+  const [text, setText] = useState(langObj.Main[1][0])
 
   const handlechangeimage = () => {
     if (imageKey >= NewsWire.length - 1) {
@@ -62,7 +62,7 @@ export const Post = () => {
         exit={{ opacity: 0 }}
         transition={{ ease: "easeIn", duration: 0.4 }}
       >
-        {text.text}
+        {text}
       </motion.p>
 
       <Button className="post--button" active>

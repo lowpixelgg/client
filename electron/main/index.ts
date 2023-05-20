@@ -11,7 +11,7 @@ import { RichPrecense } from "../game-props/external/rpc"
 import GameProps from "../game-props/main";
 
 const rpc = new RichPrecense();
-const game = new GameProps(rpc).io;
+let game;
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
 
@@ -47,6 +47,9 @@ async function createWindow() {
       contextIsolation: false,
     },
   });
+
+  game = new GameProps(win, rpc).io;
+
 
   if (app.isPackaged) {
     win.loadFile(indexHtml);
