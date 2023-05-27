@@ -24,6 +24,7 @@
     "http": "^0.0.1-security",
     "localstorage-slim": "^2.4.0",
     "react-icons": "^4.4.0",
+    "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.4.0",
     "react-toastify": "^9.1.2",
     "socket.io": "^4.6.1",

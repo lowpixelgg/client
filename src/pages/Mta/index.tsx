@@ -5,6 +5,7 @@ import { TextField } from "@mui/material";
 import { CustomSelect } from "@/components/Select";
 import { useContext } from "react";
 import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
+import { Link } from "react-router-dom";
 
 export const Mta = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
@@ -41,7 +42,12 @@ export const Mta = () => {
         </div>
       </div>
 
-      <p className="tip">{langObj.MTA[5]}</p>
+      <p className="tip">
+        {langObj.MTA[5]}{" "}
+        <Link to="/voip" style={{ color: "cyan" }}>
+          Voip
+        </Link>
+      </p>
 
       <div className="install">
         <h1>{langObj.MTA[6]}</h1>

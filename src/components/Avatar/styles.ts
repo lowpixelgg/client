@@ -1,8 +1,12 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
+type ContainerProps = {
+  size?: number;
+};
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
-  width: 56px;
+  width: ${({ size }) => (size ? size : 56)}px;
   border: 4px solid #212529;
   border-radius: 50%;
   position: relative;

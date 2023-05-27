@@ -9,6 +9,7 @@ import { Mta } from "./pages/Mta";
 import { SettingsLayout } from "./pages/Settings/Layout";
 import { Voice } from "./pages/Voice";
 import { AuthProvider } from "./global/AuthContext";
+import { Voip } from "./pages/Voip";
 
 const Routing = () => {
   const location = useLocation();
@@ -17,24 +18,26 @@ const Routing = () => {
   return (
     <AnimatePresence mode="wait">
       <AuthProvider>
-      <Routes location={location} key={locationArr[1]}>
-        <Route path="/" element={<Login />} />
-        <Route path="/init" element={<Main />} />
+        <Routes location={location} key={locationArr[1]}>
+          <Route path="/" element={<Login />} />
+          <Route path="/init" element={<Main />} />
 
-        <Route element={<SettingsLayout />}>
-          <Route path="/settings/account" element={<Account />} />
+          <Route element={<SettingsLayout />}>
+            <Route path="/settings/account" element={<Account />} />
 
-          <Route path="/settings/privacy" element={<Voice />} />
+            <Route path="/settings/privacy" element={<Voice />} />
 
-          <Route path="/settings/media" element={<Voice />} />
+            <Route path="/settings/media" element={<Voice />} />
 
-          <Route path="/settings/mta" element={<Mta />} />
+            <Route path="/settings/mta" element={<Mta />} />
 
-          <Route path="/settings/graphics" element={<Graphics />} />
+            <Route path="/settings/graphics" element={<Graphics />} />
 
-          <Route path="/settings/language" element={<Language />} />
-        </Route>
-      </Routes>
+            <Route path="/settings/language" element={<Language />} />
+          </Route>
+
+          <Route path="/voip" element={<Voip />} />
+        </Routes>
       </AuthProvider>
     </AnimatePresence>
   );
