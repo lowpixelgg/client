@@ -13,7 +13,7 @@ import { useProfile } from "@/services/hooks/userProfile";
 
 export const Account = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
-  
+
   const {user} = useAccount();
 
   if (!user.slug) {
@@ -40,7 +40,7 @@ export const Account = () => {
               <h3>{user.username}</h3>
 
               <span>
-              {profile?.badges.map((item :object, index: number) => (
+              {profile?.badges.map((item : any, index: number) => (
                 <Badge src={item.image} key={index}/>
               ))}
               </span>
