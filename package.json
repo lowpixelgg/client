@@ -22,6 +22,7 @@
     "discord-rpc": "^4.0.1",
     "framer-motion": "^7.4.0",
     "http": "^0.0.1-security",
+    "leaflet": "^1.9.4",
     "localstorage-slim": "^2.4.0",
     "react-icons": "^4.4.0",
     "react-leaflet": "^4.2.1",
@@ -33,6 +34,7 @@
   },
   "devDependencies": {
     "@types/discord-rpc": "^4.0.4",
+    "@types/leaflet": "^1.9.3",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",
     "@types/react-icons": "^3.0.0",
