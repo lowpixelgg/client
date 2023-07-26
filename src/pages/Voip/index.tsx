@@ -90,8 +90,18 @@ export const Voip = () => {
   });
 
   ipcRenderer.on('onServerCallPeer', (_, peer) => {
+
+  });
+
+  ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
+
+  })
+
+
+  const handleCall = () => {
     if (localstream && myPeer) {
-      const call = myPeer.call(peer, localstream) as MediaConnection;
+      console.log("ok")
+      const call = myPeer.call('peer', localstream) as MediaConnection;
 
       call.on('stream', (remoteStream) => {
         addRemoteStream(remoteStream, call.peer);
@@ -108,15 +118,13 @@ export const Voip = () => {
         call.close();
       });
     }
-  });
-
-  ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
-
-  })
+  }
 
 
   return (
-    <Container>
+    <>
+    <button onClick={handleCall}>habla mesmo</button>
+        <Container>
       <TopStatus />
 
       <SideNav />
@@ -157,6 +165,7 @@ export const Voip = () => {
 
       <Map />
     </Container>
+    </>
   );
 };
 
@@ -189,6 +198,7 @@ const Map = () => {
       doubleClickZoom={false}
     >
       <ImageMap userPosition={userPosition} setUserPosition={setUserPosition} />
+      
     </MapContainer>
   );
 };
@@ -227,6 +237,8 @@ const ImageMap: React.FC<ImageMapProps> = ({ userPosition, setUserPosition }) =>
   const refsArray = useRef([]);
   const [showConference, setShowConference] = useState(false);
   
+
+
 
 
 
