@@ -84,28 +84,32 @@ export const Voip = () => {
 
 
   // Events
-  ipcRenderer.on('onServerHeartBeat', (event, data) => {
+  ipcRenderer.on('onServerHeartBeat', (_, data) => {
     const { coords, location, streamInPlayers } = data as unknown as game;
   });
 
-  ipcRenderer.on('onServerCallPeer', (event, peer) => {
+  ipcRenderer.on('onServerCallPeer', (_, peer) => {
     if (localstream) {
       const call = myPeer?.call(peer, localstream) as MediaConnection;
 
-      call.on('stream', (remoteStream) => {
-        addRemoteStream(remoteStream, call.peer);
-        console.log('Connected to ' + call.peer);
-      });
-
-      call.on('close', () => {
-        console.log('Disconnected from ' + call.peer);
-      })
-
-      call.on('error', (error) => {
-        console.log("call error", error);
-        removeRemoteStream(call.peer);
-        call.close();
-      });
+      if (call) {
+        call.on('stream', (remoteStream) => {
+          addRemoteStream(remoteStream, call.peer);
+          console.log('Connected to ' + call.peer);
+        });
+  
+        call.on('close', () => {
+          console.log('Disconnected from ' + call.peer);
+        })
+  
+        call.on('error', (error) => {
+          console.log("call error", error);
+          removeRemoteStream(call.peer);
+          call.close();
+        });
+      } else {
+        console.log("error ocurred");
+      }
     }
   });
 
