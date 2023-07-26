@@ -25,14 +25,14 @@ export default function usePeer(peerId: string) {
   useEffect(() => {
     import('peerjs').then(() => {
       const Config = {
-        host: "9000-peers-peerjsserver-91xyiv47wpj.ws-us102.gitpod.io",
+        // host: "9000-peers-peerjsserver-91xyiv47wpj.ws-us102.gitpod.io",
         secure: true,
-        path: '/'
-        // iceServers: [
-        //     { urls: 'stun:stun.l.google.com:19302'}, 
-        //     { urls: 'stun:stun1.l.google.com:19302'}, 
-        //     { urls: 'stun:stun2.l.google.com:19302'}, 
-        // ]
+        // path: '/'
+        iceServers: [
+            { urls: 'stun:stun.l.google.com:19302'}, 
+            { urls: 'stun:stun1.l.google.com:19302'}, 
+            { urls: 'stun:stun2.l.google.com:19302'}, 
+        ]
     };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
