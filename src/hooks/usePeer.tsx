@@ -49,8 +49,11 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
         navigator.mediaDevices.getUserMedia(userMediaConfig).then((stream) => {
           call.answer(stream);
 
+          console.log('streaming')
+
           call.on('stream', (remoteStream) => {
             addRemoteStream(remoteStream, call.peer);
+            console.log(remoteStream, 'stream')
           });
 
           call.on('close', () => {

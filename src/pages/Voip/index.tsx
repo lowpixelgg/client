@@ -15,7 +15,7 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { MdHeadphones, MdHeadsetOff } from "react-icons/md";
@@ -29,6 +29,7 @@ import { ipcRenderer } from "electron";
 import useUserMedia from "@/hooks/useUserMedia";
 import useRemoteStreams from "@/hooks/useRemoteStream.js";
 import { MediaConnection } from "peerjs";
+import useStream from "@/hooks/useStream";
 
 interface StreamPlayer {
   id: string,
@@ -205,7 +206,8 @@ type ImageMapProps = {
   >;
 };
 
-const ImageMap = ({ userPosition, setUserPosition }: ImageMapProps) => {
+
+const ImageMap: React.FC<ImageMapProps> = ({ userPosition, setUserPosition }) => {
   const [playersList, setPlayerList] = useState([
     {
       id: 1,
@@ -219,49 +221,43 @@ const ImageMap = ({ userPosition, setUserPosition }: ImageMapProps) => {
   ]);
 
   const map = useMap();
+  const localstream = useUserMedia();
+  const [setLocalStream, localVideoRef, handleCanPlayLocal] = useStream();
+  const [remoteStreams, addRemoteStream, removeRemoteStream] = useRemoteStreams();
+  const refsArray = useRef([]);
+  const [showConference, setShowConference] = useState(false);
+  
 
-  // map.addEventListener("click", (e) => {
 
-  // });
 
   useEffect(() => {
     map.setView([userPosition.posY, userPosition.posX]);
   }, [userPosition]);
 
+  useEffect(() => {
+    remoteStreams.map(streamData =>
+      refsArray.current[streamData.peerId].srcObject = streamData.stream)
+  }, [remoteStreams])
+
+  useEffect(() => {
+    setLocalStream(localstream);
+  }, [localstream])
+
+  
+
   return (
-    <>
-      <ImageOverlay
-        url={RocketMap}
-        zIndex={1}
-        bounds={[
-          [0, 0],
-          [240, 240],
-        ]}
-        opacity={1}
-      />
-
-      <Marker
-        interactive={false}
-        position={[userPosition.posY, userPosition.posX]}
-        icon={UserIcon}
-      />
-
-      {playersList.map((item) => {
-        return (
-          <Marker
-            key={item.id}
-            position={[item.posY, item.posX]}
-            icon={L.icon({
-              iconUrl: item.avatar,
-              iconSize: [36, 36],
-              className: `playerIcon ${item.isTalking ? "isTalking" : ""}`,
-            })}
-            title={item.name}
-          >
-            <Popup>{item.name}</Popup>
-          </Marker>
-        );
-      })}
-    </>
+    <div className="listeners-box">
+      {remoteStreams.map((dataStream, i) => (
+        <div key={dataStream.peerId} className="listener-stream">
+          <video
+            ref={(ref) => (refsArray.current[dataStream.peerId] = ref)}
+            autoPlay
+            playsInline
+          />
+        </div>
+      ))}
+    </div>
   );
 };
+
+export default ImageMap;
