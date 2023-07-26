@@ -26,6 +26,9 @@ import muteSoundFile from "@/assets/sounds/muteSound.mp3";
 import unmuteSoundFile from "@/assets/sounds/unmuteSound.mp3";
 import usePeer from "@/hooks/usePeer";
 import { ipcRenderer } from "electron";
+import useUserMedia from "@/hooks/useUserMedia";
+import useRemoteStreams from "@/hooks/useRemoteStream.js";
+import { MediaConnection } from "peerjs";
 
 interface StreamPlayer {
   id: string,
@@ -54,9 +57,11 @@ const UserIcon = L.icon({
 });
 
 export const Voip = () => {
-  const [myPeer, myPeerID ] = usePeer(1, 2);
-
   const { user } = useAccount();
+  const [myPeer, myPeerID ] = usePeer(user._id);
+  const localstream = useUserMedia();
+  const [remoteStreams, addRemoteStream, removeRemoteStream] = useRemoteStreams();
+
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
     audioOn: true,
@@ -76,6 +81,38 @@ export const Voip = () => {
       setVoiceStatus({ ...voiceStatus, audioOn: !voiceStatus.audioOn });
     }
   };
+
+
+  // Events
+  ipcRenderer.on('onServerHeartBeat', (event, data) => {
+    const { coords, location, streamInPlayers } = data as unknown as game;
+  });
+
+  ipcRenderer.on('onServerCallPeer', (event, peer) => {
+    if (localstream) {
+      const call = myPeer?.call(peer, localstream) as MediaConnection;
+
+      call.on('stream', (remoteStream) => {
+        addRemoteStream(remoteStream, call.peer);
+        console.log('Connected to ' + call.peer);
+      });
+
+      call.on('close', () => {
+        console.log('Disconnected from ' + call.peer);
+      })
+
+      call.on('error', (error) => {
+        console.log("call error", error);
+        removeRemoteStream(call.peer);
+        call.close();
+      });
+    }
+  });
+
+  ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
+
+  })
+
 
   return (
     <Container>
@@ -182,17 +219,6 @@ const ImageMap = ({ userPosition, setUserPosition }: ImageMapProps) => {
   ]);
 
   const map = useMap();
-
-  ipcRenderer.on('onServerHeartBeat', (event, data) => {
-    const { coords, location, streamInPlayers } = data as unknown as game;
-
-    console.log(data)
-
-    setUserPosition({
-      posX: coords.x || 0,
-      posY: coords.y || 0,
-    });
-  });
 
   // map.addEventListener("click", (e) => {
 

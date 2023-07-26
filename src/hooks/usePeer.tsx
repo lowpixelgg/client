@@ -8,7 +8,7 @@ const userMediaConfig = {
 };
 
 
-export default function usePeer(addRemoteStream: any, removeRemoteStream: any) {
+export default function usePeer(peerId: string) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
   const [ myPeerID, setMyPeerID ] = useState(null);
 
@@ -23,7 +23,7 @@ export default function usePeer(addRemoteStream: any, removeRemoteStream: any) {
 
   useEffect(() => {
     import('peerjs').then(() => {
-      const peer: Peer = myPeer ? myPeer : new Peer('1', {
+      const peer: Peer = myPeer ? myPeer : new Peer(peerId, {
         host: 'localhost',
         secure: false,
         port: 9000,
@@ -32,8 +32,12 @@ export default function usePeer(addRemoteStream: any, removeRemoteStream: any) {
       })
 
       peer.on('open', () => {
-        console.log("connection established")
-      })
+        console.log("connection established");
+      });
+
+      peer.on('call', (call) => {
+        console.log('receiving call from ' + call.peer)
+      });
     });
 
     return () => {

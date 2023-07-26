@@ -57,19 +57,26 @@ class GameProps {
       socket.on('rp_voip:onVoipHeartbeat', async (data) => {
         data = JSON.parse(data)[0];
 
-        if (data) {
-          this.game = {
-            location: data.location,
-            coords: {
-              x: data.coords.x,
-              y: data.coords.y,
-            },
-            streamInPlayers: data.streamInPlayers
-          }
-  
-          this.win.webContents.send("onServerHeartBeat", this.game);
+        this.game = {
+          location: data.location,
+          coords: {
+            x: data.coords.x,
+            y: data.coords.y,
+          },
+          streamInPlayers: data.streamInPlayers
         }
+
+        this.win.webContents.send("onServerHeartBeat", this.game);
       });
+
+
+      socket.on('rp_voip:onVoipAddPlayer', async (peer) => {
+        this.win.webContents.send("onServerCallPeer", peer);
+      });
+
+      socket.on("rp_voip:onVoipRemovePlayer", async (peer) => {
+        this.win.webContents.send("onServerDisconectPeer", peer);
+      })
     });
   }
 }
