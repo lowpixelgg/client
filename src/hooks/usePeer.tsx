@@ -60,7 +60,12 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
       })
 
       peer.on('call', async (call) => {
-        addRemoteStream(await getAudioStream(), call.peer)
+        call.answer(await getAudioStream());
+        
+        call.on('stream', (stream) => {
+          addRemoteStream(stream, call.peer)
+        });
+        //
       });
     });
 

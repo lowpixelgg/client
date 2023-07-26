@@ -101,10 +101,12 @@ export const Voip = () => {
 
   const handleCall = async () => {
     if (myPeer) {
-      const call = myPeer.call("", await getAudioStream());
+      const call = myPeer.call("e8718e5b-53a4-43b9-b719-7603bf81ded2", await getAudioStream());
      
-      call.on('stream', async () => {
-        addRemoteStream(await getAudioStream(), call.peer)
+      call.on('stream', async (stream) => {
+        addRemoteStream(stream, call.peer)
+
+        console.log("to com meus cassas")
       })
     }
   }
