@@ -89,10 +89,9 @@ export const Voip = () => {
   });
 
   ipcRenderer.on('onServerCallPeer', (_, peer) => {
-    if (localstream) {
-      const call = myPeer?.call(peer, localstream) as MediaConnection;
+    if (localstream && myPeer) {
+      const call = myPeer.call(peer, localstream) as MediaConnection;
 
-      console.log(myPeer, peer, localstream);
       call.on('stream', (remoteStream) => {
         addRemoteStream(remoteStream, call.peer);
         console.log('Connected to ' + call.peer);
@@ -107,7 +106,6 @@ export const Voip = () => {
         removeRemoteStream(call.peer);
         call.close();
       });
-
     }
   });
 

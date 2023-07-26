@@ -8,7 +8,6 @@ const ratios = new Map([
 
 const userMediaConfig = {
   audio: { echoCancellation: true, noiseSuppression: true },
-  video: { facingMode: "user" }
 };
 
 export default function useUserMedia() {
@@ -17,11 +16,8 @@ export default function useUserMedia() {
   useEffect(() => {
     const enableStream = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({
-          audio: true,
-        });
+        const stream = await navigator.mediaDevices.getUserMedia(userMediaConfig);
 
-        console.log("ok media dnv")
         setMediaStream(stream);
       } catch (error) {
         console.log(error);
