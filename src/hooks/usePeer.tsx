@@ -4,12 +4,11 @@ import React, { useState, useEffect } from 'react';
 const audioOnlyConfig = { audio: true, video: false };
 const userMediaConfig = {
     audio: { echoCancellation: true, noiseSuppression: true },
-    video: { facingMode: "user" }
 };
 
 const config = { 'iceServers': [{ 'urls': ['stun:stun.l.google.com:19302'] }] };
 
-export default function usePeer(peerId: string) {
+export default function usePeer(peerId: string, addRemoteStream: any, removeRemoteStream: any) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
   const [ myPeerID, setMyPeerID ] = useState(null);
 
@@ -47,7 +46,23 @@ export default function usePeer(peerId: string) {
       })
 
       peer.on('call', (call) => {
-        console.log('receiving call from ' + call.peer)
+        navigator.mediaDevices.getUserMedia(userMediaConfig).then((stream) => {
+          call.answer(stream);
+
+          call.on('stream', (remoteStream) => {
+            addRemoteStream(remoteStream, call.peer);
+          });
+
+          call.on('close', () => {
+            console.log("The call has ended");
+            removeRemoteStream(call.peer);
+          });
+
+          call.on('error', (error) => {
+            console.log(error);
+            removeRemoteStream(call.peer);
+          });
+        }).catch(err => console.log(err));
       });
     });
 

@@ -58,9 +58,9 @@ const UserIcon = L.icon({
 
 export const Voip = () => {
   const { user } = useAccount();
-  const [myPeer, myPeerID ] = usePeer(user._id);
   const localstream = useUserMedia();
   const [remoteStreams, addRemoteStream, removeRemoteStream] = useRemoteStreams();
+  const [myPeer, myPeerID ] = usePeer(user._id, addRemoteStream, remoteStreams);
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
