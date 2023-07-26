@@ -24,6 +24,23 @@ import useAccount from "@/services/hooks/useAccount";
 
 import muteSoundFile from "@/assets/sounds/muteSound.mp3";
 import unmuteSoundFile from "@/assets/sounds/unmuteSound.mp3";
+import usePeer from "@/hooks/usePeer";
+import { ipcRenderer } from "electron";
+
+interface StreamPlayer {
+  id: string,
+  coords: {
+    x: number,
+    y: number,
+    z: number,
+  }
+}
+
+interface game  { 
+    location: string,
+    coords: { x: number, y: number }
+    streamInPlayers: StreamPlayer[]
+}
 
 const MuteSound = new Audio(muteSoundFile);
 const UnmuteSound = new Audio(unmuteSoundFile);
@@ -37,6 +54,8 @@ const UserIcon = L.icon({
 });
 
 export const Voip = () => {
+  const [myPeer, myPeerID ] = usePeer(1, 2);
+
   const { user } = useAccount();
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
@@ -160,43 +179,24 @@ const ImageMap = ({ userPosition, setUserPosition }: ImageMapProps) => {
       avatar:
         "https://media.discordapp.net/attachments/916053830272155652/1055839901184163842/FkaPYQdXEAMlFD8.png?width=450&height=437",
     },
-    {
-      id: 2,
-      posX: 160,
-      posY: 97.5,
-      isTalking: true,
-      name: "Bozo",
-      avatar:
-        "https://i.pinimg.com/564x/de/30/d6/de30d6b0e6e02510b7f7d74b56cfeb11.jpg",
-    },
-    {
-      id: 3,
-      posX: 162,
-      posY: 98,
-      isTalking: false,
-      name: "Konima",
-      avatar:
-        "https://i.pinimg.com/564x/e0/73/4c/e0734c4ed53a4dacde032be644c7abc7.jpg",
-    },
-    {
-      id: 4,
-      posX: 162.4,
-      posY: 101.2,
-      isTalking: true,
-      name: "flashii",
-      avatar:
-        "https://i.pinimg.com/564x/84/56/7b/84567be65df5b8663af8bffd49542e01.jpg",
-    },
   ]);
 
   const map = useMap();
 
-  map.addEventListener("click", (e) => {
+  ipcRenderer.on('onServerHeartBeat', (event, data) => {
+    const { coords, location, streamInPlayers } = data as unknown as game;
+
+    console.log(data)
+
     setUserPosition({
-      posX: e.latlng.lng,
-      posY: e.latlng.lat,
+      posX: coords.x || 0,
+      posY: coords.y || 0,
     });
   });
+
+  // map.addEventListener("click", (e) => {
+
+  // });
 
   useEffect(() => {
     map.setView([userPosition.posY, userPosition.posX]);

@@ -1,33 +1,41 @@
-// class GameProps {
-//   constructor () {
-
-//   }
-// }
 import rpc from "discord-rpc"
 import { RichPrecense } from "./external/rpc";
 import { createServer } from "http";
 import { Server } from "socket.io";
+import { app, BrowserWindow, shell, ipcMain } from "electron";
+
+interface StreamPlayer {
+  id: string,
+  coords: {
+    x: number,
+    y: number,
+    z: number,
+  }
+}
 
 class GameProps {
   public io: Server;
-  user: { fname: string; lname: string; serial: any; id: number; };
+
   rpc: RichPrecense;
   win: any;
+  game: {
+    location: string,
+    coords: { x: number, y: number }
+    streamInPlayers: StreamPlayer[]
+  }
+
   constructor (win, rpc: RichPrecense) {
-
-    this.user = {
-      fname: "Guest",
-      lname: "Guest",
-      serial: null,
-      id: 0
-    }
-
     this.win = win;
 
     const httpServer = createServer();
     this.io = new Server(httpServer, {});
     this.rpc = rpc;
     this.events();
+    this.game = {
+      location: 'World',
+      coords: { x: 0, y: 0 },
+      streamInPlayers: []
+    }
   }
 
   public async getUserToken () {
@@ -37,36 +45,31 @@ class GameProps {
 
   private events () {
     this.io.on("connection", (socket) => {
-      console.log("a user connected");
+      socket.on("rp_core:getUserToken", async () => {
+        socket.emit("onLauncherSendToken", await this.getUserToken());
+      });
 
-      socket.on("rp_core:configure", (data) => {
-        data = JSON.parse(data);
-        const { serial, fname, lname, id } = data[0]
-        console.log(data)
+      socket.on("rp_voip:onPlayerSpawn", async () => {
+        this.win.webContents.send("onPlayerSpawn", true);
+      });
 
-        if (serial || fname || lname || id) {
-          this.user = {
-            fname,
-            lname,
-            serial,
-            id
+
+      socket.on('rp_voip:onVoipHeartbeat', async (data) => {
+        data = JSON.parse(data)[0];
+
+        if (data) {
+          this.game = {
+            location: data.location,
+            coords: {
+              x: data.coords.x,
+              y: data.coords.y,
+            },
+            streamInPlayers: data.streamInPlayers
           }
+  
+          this.win.webContents.send("onServerHeartBeat", this.game);
         }
-
-        socket.emit("server:requestPlayerInformation")
-      })
-
-      socket.on("rp_core:setPlayerPosition", (data) => {
-        const user = this.user
-        data = JSON.parse(data);
-        const { zone, slots, max } = data[0]
-
-        this.rpc.request(`${user.fname} ${user.lname}(${user.id})`, `Em: ${zone} (${slots}/${max})`)
-      })
-
-      socket.on("rp_core:onCoreRequestToken", async () => {
-        socket.emit("rp_core:onServerSendInformation", await this.getUserToken());
-      })
+      });
     });
   }
 }

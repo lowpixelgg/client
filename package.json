@@ -24,6 +24,7 @@
     "http": "^0.0.1-security",
     "leaflet": "^1.9.4",
     "localstorage-slim": "^2.4.0",
+    "peerjs": "^1.4.7",
     "react-icons": "^4.4.0",
     "react-leaflet": "^4.2.1",
     "react-router-dom": "^6.4.0",

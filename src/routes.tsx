@@ -1,5 +1,5 @@
 import { AnimatePresence } from "framer-motion";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Account } from "./pages/Account";
 import { Graphics } from "./pages/Graphics";
 import { Language } from "./pages/Language";
@@ -10,9 +10,15 @@ import { SettingsLayout } from "./pages/Settings/Layout";
 import { Voice } from "./pages/Voice";
 import { AuthProvider } from "./global/AuthContext";
 import { Voip } from "./pages/Voip";
+import { ipcRenderer } from "electron";
 
 const Routing = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  ipcRenderer.on('onPlayerSpawn', () => {
+    return navigate('/voip');
+  });
 
   const locationArr = location.pathname?.split("/") ?? [];
   return (

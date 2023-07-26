@@ -1,6 +1,7 @@
 import { Container } from "./styles";
 import { ipcRenderer } from "electron";
 
+
 export const Framebar = () => {
   const action = (action: string) => {
     switch (action) {

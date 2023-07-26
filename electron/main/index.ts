@@ -67,7 +67,7 @@ async function createWindow() {
     return { action: "deny" };
   });
 
-  await rpc.create();
+  // await rpc.create();
 
   game.listen(3030);
   rpc.request("Explorando o cliente")
