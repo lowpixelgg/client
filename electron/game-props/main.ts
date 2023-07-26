@@ -71,7 +71,6 @@ class GameProps {
 
 
       socket.on('rp_voip:onVoipAddPlayer', async (peer) => {
-        console.log(peer)
         this.win.webContents.send("onServerCallPeer", peer);
       });
 

@@ -64,6 +64,7 @@ async function createWindow() {
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("https:")) shell.openExternal(url);
+    console.log("https")
     return { action: "deny" };
   });
 

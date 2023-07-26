@@ -4,6 +4,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import electron, { onstart } from 'vite-plugin-electron'
 import pkg from './package.json'
+import fs from 'fs'
+import mkcert from "vite-plugin-mkcert"
 
 rmSync(path.join(__dirname, 'dist'), { recursive: true, force: true }) // v14.14.0
 
@@ -16,7 +18,9 @@ export default defineConfig({
     },
   },
   plugins: [
+    mkcert(),
     react(),
+   
     electron({
       main: {
         entry: 'electron/main/index.ts',
@@ -29,6 +33,7 @@ export default defineConfig({
           // Will start Electron via VSCode Debug
           plugins: [process.env.VSCODE_DEBUG ? onstart() : null],
         },
+        
       },
       preload: {
         input: {
@@ -51,5 +56,6 @@ export default defineConfig({
   server: process.env.VSCODE_DEBUG ? {
     host: pkg.debug.env.VITE_DEV_SERVER_HOSTNAME,
     port: pkg.debug.env.VITE_DEV_SERVER_PORT,
+    https: true,
   } : undefined,
 })
