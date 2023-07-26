@@ -4,9 +4,7 @@ import App from './App'
 import { AuthProvider } from "./global/AuthContext";
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
       <App />
-  </React.StrictMode>
 )
 
 postMessage({ payload: 'removeLoading' }, '*')

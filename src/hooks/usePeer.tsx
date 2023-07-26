@@ -25,15 +25,20 @@ export default function usePeer(peerId: string) {
     import('peerjs').then(() => {
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, {
         host: 'localhost',
-        secure: false,
         port: 9000,
         path: '/voip',
-        debug: 0,
       })
 
       peer.on('open', () => {
-        console.log("connection established");
       });
+
+      peer.on('connection', () => {
+        console.log("connection established");
+      })
+
+      peer.on('error', (err) => {
+        console.log(err);
+      })
 
       peer.on('call', (call) => {
         console.log('receiving call from ' + call.peer)

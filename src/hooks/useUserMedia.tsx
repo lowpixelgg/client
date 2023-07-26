@@ -17,7 +17,9 @@ export default function useUserMedia() {
   useEffect(() => {
     const enableStream = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia(userMediaConfig);
+        const stream = await navigator.mediaDevices.getUserMedia({
+          audio: true,
+        });
         setMediaStream(stream);
       } catch (error) {
         console.log(error);
