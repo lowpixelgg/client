@@ -1,16 +1,26 @@
-import Peer from 'peerjs';
+import Peer, { CallOption, MediaConnection } from 'peerjs';
 import React, { useState, useEffect } from 'react';
+import { StreamSplit } from './StreamSplit';
+import useRemoteStreams from './useRemoteStream';
 
-const audioOnlyConfig = { audio: true, video: false };
 const userMediaConfig = {
     audio: { echoCancellation: true, noiseSuppression: true },
 };
 
-const config = { 'iceServers': [{ 'urls': ['stun:stun.l.google.com:19302'] }] };
+interface Streams {
+  peer: string,
+  stream: any,
+}
+
+function getAudioStream() {
+  return navigator.mediaDevices.getUserMedia({ audio: true });
+}
 
 export default function usePeer(peerId: string, addRemoteStream: any, removeRemoteStream: any) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
   const [ myPeerID, setMyPeerID ] = useState(null);
+  
+
 
   const cleanUp = () => {
     if (myPeer) {
@@ -20,20 +30,24 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
     setPeer(null);
     setMyPeerID(null);
   }
+  
+ 
 
   useEffect(() => {
     import('peerjs').then(() => {
       const Config = {
-        host: "9000-peers-peerjsserver-91xyiv47wpj.ws-us102.gitpod.io",
         secure: true,
-        path: '/'
+        iceServers: [
+            { urls: 'stun:stun.l.google.com:19302'}, 
+            { urls: 'stun:stun1.l.google.com:19302'}, 
+            { urls: 'stun:stun2.l.google.com:19302'}, 
+        ]
     };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
 
       peer.on('open', () => {
         console.log("ok connected")
-
         setPeer(peer);
       });
 
@@ -45,27 +59,8 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
         console.log(err);
       })
 
-      peer.on('call', (call) => {
-        navigator.mediaDevices.getUserMedia(userMediaConfig).then((stream) => {
-          call.answer(stream);
-
-          console.log('streaming')
-
-          call.on('stream', (remoteStream) => {
-            addRemoteStream(remoteStream, call.peer);
-            console.log(remoteStream, 'stream')
-          });
-
-          call.on('close', () => {
-            console.log("The call has ended");
-            removeRemoteStream(call.peer);
-          });
-
-          call.on('error', (error) => {
-            console.log(error);
-            removeRemoteStream(call.peer);
-          });
-        }).catch(err => console.log(err));
+      peer.on('call', async (call) => {
+        addRemoteStream(await getAudioStream(), call.peer)
       });
     });
 
@@ -74,5 +69,6 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
     }
   }, [])
 
-  return [myPeer, myPeerID];
+
+  return [ myPeer, myPeerID, ];
 }

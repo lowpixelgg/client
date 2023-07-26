@@ -24,12 +24,11 @@ import useAccount from "@/services/hooks/useAccount";
 
 import muteSoundFile from "@/assets/sounds/muteSound.mp3";
 import unmuteSoundFile from "@/assets/sounds/unmuteSound.mp3";
-import usePeer from "@/hooks/usePeer";
-import { ipcRenderer } from "electron";
 import useUserMedia from "@/hooks/useUserMedia";
 import useRemoteStreams from "@/hooks/useRemoteStream.js";
-import { MediaConnection } from "peerjs";
 import useStream from "@/hooks/useStream";
+import usePeer from "@/hooks/usePeer";
+import PlayAudioStream from "./MediaStream";
 
 interface StreamPlayer {
   id: string,
@@ -57,11 +56,14 @@ const UserIcon = L.icon({
   iconSize: [20, 20],
 });
 
+function getAudioStream() {
+  return navigator.mediaDevices.getUserMedia({ audio: true });
+}
+
 export const Voip = () => {
   const { user } = useAccount();
-  const localstream = useUserMedia();
-  const [remoteStreams, addRemoteStream, removeRemoteStream] = useRemoteStreams();
-  const [myPeer, myPeerID ] = usePeer(user._id, addRemoteStream, remoteStreams);
+  const [ remoteStreams, addRemoteStream, removeRemoteStream] = useRemoteStreams();
+  const [ myPeer, myPeerID ] = usePeer(user._id, addRemoteStream, removeRemoteStream);
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
@@ -85,84 +87,45 @@ export const Voip = () => {
 
 
   // Events
-  ipcRenderer.on('onServerHeartBeat', (_, data) => {
-    const { coords, location, streamInPlayers } = data as unknown as game;
-  });
+  // ipcRenderer.on('onServerHeartBeat', (_, data) => {
+  //   const { coords, location, streamInPlayers } = data as unknown as game;
+  // });
 
-  ipcRenderer.on('onServerCallPeer', (_, peer) => {
+  // ipcRenderer.on('onServerCallPeer', (_, peer) => {
 
-  });
+  // });
 
-  ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
+  // ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
 
-  })
+  // })
 
-
-  const handleCall = () => {
-    if (localstream && myPeer) {
-      console.log("ok")
-      const call = myPeer.call('peer', localstream) as MediaConnection;
-
-      call.on('stream', (remoteStream) => {
-        addRemoteStream(remoteStream, call.peer);
-        console.log('Connected to ' + call.peer);
-      });
-
-      call.on('close', () => {
-        console.log('Disconnected from ' + call.peer);
+  const handleCall = async () => {
+    if (myPeer) {
+      const call = myPeer.call("", await getAudioStream());
+     
+      call.on('stream', async () => {
+        addRemoteStream(await getAudioStream(), call.peer)
       })
-
-      call.on('error', (error) => {
-        console.log("call error", error);
-        removeRemoteStream(call.peer);
-        call.close();
-      });
     }
   }
 
 
   return (
     <>
-    <button onClick={handleCall}>habla mesmo</button>
+    {
+     remoteStreams.map((audio) => (
+      <PlayAudioStream stream={audio.stream} target={audio.peerId} />
+     ))
+    }
+      <button onClick={handleCall}>habla mesmo</button>
+    
+
         <Container>
       <TopStatus />
 
       <SideNav />
 
       <Footer />
-
-      <div className="voiceControls">
-        <Avatar size={40} />
-
-        <div className="username">
-          <strong>{user.username}</strong>
-          <p>{user.username}</p>
-        </div>
-
-        <button
-          onClick={() => handleVoiceAction("mic")}
-          style={{ width: 24, margin: "0 -2px" }}
-        >
-          {voiceStatus.micOn ? (
-            <FaMicrophone size={18} />
-          ) : (
-            <FaMicrophoneSlash size={24} />
-          )}
-        </button>
-
-        <button onClick={() => handleVoiceAction("audio")}>
-          {voiceStatus.audioOn ? (
-            <MdHeadphones size={24} />
-          ) : (
-            <MdHeadsetOff size={24} />
-          )}
-        </button>
-
-        <button>
-          <BsGearFill size={20} />
-        </button>
-      </div>
-
       <Map />
     </Container>
     </>
@@ -231,43 +194,11 @@ const ImageMap: React.FC<ImageMapProps> = ({ userPosition, setUserPosition }) =>
   ]);
 
   const map = useMap();
-  const localstream = useUserMedia();
-  const [setLocalStream, localVideoRef, handleCanPlayLocal] = useStream();
-  const [remoteStreams, addRemoteStream, removeRemoteStream] = useRemoteStreams();
-  const refsArray = useRef([]);
-  const [showConference, setShowConference] = useState(false);
   
-
-
-
-
-
-  useEffect(() => {
-    map.setView([userPosition.posY, userPosition.posX]);
-  }, [userPosition]);
-
-  useEffect(() => {
-    remoteStreams.map(streamData =>
-      refsArray.current[streamData.peerId].srcObject = streamData.stream)
-  }, [remoteStreams])
-
-  useEffect(() => {
-    setLocalStream(localstream);
-  }, [localstream])
-
   
 
   return (
     <div className="listeners-box">
-      {remoteStreams.map((dataStream, i) => (
-        <div key={dataStream.peerId} className="listener-stream">
-          <video
-            ref={(ref) => (refsArray.current[dataStream.peerId] = ref)}
-            autoPlay
-            playsInline
-          />
-        </div>
-      ))}
     </div>
   );
 };

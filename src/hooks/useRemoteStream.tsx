@@ -1,38 +1,38 @@
-import React, { useState, useCallback } from 'react';
+import { useState, useCallback } from 'react';
+import { StreamSplit } from './StreamSplit';
 
 interface RemoteStream {
-    peerId: string;
-    stream: MediaStream;
+  peerId: string;
+  split: StreamSplit;
+  stream: MediaStream;
 }
 
 type AddRemoteStreamFunction = (stream: MediaStream, peerId: string) => void;
 type RemoveRemoteStreamFunction = (peerId: string) => void;
 
 export default function useRemoteStreams(): [RemoteStream[], AddRemoteStreamFunction, RemoveRemoteStreamFunction] {
-    const [remoteStreams, setRemoteStreams] = useState<RemoteStream[]>([]);
+  const [remoteStreams, setRemoteStreams] = useState<RemoteStream[]>([]);
 
-    const addRemoteStream: AddRemoteStreamFunction = useCallback(
-        (stream, peerId) => {
-            setRemoteStreams((prevRemoteStreams) => {
-                if (!stream || !peerId) return [...prevRemoteStreams];
-                if (prevRemoteStreams.some((remote) => remote.peerId === peerId)) return [...prevRemoteStreams];
-                return [...prevRemoteStreams, { peerId: peerId, stream: stream }];
-            });
-        },
-        [],
-    );
+  const addRemoteStream = useCallback((stream: MediaStream, peerId: string) => {
+    if (!stream || !peerId) return;
 
-    const removeRemoteStream: RemoveRemoteStreamFunction = useCallback(
-        (peerId) => {
-            setRemoteStreams((prevRemoteStreams) => {
-                const index = prevRemoteStreams.findIndex((remote) => remote.peerId === peerId);
-                if (index < 0) return [...prevRemoteStreams];
-                prevRemoteStreams.splice(index, 1);
-                return [...prevRemoteStreams];
-            });
-        },
-        [],
-    );
+    setRemoteStreams(prevRemoteStreams => {
+      // Check if the peerId already exists in remoteStreams
+      if (prevRemoteStreams.some(remote => remote.peerId === peerId)) {
+        return prevRemoteStreams;
+      }
 
-    return [remoteStreams, addRemoteStream, removeRemoteStream];
+      // If the peerId is unique, add the new stream to remoteStreams
+      return [...prevRemoteStreams, { peerId: peerId, split: new StreamSplit(stream), stream: stream }];
+    });
+  }, []);
+
+  const removeRemoteStream = useCallback((peerId: string) => {
+    setRemoteStreams(prevRemoteStreams => {
+      // Filter out the remote stream with the given peerId
+      return prevRemoteStreams.filter(remote => remote.peerId !== peerId);
+    });
+  }, []);
+
+  return [remoteStreams, addRemoteStream, removeRemoteStream];
 }
