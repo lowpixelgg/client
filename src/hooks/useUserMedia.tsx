@@ -20,6 +20,8 @@ export default function useUserMedia() {
         const stream = await navigator.mediaDevices.getUserMedia({
           audio: true,
         });
+
+        console.log("ok media dnv")
         setMediaStream(stream);
       } catch (error) {
         console.log(error);

@@ -7,6 +7,7 @@ const userMediaConfig = {
     video: { facingMode: "user" }
 };
 
+const config = { 'iceServers': [{ 'urls': ['stun:stun.l.google.com:19302'] }] };
 
 export default function usePeer(peerId: string) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
@@ -24,12 +25,14 @@ export default function usePeer(peerId: string) {
   useEffect(() => {
     import('peerjs').then(() => {
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, {
-        host: 'localhost',
+        host: '26.96.232.44',
         port: 9000,
+        secure: false,
         path: '/voip',
       })
 
       peer.on('open', () => {
+        console.log("ok connected")
       });
 
       peer.on('connection', () => {
