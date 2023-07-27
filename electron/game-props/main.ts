@@ -47,8 +47,12 @@ class GameProps {
   
   private events () {
     this.io.on("connection", (socket) => {
+      socket.on('onFrontendConnect', (id) => {
+        socket.join('frontend');
+      })
+
       socket.on("rp_core:getUserToken", async () => {
-        socket.emit("onLauncherSendToken", await this.getUserToken());
+        socket.emit('onLauncherSendToken', await this.getUserToken())
       });
       
       socket.on("rp_voip:onPlayerSpawn", async () => {
@@ -69,7 +73,7 @@ class GameProps {
           streamInPlayers: data.streamInPlayers
         }
         
-        this.win.webContents.send("onServerHeartBeat", this.game);
+        this.io.to('frontend').emit('onServerHeartBeat', this.game)
       });
       
       

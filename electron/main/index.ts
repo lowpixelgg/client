@@ -64,14 +64,13 @@ async function createWindow() {
 
   win.webContents.setWindowOpenHandler(({ url }) => {
     if (url.startsWith("https:")) shell.openExternal(url);
-    console.log("https")
     return { action: "deny" };
   });
 
 
 
   game.listen(3030);
-  rpc.request("Explorando o cliente")
+  // rpc.request("Explorando o cliente")
 }
 
 app.whenReady().then(createWindow);

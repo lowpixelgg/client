@@ -16,10 +16,8 @@ import {
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import React, {
-  Dispatch,
-  SetStateAction,
+  useContext,
   useEffect,
-  useRef,
   useState,
 } from "react";
 import { Avatar } from "@/components/Avatar";
@@ -30,14 +28,15 @@ import useAccount from "@/services/hooks/useAccount";
 
 import muteSoundFile from "@/assets/sounds/muteSound.mp3";
 import unmuteSoundFile from "@/assets/sounds/unmuteSound.mp3";
-import useUserMedia from "@/hooks/useUserMedia";
 import useRemoteStreams from "@/hooks/useRemoteStream.js";
 import useStream from "@/hooks/useStream";
-import usePeer from "@/hooks/usePeer";
 import PlayAudioStream from "./MediaStream";
 import { ipcRenderer } from "electron";
 import { GamePlayer, StreamPlayer } from "../../../electron/game-props/main";
-
+import usePeer from "@/hooks/usePeer";
+import { io, SocketOptions } from "socket.io-client";
+import { SocketContext } from "@/contexts/socket";
+import { Socket } from "socket.io";
 
 
 const MuteSound = new Audio(muteSoundFile);
@@ -69,6 +68,8 @@ export const Voip = () => {
   );
   const [userPosition, setUserPosition] = useState({ x: 0, y: 0  });
   const [ streamingPlayers, setStreamingPlayers] = useState<StreamPlayer[]>([])
+  const socket = useContext(SocketContext) as Socket
+
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
@@ -90,39 +91,10 @@ export const Voip = () => {
     }
   };
 
-  // Events
-  ipcRenderer.on("onServerHeartBeat", (_, data) => {
-    const {
-      coords,
-      location,
-      streamInPlayers,
-    } = (data as unknown) as GamePlayer;
 
-    setUserPosition({
-      x: coords.x / 1000,
-      y: coords.y / 1000,
-    });
-
-
-    setStreamingPlayers(streamInPlayers);
-
-    Object.entries(streamInPlayers).map((c,d) => {
-      const entity = c[1];
-      const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
-
-      if (voip) {
-        const { x, y, z } = entity.coords;
-        voip.coords = { x: x, y: y, z: z };
-        voip.split.setAudioPosition(x, y, z);
-  
-        voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
-      }      
-    })
-  });
-
-  ipcRenderer.on('onServerCallPeer', async (_, peer) => {
+  const handleCallPlayer = async (peerId: string) => {
     if (myPeer) {
-      const call = myPeer.call(peer, await getAudioStream());
+      const call = myPeer.call(peerId, await getAudioStream());
 
       if (call) {
         call.on("stream", async (stream) => {
@@ -130,13 +102,47 @@ export const Voip = () => {
         });
       }
     }
+  }
 
-  });
+  
+  useEffect(() => {
+    socket.on('onServerHeartBeat', (data) => {
+      const {
+        coords,
+        location,
+        streamInPlayers,
+      } = (data as unknown) as GamePlayer;
+  
+      // setUserPosition({
+      //   x: coords.x / 1000,
+      //   y: coords.y / 1000,
+      // });  
 
-  ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
 
-  })
+      setStreamingPlayers(streamInPlayers);
 
+      Object.entries(streamInPlayers).map(async (c) => {
+        const entity = c[1];
+        const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
+
+        if (!voip) {
+          await handleCallPlayer(entity.id);
+        } else {
+          const { x, y, z } = entity.coords;
+          voip.coords = { x: x, y: y, z: z };
+          voip.split.setAudioPosition(x, y, z);
+    
+          voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
+        }
+      })
+
+    })
+  }, [socket])
+
+  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallPlayer(peer));
+
+  // ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
+  // })
 
   return (
     <Container>
@@ -204,11 +210,11 @@ const Map = ({ userPosition }: MapProps) => {
       dragging={false}
       bounds={[
         [0, 0],
-        [240, 240],
+        [480, 480],
       ]}
       maxBounds={[
         [0, 0],
-        [240, 240],
+        [480, 480],
       ]}
       maxBoundsViscosity={1}
       crs={L.CRS.Simple}
@@ -248,7 +254,7 @@ const ImageMap = ({ userPosition }: MapProps) => {
         zIndex={1}
         bounds={[
           [0, 0],
-          [240, 240],
+          [480, 480],
         ]}
         opacity={1}
       />

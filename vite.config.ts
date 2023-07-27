@@ -18,7 +18,7 @@ export default defineConfig({
     },
   },
   plugins: [
-    mkcert(),
+    // mkcert(),
     react(),
    
     electron({
@@ -56,6 +56,6 @@ export default defineConfig({
   server: process.env.VSCODE_DEBUG ? {
     host: pkg.debug.env.VITE_DEV_SERVER_HOSTNAME,
     port: pkg.debug.env.VITE_DEV_SERVER_PORT,
-    https: true,
+    // https: true,
   } : undefined,
 })
