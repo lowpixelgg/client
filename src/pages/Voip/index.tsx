@@ -93,7 +93,6 @@ export const Voip = () => {
 
 
   const handleCallPlayer = async (peerId: string) => {
-    console.log("chegou até aqui")
     if (myPeer) {
       const call = myPeer.call(peerId, await getAudioStream());
 
@@ -102,8 +101,6 @@ export const Voip = () => {
       if (call) {
         call.on("stream", async (stream) => {
           addRemoteStream(stream, call.peer);
-
-          console.log(stream, peerId)
         });
 
 
@@ -133,13 +130,14 @@ export const Voip = () => {
         const entity = c[1];
         const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
 
-        if (!voip) {
-          await handleCallPlayer(entity.id);
+        if (voip === undefined) {
+          console.log("Caiu aqui", Date.now())
+          //await handleCallPlayer(entity.id);
         } else {
           const { x, y, z } = entity.coords;
-          voip.coords = { x: x, y: y, z: z };
+          // voip.coords = { x: x, y: y, z: z };
+          
           voip.split.setAudioPosition(x, y, z);
-    
           voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
         }
       })
@@ -150,8 +148,7 @@ export const Voip = () => {
 
 
 
-  ipcRenderer.setMaxListeners(15);
-  // ipcRenderer.on('onServerCallPeer', async (_, peer) => await );
+  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallPlayer(peer));
 
   // ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
   // })

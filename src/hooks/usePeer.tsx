@@ -67,7 +67,7 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
         call.on('stream', (stream) => {
           addRemoteStream(stream, call.peer)
         });
-        //
+        
 
         console.log("Connected to peer")
       });
