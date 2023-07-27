@@ -155,6 +155,8 @@ export const Voip = () => {
 
           streamingPlayers[voip].AudioSplit.setPlayerPosition(coords.x, coords.y, coords.z);
           streamingPlayers[voip].AudioSplit.setAudioPosition(x, y, z);
+        } else {
+          console.log("Não encontrado: ", Date.now())
         }
       })
 
