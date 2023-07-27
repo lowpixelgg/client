@@ -93,64 +93,73 @@ export const Voip = () => {
 
 
   const handleCallPlayer = async (peerId: string) => {
+    console.log("chegou até aqui")
     if (myPeer) {
       const call = myPeer.call(peerId, await getAudioStream());
+
+
 
       if (call) {
         call.on("stream", async (stream) => {
           addRemoteStream(stream, call.peer);
+
+          console.log(stream, peerId)
         });
+
+
+        call.on('error', (err) => console.log(err))
       }
     }
   }
 
 
-  // useEffect(() => {
-  //   socket.on('onServerHeartBeat', (data) => {
-  //     const {
-  //       coords,
-  //       location,
-  //       streamInPlayers,
-  //     } = (data as unknown) as GamePlayer;
+  useEffect(() => {
+    socket.on('onServerHeartBeat', (data) => {
+      const {
+        coords,
+        location,
+        streamInPlayers,
+      } = (data as unknown) as GamePlayer;
   
-  //     setUserPosition({
-  //       x: 240 + coords.x / 1000,
-  //       y: 240 + coords.y / 1000,
-  //     });  
+      setUserPosition({
+        x: 240 + coords.x / 1000,
+        y: 240 + coords.y / 1000,
+      });  
 
 
-  //     setStreamingPlayers(streamInPlayers);
+      setStreamingPlayers(streamInPlayers);
 
-  //     Object.entries(streamInPlayers).map(async (c) => {
-  //       const entity = c[1];
-  //       const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
+      Object.entries(streamInPlayers).map(async (c) => {
+        const entity = c[1];
+        const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
 
-  //       if (!voip) {
-  //         await handleCallPlayer(entity.id);
-  //       } else {
-  //         const { x, y, z } = entity.coords;
-  //         voip.coords = { x: x, y: y, z: z };
-  //         voip.split.setAudioPosition(x, y, z);
+        if (!voip) {
+          await handleCallPlayer(entity.id);
+        } else {
+          const { x, y, z } = entity.coords;
+          voip.coords = { x: x, y: y, z: z };
+          voip.split.setAudioPosition(x, y, z);
     
-  //         voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
-  //       }
-  //     })
+          voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
+        }
+      })
 
-  //   })
-  // }, [socket])
+    })
+  }, [socket])
 
 
 
 
   ipcRenderer.setMaxListeners(15);
-  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallPlayer('peer'));
+  // ipcRenderer.on('onServerCallPeer', async (_, peer) => await );
 
   // ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
   // })
 
   return (
+    <>
     <Container>
-      {/* <TopStatus />
+      <TopStatus />
       <SideNav />
       <Footer />
 
@@ -163,7 +172,7 @@ export const Voip = () => {
         </div>
 
         <button
-          onClick={() => handleVoiceAction("mic")}
+          onClick={() => { handleCallPlayer('e8718e5b-53a4-43b9-b719-7603bf81ded2') }}
           style={{ width: 24, margin: "0 -2px" }}
         >
           {voiceStatus.micOn ? (
@@ -186,12 +195,13 @@ export const Voip = () => {
         </button>
       </div>
 
-      <Map  userPosition={userPosition} /> */}
+      <Map  userPosition={userPosition} />
 
       {remoteStreams.map((audio) => (
         <PlayAudioStream stream={audio.stream} target={audio.peerId} key={audio.peerId} />
       ))}
     </Container>
+    </>
   );
 };
 
