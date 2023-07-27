@@ -64,12 +64,9 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
       peer.on('call', async (call) => {
         call.answer(await getAudioStream());
         
-        call.on('stream', (stream) => {
-          addRemoteStream(stream, call.peer)
-        });
-        
-
-        console.log("Connected to peer")
+        // call.on('stream', (stream) => {
+        //   addRemoteStream(stream, call.peer)
+        // });
       });
     });
 

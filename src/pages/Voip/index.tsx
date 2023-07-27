@@ -128,18 +128,20 @@ export const Voip = () => {
 
       Object.entries(streamInPlayers).map(async (c) => {
         const entity = c[1];
-        const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
 
-        if (voip === undefined) {
-          console.log("Caiu aqui", Date.now())
-          //await handleCallPlayer(entity.id);
-        } else {
-          const { x, y, z } = entity.coords;
-          // voip.coords = { x: x, y: y, z: z };
+        // console.log(entity)
+        // const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
+
+        // if (voip === undefined) {
+        //   console.log("Caiu aqui", Date.now())
+        //   //await handleCallPlayer(entity.id);
+        // } else {
+        //   const { x, y, z } = entity.coords;
+        //   // voip.coords = { x: x, y: y, z: z };
           
-          voip.split.setAudioPosition(x, y, z);
-          voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
-        }
+        //   voip.split.setAudioPosition(x, y, z);
+        //   voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
+        // }
       })
 
     })
