@@ -113,8 +113,8 @@ export const Voip = () => {
       if (voip) {
         const { x, y, z } = entity.coords;
         voip.coords = { x: x, y: y, z: z };
-
         voip.split.setAudioPosition(x, y, z);
+  
         voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
       }      
     })
