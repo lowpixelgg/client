@@ -36,12 +36,14 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
   useEffect(() => {
     import('peerjs').then(() => {
       const Config = {
-        secure: true,
-        iceServers: [
-            { urls: 'stun:stun.l.google.com:19302'}, 
-            { urls: 'stun:stun1.l.google.com:19302'}, 
-            { urls: 'stun:stun2.l.google.com:19302'}, 
-        ]
+        host: "agenciaab.com.br",
+        port: 9000,
+        path: '/peerjs'
+        // iceServers: [
+        //     { urls: 'stun:stun.l.google.com:19302'}, 
+        //     // { urls: 'stun:stun1.l.google.com:19302'}, 
+        //     // { urls: 'stun:stun2.l.google.com:19302'}, 
+        // ]
     };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
@@ -66,6 +68,8 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
           addRemoteStream(stream, call.peer)
         });
         //
+
+        console.log("Connected to peer")
       });
     });
 
