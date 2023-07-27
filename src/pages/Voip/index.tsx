@@ -15,7 +15,13 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Avatar } from "@/components/Avatar";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { MdHeadphones, MdHeadsetOff } from "react-icons/md";
@@ -29,21 +35,10 @@ import useRemoteStreams from "@/hooks/useRemoteStream.js";
 import useStream from "@/hooks/useStream";
 import usePeer from "@/hooks/usePeer";
 import PlayAudioStream from "./MediaStream";
+import { ipcRenderer } from "electron";
+import { GamePlayer, StreamPlayer } from "../../../electron/game-props/main";
 
-interface StreamPlayer {
-  id: string,
-  coords: {
-    x: number,
-    y: number,
-    z: number,
-  }
-}
 
-interface game  { 
-    location: string,
-    coords: { x: number, y: number }
-    streamInPlayers: StreamPlayer[]
-}
 
 const MuteSound = new Audio(muteSoundFile);
 const UnmuteSound = new Audio(unmuteSoundFile);
@@ -62,8 +57,17 @@ function getAudioStream() {
 
 export const Voip = () => {
   const { user } = useAccount();
-  const [ remoteStreams, addRemoteStream, removeRemoteStream] = useRemoteStreams();
-  const [ myPeer, myPeerID ] = usePeer(user._id, addRemoteStream, removeRemoteStream);
+  const [
+    remoteStreams,
+    addRemoteStream,
+    removeRemoteStream,
+  ] = useRemoteStreams();
+  const [myPeer, myPeerID] = usePeer(
+    user._id,
+    addRemoteStream,
+    removeRemoteStream
+  );
+  const [userPosition, setUserPosition] = useState({ x: 0, y: 0  });
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
@@ -85,69 +89,113 @@ export const Voip = () => {
     }
   };
 
-
   // Events
-  // ipcRenderer.on('onServerHeartBeat', (_, data) => {
-  //   const { coords, location, streamInPlayers } = data as unknown as game;
-  // });
+  ipcRenderer.on("onServerHeartBeat", (_, data) => {
+    const {
+      coords,
+      location,
+      streamInPlayers,
+    } = (data as unknown) as GamePlayer;
 
-  // ipcRenderer.on('onServerCallPeer', (_, peer) => {
+    setUserPosition({
+      x: coords.x / 1000,
+      y: coords.y / 1000,
+    });
 
-  // });
 
-  // ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
+    streamInPlayers.map((entity) => {
+      const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
 
-  // })
+      if (voip) {
+        const { x, y, z } = entity.coords;
+        voip.coords = { x: x, y: y, z: z };
 
-  const handleCall = async () => {
+        voip.split.setAudioPosition(x, y, z);
+        voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
+      }
+    });
+  });
+
+  ipcRenderer.on('onServerCallPeer', async (_, peer) => {
     if (myPeer) {
-      const call = myPeer.call("e8718e5b-53a4-43b9-b719-7603bf81ded2", await getAudioStream());
-     
-      call.on('stream', async (stream) => {
-        addRemoteStream(stream, call.peer)
+      const call = myPeer.call(peer, await getAudioStream());
 
-        console.log("to com meus cassas")
-      })
+      if (call) {
+        call.on("stream", async (stream) => {
+          addRemoteStream(stream, call.peer);
+        });
+      }
     }
-  }
+
+  });
+
+  ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
+
+  })
 
 
   return (
-    <>
-    {
-     remoteStreams.map((audio) => (
-      <PlayAudioStream stream={audio.stream} target={audio.peerId} />
-     ))
-    }
-      <button onClick={handleCall}>habla mesmo</button>
-    
-
-        <Container>
+    <Container>
       <TopStatus />
-
       <SideNav />
-
       <Footer />
-      <Map />
+
+      <div className="voiceControls">
+        <Avatar size={40} />
+
+        <div className="username">
+          <strong>{user.username}</strong>
+          <p>{user.username}</p>
+        </div>
+
+        <button
+          onClick={() => handleVoiceAction("mic")}
+          style={{ width: 24, margin: "0 -2px" }}
+        >
+          {voiceStatus.micOn ? (
+            <FaMicrophone size={18} />
+          ) : (
+            <FaMicrophoneSlash size={24} />
+          )}
+        </button>
+
+        <button onClick={() => handleVoiceAction("audio")}>
+          {voiceStatus.audioOn ? (
+            <MdHeadphones size={24} />
+          ) : (
+            <MdHeadsetOff size={24} />
+          )}
+        </button>
+
+        <button>
+          <BsGearFill size={20} />
+        </button>
+      </div>
+
+      <Map  userPosition={userPosition} />
+
+      {remoteStreams.map((audio) => (
+        <PlayAudioStream stream={audio.stream} target={audio.peerId} />
+      ))}
     </Container>
-    </>
   );
 };
 
-const Map = () => {
-  // 98.5, 161
 
-  const [userPosition, setUserPosition] = useState({
-    posX: 161,
-    posY: 98.5,
-  });
+type MapProps = {
+  userPosition: {
+    x: number;
+    y: number;
+  };
+}
 
+const Map = ({ userPosition }: MapProps) => {
   return (
     <MapContainer
       zoom={5}
       zoomControl={false}
       scrollWheelZoom={false}
-      center={[userPosition.posY, userPosition.posX]}
+      center={[userPosition.x, userPosition.y]}
       style={{ height: "100%", width: "100%", zIndex: 1, outline: "none" }}
       dragging={false}
       bounds={[
@@ -162,32 +210,19 @@ const Map = () => {
       crs={L.CRS.Simple}
       doubleClickZoom={false}
     >
-      <ImageMap userPosition={userPosition} setUserPosition={setUserPosition} />
-      
+      <ImageMap userPosition={userPosition} />
     </MapContainer>
   );
 };
 
-type ImageMapProps = {
-  userPosition: {
-    posX: number;
-    posY: number;
-  };
-  setUserPosition: Dispatch<
-    SetStateAction<{
-      posX: number;
-      posY: number;
-    }>
-  >;
-};
 
 
-const ImageMap: React.FC<ImageMapProps> = ({ userPosition, setUserPosition }) => {
+const ImageMap = ({ userPosition }: MapProps) => {
   const [playersList, setPlayerList] = useState([
     {
       id: 1,
-      posX: 160,
-      posY: 99.5,
+      x: 160,
+      y: 99.5,
       isTalking: false,
       name: "lontrinha",
       avatar:
@@ -196,13 +231,46 @@ const ImageMap: React.FC<ImageMapProps> = ({ userPosition, setUserPosition }) =>
   ]);
 
   const map = useMap();
-  
-  
+
+
+  useEffect(() => {
+    map.setView([userPosition.x, userPosition.y]);
+  }, [userPosition]);
 
   return (
-    <div className="listeners-box">
-    </div>
+    <>
+      <ImageOverlay
+        url={RocketMap}
+        zIndex={1}
+        bounds={[
+          [0, 0],
+          [240, 240],
+        ]}
+        opacity={1}
+      />
+
+      <Marker
+        interactive={false}
+        position={[userPosition.x, userPosition.y]}
+        icon={UserIcon}
+      />
+
+      {playersList.map((item) => {
+        return (
+          <Marker
+            key={item.id}
+            position={[item.x, item.y]}
+            icon={L.icon({
+              iconUrl: item.avatar,
+              iconSize: [36, 36],
+              className: `playerIcon ${item.isTalking ? "isTalking" : ""}`,
+            })}
+            title={item.name}
+          >
+            <Popup>{item.name}</Popup>
+          </Marker>
+        );
+      })}
+    </>
   );
 };
-
-export default ImageMap;
