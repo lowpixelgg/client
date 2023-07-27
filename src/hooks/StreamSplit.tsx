@@ -33,15 +33,12 @@ export class StreamSplit {
     this.panner.panningModel = "HRTF";
     this.panner.distanceModel = "linear";
     this.panner.rolloffFactor = 10;
-    this.panner.coneOuterAngle = 30;
-    this.panner.coneOuterGain = 1;
-    this.panner.coneInnerAngle = 10;
+    this.panner.coneOuterAngle = 50;
+    this.panner.coneOuterGain = 0.4;
+    this.panner.coneInnerAngle = 40;
     this.panner.maxDistance = 50;
 
-    this.panner.positionX.value = 0;
-    this.panner.positionY.value = 0;
-    this.panner.positionZ.value = 0;
-    
+
     source.connect(this.panner).connect(this.context.destination);
   }
   

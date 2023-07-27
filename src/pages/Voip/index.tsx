@@ -147,17 +147,14 @@ export const Voip = () => {
 
       Object.entries(streamInPlayers).map(async (c) => {
         const entity = c[1];
-        const voip = streamingPlayers.find(p => p.peerId === entity.id);
+        const voip = streamingPlayers.findIndex(p => p.peerId === entity.id);
 
 
-        if (voip) {
+        if (voip !== -1) {
           const { x, y, z } = entity.coords;
-          // voip.coords = { x: x, y: y, z: z };
-          
-          voip.AudioSplit.setAudioPosition(x, y, z);
-          voip.AudioSplit.setPlayerPosition(coords.x, coords.y, coords.z);
-        } else {
 
+          streamingPlayers[voip].AudioSplit.setPlayerPosition(coords.x, coords.y, coords.z);
+          streamingPlayers[voip].AudioSplit.setAudioPosition(x, y, z);
         }
       })
 
