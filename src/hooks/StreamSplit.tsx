@@ -61,7 +61,6 @@ export class StreamSplit {
     }
   }
 
-
   public close () {
     return this.context.close();
   }

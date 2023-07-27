@@ -37,6 +37,7 @@ import usePeer from "@/hooks/usePeer";
 import { io, SocketOptions } from "socket.io-client";
 import { SocketContext } from "@/contexts/socket";
 import { Socket } from "socket.io";
+import { StreamSplit } from "@/hooks/StreamSplit";
 
 
 const MuteSound = new Audio(muteSoundFile);
@@ -50,25 +51,31 @@ const UserIcon = L.icon({
   iconSize: [20, 20],
 });
 
+
+interface AudioStreams {
+  peerId: string;
+  AudioSplit: StreamSplit,
+  stream: MediaStream;
+}
+
+
 function getAudioStream() {
   return navigator.mediaDevices.getUserMedia({ audio: true });
 }
 
 export const Voip = () => {
   const { user } = useAccount();
-  const [
-    remoteStreams,
-    addRemoteStream,
-    removeRemoteStream,
-  ] = useRemoteStreams();
-  const [myPeer, myPeerID] = usePeer(
-    user._id,
-    addRemoteStream,
-    removeRemoteStream
-  );
+  // const [
+  //   remoteStreams,
+  //   addRemoteStream,
+  //   removeRemoteStream,
+  // ] = useRemoteStreams();
+
+
+  const [myPeer, myPeerID] = usePeer(user._id);
   const [userPosition, setUserPosition] = useState({ x: 0, y: 0  });
-  const [ streamingPlayers, setStreamingPlayers] = useState<StreamPlayer[]>([])
   const socket = useContext(SocketContext) as Socket
+  const [ streamingPlayers, addStreamingPlayer ] = useState<AudioStreams[]>([])  
 
 
   const [voiceStatus, setVoiceStatus] = useState({
@@ -91,11 +98,23 @@ export const Voip = () => {
     }
   };
 
+  const addRemoteStream = (stream: any, peerId: string) => {
+    const exists = streamingPlayers.findIndex(p => p.peerId === peerId);
+    
+    if (exists === -1) {
+      addStreamingPlayer([...streamingPlayers, { peerId: peerId, AudioSplit: new StreamSplit(stream), stream: stream }])
+    } else  {
+      const streams = [...streamingPlayers]
+      streams[exists].stream = stream
+
+      return addStreamingPlayer(streams)
+    }    
+  }
 
   const handleCallPlayer = async (peerId: string) => {
     if (myPeer) {
       const call = myPeer.call(peerId, await getAudioStream());
-
+      console.log ("Call to " + peerId)
 
 
       if (call) {
@@ -118,36 +137,32 @@ export const Voip = () => {
         streamInPlayers,
       } = (data as unknown) as GamePlayer;
   
-      setUserPosition({
-        x: 240 + coords.x / 1000,
-        y: 240 + coords.y / 1000,
-      });  
+      // setUserPosition({
+      //   x: 240 + coords.x / 1000,
+      //   y: 240 + coords.y / 1000,
+      // });  
 
 
-      setStreamingPlayers(streamInPlayers);
+      // setStreamingPlayers(streamInPlayers);
 
       Object.entries(streamInPlayers).map(async (c) => {
         const entity = c[1];
+        const voip = streamingPlayers.find(p => p.peerId === entity.id);
 
-        // console.log(entity)
-        // const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
 
-        // if (voip === undefined) {
-        //   console.log("Caiu aqui", Date.now())
-        //   //await handleCallPlayer(entity.id);
-        // } else {
-        //   const { x, y, z } = entity.coords;
-        //   // voip.coords = { x: x, y: y, z: z };
+        if (voip) {
+          const { x, y, z } = entity.coords;
+          // voip.coords = { x: x, y: y, z: z };
           
-        //   voip.split.setAudioPosition(x, y, z);
-        //   voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
-        // }
+          voip.AudioSplit.setAudioPosition(x, y, z);
+          voip.AudioSplit.setPlayerPosition(coords.x, coords.y, coords.z);
+        } else {
+
+        }
       })
 
     })
   }, [socket])
-
-
 
 
   ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallPlayer(peer));
@@ -196,7 +211,7 @@ export const Voip = () => {
 
       <Map  userPosition={userPosition} />
 
-      {remoteStreams.map((audio) => (
+      {streamingPlayers.map((audio) => (
         <PlayAudioStream stream={audio.stream} target={audio.peerId} key={audio.peerId} />
       ))}
     </Container>

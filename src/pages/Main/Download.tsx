@@ -12,6 +12,8 @@ export const Download = () => {
   const [actionBtn, setActionBtn] = useState(langObj.Main[3]);
   const [downloadFill, setDownloadFill] = useState(0);
 
+
+
   const handleAction = () => {
     switch (actionBtn) {
       case langObj.Main[3]:
@@ -39,8 +41,11 @@ export const Download = () => {
     }
   };
 
+
   return (
     <div className="download">
+
+        
       <AnimatePresence>
         {actionBtn !== langObj.Main[6] && (
           <motion.div

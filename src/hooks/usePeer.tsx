@@ -16,11 +16,10 @@ function getAudioStream() {
   return navigator.mediaDevices.getUserMedia({ audio: true });
 }
 
-export default function usePeer(peerId: string, addRemoteStream: any, removeRemoteStream: any) {
+export default function usePeer(peerId: string) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
   const [ myPeerID, setMyPeerID ] = useState(null);
   
-
 
   const cleanUp = () => {
     if (myPeer) {
@@ -32,18 +31,12 @@ export default function usePeer(peerId: string, addRemoteStream: any, removeRemo
   }
   
  
-
   useEffect(() => {
     import('peerjs').then(() => {
       const Config = {
         host: "agenciaab.com.br",
         port: 9000,
         path: '/peerjs'
-        // iceServers: [
-        //     { urls: 'stun:stun.l.google.com:19302'}, 
-        //     // { urls: 'stun:stun1.l.google.com:19302'}, 
-        //     // { urls: 'stun:stun2.l.google.com:19302'}, 
-        // ]
     };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
