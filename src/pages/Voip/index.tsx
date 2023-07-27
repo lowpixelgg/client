@@ -106,7 +106,8 @@ export const Voip = () => {
 
     setStreamingPlayers(streamInPlayers);
 
-    streamingPlayers.map((entity) => {
+    Object.entries(streamInPlayers).map((c,d) => {
+      const entity = c[1];
       const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
 
       if (voip) {
@@ -115,8 +116,8 @@ export const Voip = () => {
 
         voip.split.setAudioPosition(x, y, z);
         voip.split.setPlayerPosition(coords.x, coords.y, coords.z);
-      }
-    });
+      }      
+    })
   });
 
   ipcRenderer.on('onServerCallPeer', async (_, peer) => {
@@ -127,8 +128,6 @@ export const Voip = () => {
         call.on("stream", async (stream) => {
           addRemoteStream(stream, call.peer);
         });
-
-        console.log("Call to: " + peer);
       }
     }
 
