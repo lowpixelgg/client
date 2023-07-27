@@ -68,6 +68,7 @@ export const Voip = () => {
     removeRemoteStream
   );
   const [userPosition, setUserPosition] = useState({ x: 0, y: 0  });
+  const [ streamingPlayers, setStreamingPlayers] = useState<StreamPlayer[]>([])
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
@@ -103,7 +104,9 @@ export const Voip = () => {
     });
 
 
-    streamInPlayers.map((entity) => {
+    setStreamingPlayers(streamInPlayers);
+
+    streamingPlayers.map((entity) => {
       const voip = remoteStreams.find((stream) => stream.peerId === entity.id);
 
       if (voip) {
@@ -124,6 +127,8 @@ export const Voip = () => {
         call.on("stream", async (stream) => {
           addRemoteStream(stream, call.peer);
         });
+
+        console.log("Call to: " + peer);
       }
     }
 
@@ -175,7 +180,7 @@ export const Voip = () => {
       <Map  userPosition={userPosition} />
 
       {remoteStreams.map((audio) => (
-        <PlayAudioStream stream={audio.stream} target={audio.peerId} />
+        <PlayAudioStream stream={audio.stream} target={audio.peerId} key={audio.peerId} />
       ))}
     </Container>
   );

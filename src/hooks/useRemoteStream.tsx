@@ -27,7 +27,9 @@ export default function useRemoteStreams(): [RemoteStream[], AddRemoteStreamFunc
         return prevRemoteStreams;
       }
 
-      return [...prevRemoteStreams, { peerId: peerId, coords: { x: 0, y: 0, z: 0 }, split: new StreamSplit(stream), stream: stream }];
+      const split = new StreamSplit(stream);
+      
+      return [...prevRemoteStreams, { peerId: peerId, coords: { x: 0, y: 0, z: 0 }, split: split, stream: stream }];
     });
   }, []);
 
