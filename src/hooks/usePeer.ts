@@ -1,3 +1,4 @@
+import AudioManager from '@/components/Voip/three';
 import Peer, { CallOption, MediaConnection } from 'peerjs';
 import React, { useState, useEffect } from 'react';
 
@@ -5,7 +6,7 @@ function getAudioStream() {
   return navigator.mediaDevices.getUserMedia({ audio: true });
 }
 
-export default function usePeer(peerId: string) {
+export default function usePeer(peerId: string, scene: AudioManager | undefined) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
   const [ myPeerID, setMyPeerID ] = useState(null);
   
@@ -48,6 +49,14 @@ export default function usePeer(peerId: string) {
         
         call.answer(await getAudioStream());
         
+
+        call.on("stream", (stream) => {
+          if (scene) {
+            if (!scene.isObjectExistent(call.peer)) {
+              scene.addStream(call.peer, stream)
+            }
+          }
+        })
 
         console.log('[PEER]: Receiving Call from ' + call.peer)
       });

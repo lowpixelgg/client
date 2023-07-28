@@ -55,7 +55,7 @@ export const Voip = () => {
   const [ scene, setScene ] = useState<AudioManager>()
   const { user } = useAccount();
   const [ userPosition, setUserPosition ] =  useState({ x: 0, y: 0, z: 0});
-  const [ myPeer, myPeerID ] = usePeer(user._id);
+  const [ myPeer, myPeerID ] = usePeer(user._id, scene);
   const socket = useContext(SocketContext) as Socket
 
   
@@ -111,7 +111,7 @@ export const Voip = () => {
         call.on('stream', async (stream) => {
           var audio = new Audio()
           audio.srcObject = stream;
-
+          
           scene.addStream(peerId, stream);
         })
       }
