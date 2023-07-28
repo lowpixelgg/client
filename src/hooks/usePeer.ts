@@ -1,16 +1,5 @@
 import Peer, { CallOption, MediaConnection } from 'peerjs';
 import React, { useState, useEffect } from 'react';
-import { StreamSplit } from './StreamSplit';
-import useRemoteStreams from './useRemoteStream';
-
-const userMediaConfig = {
-    audio: { echoCancellation: true, noiseSuppression: true },
-};
-
-interface Streams {
-  peer: string,
-  stream: any,
-}
 
 function getAudioStream() {
   return navigator.mediaDevices.getUserMedia({ audio: true });
@@ -37,29 +26,24 @@ export default function usePeer(peerId: string) {
         host: "agenciaab.com.br",
         port: 9000,
         path: '/peerjs'
-    };
+      };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
 
       peer.on('open', () => {
-        console.log("ok connected")
         setPeer(peer);
       });
 
       peer.on('connection', () => {
-        console.log("connection established");
+        console.log('[PEER]: Connection established')
       })
 
       peer.on('error', (err) => {
-        console.log(err);
+        console.log('[PEER]: New Error  throwed on usePeer: ' + err);
       })
 
       peer.on('call', async (call) => {
         call.answer(await getAudioStream());
-        
-        // call.on('stream', (stream) => {
-        //   addRemoteStream(stream, call.peer)
-        // });
       });
     });
 
@@ -69,5 +53,5 @@ export default function usePeer(peerId: string) {
   }, [])
 
 
-  return [ myPeer, myPeerID, ];
+  return [ myPeer, myPeerID ];
 }

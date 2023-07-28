@@ -4,7 +4,9 @@ import { SideNav } from "@/components/SideNav";
 import { TopStatus } from "../Main/TopStatus";
 import RocketMap from "@/assets/FullMap.png";
 import UIcon from "@/assets/playerMapIcon.png";
+import * as THREE from 'three';
 // import PIcon from "@/assets/images/avatar1.png";
+
 
 import {
   ImageOverlay,
@@ -25,19 +27,15 @@ import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { MdHeadphones, MdHeadsetOff } from "react-icons/md";
 import { BsGearFill } from "react-icons/bs";
 import useAccount from "@/services/hooks/useAccount";
-
+import { GamePlayer, StreamPlayer } from "../../../electron/game-props/main";
 import muteSoundFile from "@/assets/sounds/muteSound.mp3";
 import unmuteSoundFile from "@/assets/sounds/unmuteSound.mp3";
-import useRemoteStreams from "@/hooks/useRemoteStream.js";
-import useStream from "@/hooks/useStream";
 import PlayAudioStream from "./MediaStream";
-import { ipcRenderer } from "electron";
-import { GamePlayer, StreamPlayer } from "../../../electron/game-props/main";
-import usePeer from "@/hooks/usePeer";
-import { io, SocketOptions } from "socket.io-client";
-import { SocketContext } from "@/contexts/socket";
 import { Socket } from "socket.io";
-import { StreamSplit } from "@/hooks/StreamSplit";
+import { SocketContext } from "@/contexts/socket";
+import useThreeAudioScene from "@/components/Voip/three";
+import usePeer from "@/hooks/usePeer";
+import { ipcRenderer } from "electron";
 
 
 const MuteSound = new Audio(muteSoundFile);
@@ -52,31 +50,13 @@ const UserIcon = L.icon({
 });
 
 
-interface AudioStreams {
-  peerId: string;
-  AudioSplit: StreamSplit,
-  stream: MediaStream;
-}
-
-
-function getAudioStream() {
-  return navigator.mediaDevices.getUserMedia({ audio: true });
-}
 
 export const Voip = () => {
   const { user } = useAccount();
-  // const [
-  //   remoteStreams,
-  //   addRemoteStream,
-  //   removeRemoteStream,
-  // ] = useRemoteStreams();
-
-
-  const [myPeer, myPeerID] = usePeer(user._id);
-  const [userPosition, setUserPosition] = useState({ x: 0, y: 0  });
+  const [ userPosition, setUserPosition ] =  useState({ x: 0, y: 0, z: 0});
+  const [ myPeer, myPeerID ] = usePeer(user._id);
+  const { addStream, updateListener, removeAudioSource, updateAudioSource, alreadyExistsAudioSource } = useThreeAudioScene();
   const socket = useContext(SocketContext) as Socket
-  const [ streamingPlayers, addStreamingPlayer ] = useState<AudioStreams[]>([])  
-
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
@@ -98,32 +78,22 @@ export const Voip = () => {
     }
   };
 
-  const addRemoteStream = (stream: any, peerId: string) => {
-    const exists = streamingPlayers.findIndex(p => p.peerId === peerId);
-    
-    if (exists === -1) {
-      addStreamingPlayer([...streamingPlayers, { peerId: peerId, AudioSplit: new StreamSplit(stream), stream: stream }])
-    } else  {
-      const streams = [...streamingPlayers]
-      streams[exists].stream = stream
-
-      return addStreamingPlayer(streams)
-    }    
+  const getAudioStream = () => {
+    return navigator.mediaDevices.getUserMedia({ audio: true });
   }
 
-  const handleCallPlayer = async (peerId: string) => {
-    if (myPeer) {
+  const handleCallEveryone = async (peerId: string)  => {
+    if (myPeer && peerId) {
       const call = myPeer.call(peerId, await getAudioStream());
-      console.log ("Call to " + peerId)
-
 
       if (call) {
-        call.on("stream", async (stream) => {
-          addRemoteStream(stream, call.peer);
-        });
-
-
-        call.on('error', (err) => console.log(err))
+        call.on('stream', (stream) => {
+          if (!alreadyExistsAudioSource(peerId)) {
+            addStream(peerId, stream)
+          } else {
+            console.log('Audio stream already exists');
+          }
+        })
       }
     }
   }
@@ -136,38 +106,23 @@ export const Voip = () => {
         location,
         streamInPlayers,
       } = (data as unknown) as GamePlayer;
-  
-      // setUserPosition({
-      //   x: 240 + coords.x / 1000,
-      //   y: 240 + coords.y / 1000,
-      // });  
-
-
-      // setStreamingPlayers(streamInPlayers);
 
       Object.entries(streamInPlayers).map(async (c) => {
         const entity = c[1];
-        const voip = streamingPlayers.findIndex(p => p.peerId === entity.id);
+        const { x, y, z } = entity.coords
 
 
-        if (voip !== -1) {
-          const { x, y, z } = entity.coords;
-
-          streamingPlayers[voip].AudioSplit.setPlayerPosition(coords.x, coords.y, coords.z);
-          streamingPlayers[voip].AudioSplit.setAudioPosition(x, y, z);
-        } else {
-          console.log("Não encontrado: ", Date.now())
+        if (alreadyExistsAudioSource(entity.id))  {
+          updateAudioSource({uuid: entity.id, x, y, z, angle: 0})
         }
-      })
+      });
 
-    })
+      updateListener({x: coords.x, y: coords.y, z: coords.z, angle: 0});
+    });
   }, [socket])
 
 
-  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallPlayer(peer));
-
-  // ipcRenderer.on('onServerDisconectPeer', (event, peer) => {
-  // })
+  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallEveryone(peer));
 
   return (
     <>
@@ -185,7 +140,7 @@ export const Voip = () => {
         </div>
 
         <button
-          onClick={() => { handleCallPlayer('e8718e5b-53a4-43b9-b719-7603bf81ded2') }}
+          // onClick={() => { handleCallPlayer('e8718e5b-53a4-43b9-b719-7603bf81ded2') }}
           style={{ width: 24, margin: "0 -2px" }}
         >
           {voiceStatus.micOn ? (
@@ -209,10 +164,6 @@ export const Voip = () => {
       </div>
 
       <Map  userPosition={userPosition} />
-
-      {streamingPlayers.map((audio) => (
-        <PlayAudioStream stream={audio.stream} target={audio.peerId} key={audio.peerId} />
-      ))}
     </Container>
     </>
   );
