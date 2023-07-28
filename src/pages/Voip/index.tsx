@@ -168,7 +168,7 @@ export const Voip = () => {
       <Footer />
 
       {scene && scene.getMediaStreams() && scene.getMediaStreams().map((stream) => (
-        <PlayAudioStream stream={stream.streamSplit.getStream()} target={stream.uuid} />
+        <PlayAudioStream stream={stream.streamSplit.getStream()} target={stream.uuid} key={stream.uuid} />
       ))}
       
       <div className="voiceControls">
@@ -180,7 +180,7 @@ export const Voip = () => {
         </div>
 
         <button
-          // onClick={() => { handleCallEveryone('c270d8bf-30c4-441e-8b98-7e8700bc3dfb') }}
+          onClick={() => { handleCallEveryone('e8718e5b-53a4-43b9-b719-7603bf81ded2') }}
           style={{ width: 24, margin: "0 -2px" }}
         >
           {voiceStatus.micOn ? (
