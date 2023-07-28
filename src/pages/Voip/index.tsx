@@ -31,7 +31,7 @@ import { StreamPlayer, GamePlayer } from "../../../electron/game-props/main";
 import { MediaConnection } from "peerjs";
 import { StreamSplit } from "./modules/StreamSplit";
 import PlayAudioStream from "./MediaStream";
-import chalk from "chalk"
+import chalk from "chalk";
 
 import usePeer from "./modules/PeerConnection";
 // import AudioManager from "@/components/Voip/three";
@@ -57,8 +57,8 @@ interface onRangePlayer {
   posY: number;
   posZ: number;
   angle: number;
-  context: StreamSplit;
-  stream: MediaStream;
+  context?: StreamSplit;
+  stream?: MediaStream;
 }
 
 interface HeartBeat {
@@ -70,9 +70,9 @@ interface HeartBeat {
 
 export const Voip = () => {
   const { user } = useAccount();
-  const [ userPosition, setUserPosition ] = useState({ x: 0, y: 0, z: 0 });
-  const [ myPeer ] = usePeer(user._id);
-  const [ streams ] = useState<onRangePlayer[]>([])
+  const [userPosition, setUserPosition] = useState({ x: 0, y: 0, z: 0 });
+  const [myPeer] = usePeer(user._id);
+  const [streams] = useState<onRangePlayer[]>([]);
   const socket = useContext(SocketContext) as Socket;
 
   const [voiceStatus, setVoiceStatus] = useState({
@@ -97,41 +97,48 @@ export const Voip = () => {
 
   const getAudioStream = () => {
     return navigator.mediaDevices.getUserMedia({ audio: true });
-  }
-
+  };
 
   const handleCallPlayer = async (player: any) => {
     if (myPeer) {
-      const exists = streams.some(stream => stream.id === player.id);
+      const exists = streams.some((stream) => stream.id === player.id);
 
       if (!exists) {
-        const call: MediaConnection = myPeer.call(player.id, await getAudioStream());
-        
-          console.log(`${chalk.cyan('[PEER]:')} Requested call to: ` + player.id );
+        const call: MediaConnection = myPeer.call(
+          player.id,
+          await getAudioStream()
+        );
+
+        streams.push({
+          id: player.id,
+          angle: player.angle,
+          distance: player.distance,
+          effect: player.effect,
+          muted: player.muted,
+          posX: player.posX,
+          posY: player.posY,
+          posZ: player.posZ,
+          volume: player.volume,
+        });
+
+        console.log(`${chalk.cyan("[PEER]:")} Requested call to: ` + player.id);
         if (call) {
-          console.log(`${chalk.cyan('[PEER]:')} Created call with: ` + player.id );
+          const peer = streams.find((s) => s.id === player.id);
+          console.log(`${chalk.cyan("[PEER]:")} Created call with: ` + player.id);
+
 
           call.on('stream', (stream: MediaStream) => {
-            streams.push({
-              id: player.id,
-              angle: player.angle,
-              distance: player.distance,
-              effect: player.effect,
-              muted: player.muted,
-              posX: player.posX,
-              posY: player.posY,
-              posZ: player.posZ,
-              volume: player.volume,
-              stream: stream,
-              context: new StreamSplit(stream)
-            })
+            if (peer) {
+              peer.stream = stream
+              peer.context = new StreamSplit(stream)
+            }
           });
         }
       } else {
-        return streams.find(s => s.id === player.id);
+        return streams.find((s) => s.id === player.id);
       }
     }
-  }
+  };
 
   useEffect(() => {
     socket.on("onClientHeartBeat", (data: HeartBeat) => {
@@ -148,21 +155,19 @@ export const Voip = () => {
           posY,
           posZ,
           volume,
-        } = (player as unknown) as onRangePlayer;
+        } = (player[1] as unknown) as onRangePlayer;
+        const call = await handleCallPlayer(
+          (player[1] as unknown) as onRangePlayer
+        );
 
-        const call = await handleCallPlayer((player as unknown) as onRangePlayer);
-
-        if (call) {
+        if (call && call.context) {
           call.context.setPlayerPosition(x, y, z);
           call.context.setAudioPosition(posX, posY, posZ);
           call.context.setPannerGain(muted);
         }
       });
     });
-  }, [socket]);
-
-
-
+  }, [myPeer]);
 
   return (
     <>
@@ -171,9 +176,11 @@ export const Voip = () => {
         <SideNav />
         <Footer />
 
-        {streams.map((s) => {
-            <PlayAudioStream stream={s.stream} target={s.id} />
-        }) as any}
+        {
+          streams.map((s) => {
+            s.stream && (<PlayAudioStream stream={s.stream} target={s.id} />)
+          }) as any
+        }
 
         <div className="voiceControls">
           <Avatar size={40} />
@@ -184,7 +191,9 @@ export const Voip = () => {
           </div>
 
           <button
-            onClick={() => { handleCallPlayer('123') }}
+            onClick={() => {
+              handleCallPlayer("123");
+            }}
             style={{ width: 24, margin: "0 -2px" }}
           >
             {voiceStatus.micOn ? (
