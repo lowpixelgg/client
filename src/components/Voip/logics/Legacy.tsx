@@ -23,6 +23,10 @@ export default class LegacyAudio {
     }
   }
 
+  public getMediaStreams () {
+    return this.streams
+  }
+
   public updateListener(data: { x: number; y: number; z: number; angle: number }): void {
     if (this.streams.length > 0) {
       this.streams.map((s, d) => {

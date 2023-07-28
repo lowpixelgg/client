@@ -1,6 +1,4 @@
-import useThreeAudioScene from '@/components/Voip/three';
 import React, { useEffect, useRef } from 'react';
-// Importe o jQuery caso esteja usando-o
 
 type Props = {
   stream: MediaStream;
@@ -16,9 +14,6 @@ const PlayAudioStream: React.FC<Props> = ({ stream, target }) => {
       videoRef.current.muted = true;
       videoRef.current.setAttribute('data-peer', target);
       videoRef.current.onloadedmetadata = () => videoRef.current?.play();
-
-      // addStream('1', videoRef.current.srcObject)
-      // updateAudioSource()
     }
   }, [stream, target]);
 

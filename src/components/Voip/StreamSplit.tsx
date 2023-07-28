@@ -42,6 +42,10 @@ export class StreamSplit {
     
     source.connect(this.panner).connect(this.context.destination);
   }
+
+  public getStream (): MediaStream {
+    return this.stream
+  }
   
   public setPlayerPosition (x: number, y: number, z: number) {
     if (this.panner) {

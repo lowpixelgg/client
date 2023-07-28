@@ -8,7 +8,7 @@ class AudioManager {
   logic: StandardAudio | LegacyAudio
 
   constructor() {
-    this.logic = window.WebGLRenderingContext ? new StandardAudio() : new LegacyAudio();
+    this.logic = false ? new StandardAudio() : new LegacyAudio();
   }
 
   public render () {
@@ -19,6 +19,13 @@ class AudioManager {
     }
   }
 
+  public getMediaStreams () {
+    if (this.logic instanceof LegacyAudio) {
+      return this.logic.getMediaStreams();
+    } else {
+      return [];
+    }
+  }
 
   public addStream(uuid: string, stream: MediaStream): void {
     this.logic.addStream(uuid, stream);

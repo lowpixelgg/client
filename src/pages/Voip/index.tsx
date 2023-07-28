@@ -36,6 +36,7 @@ import { ipcRenderer } from "electron";
 import  {StreamPlayer, GamePlayer} from "../../../electron/game-props/main"
 import { MediaConnection } from "peerjs";
 import AudioManager from "@/components/Voip/AudioManager";
+import PlayAudioStream from "./MediaStream";
 
 
 const MuteSound = new Audio(muteSoundFile);
@@ -165,6 +166,10 @@ export const Voip = () => {
       <TopStatus />
       <SideNav />
       <Footer />
+
+      {scene && scene.getMediaStreams() && scene.getMediaStreams().map((stream) => (
+        <PlayAudioStream stream={stream.streamSplit.getStream()} target={stream.uuid} />
+      ))}
       
       <div className="voiceControls">
         <Avatar size={40} />
