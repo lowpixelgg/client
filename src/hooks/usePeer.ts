@@ -32,10 +32,12 @@ export default function usePeer(peerId: string) {
 
       peer.on('open', () => {
         setPeer(peer);
+
+        console.log('[PEER]: Connection established')
       });
 
       peer.on('connection', () => {
-        console.log('[PEER]: Connection established')
+        console.log('[PEER]: On Peer Connection')
       })
 
       peer.on('error', (err) => {
