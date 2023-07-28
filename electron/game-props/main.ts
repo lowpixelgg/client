@@ -55,35 +55,26 @@ class GameProps {
         socket.emit('onLauncherSendToken', await this.getUserToken())
       });
       
-      socket.on("rp_voip:onPlayerSpawn", async () => {
+      socket.on("onClientPlayerSpawn", async () => {
         this.win.webContents.send("onPlayerSpawn", true);
       });
       
       
-      socket.on('rp_voip:onVoipHeartbeat', async (data) => {
+      socket.on('onClientHeartBeat', async (data) => {
         data = JSON.parse(data)[0];
-        
-        this.game = {
-          location: data.location,
-          coords: {
-            x: data.coords.x,
-            y: data.coords.y,
-            z: data.coords.z,
-          },
-          streamInPlayers: data.streamInPlayers
-        }
-        
-        this.io.to('frontend').emit('onServerHeartBeat', this.game)
+      
+        console.log(data)
+        // this.io.to('frontend').emit('onClientHeartBeat', data)
       });
       
       
-      socket.on('rp_voip:onVoipAddPlayer', async (peer) => {
-        this.win.webContents.send("onServerCallPeer", peer);
-      });
+      // socket.on('rp_voip:onVoipAddPlayer', async (peer) => {
+      //   this.win.webContents.send("onServerCallPeer", peer);
+      // });
       
-      socket.on("rp_voip:onVoipRemovePlayer", async (peer) => {
-        this.win.webContents.send("onServerDisconectPeer", peer);
-      })
+      // socket.on("rp_voip:onVoipRemovePlayer", async (peer) => {
+      //   this.win.webContents.send("onServerDisconectPeer", peer);
+      // })
     });
   }
 }

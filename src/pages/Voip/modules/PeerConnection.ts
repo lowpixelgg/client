@@ -34,7 +34,7 @@ export default function usePeer(peerId: string) {
       peer.on('open', () => {
         setPeer(peer);
 
-        console.log(`${chalk.cyan('[PEER]: ')} Connection established`);
+        console.log(`${chalk.cyan('[PEER]:')} Connection established`);
       });
 
       peer.on('error', (err) => {
@@ -43,7 +43,7 @@ export default function usePeer(peerId: string) {
 
       peer.on('call', async (call) => {    
         call.answer(await getAudioStream());
-        console.log(`${chalk.cyan('[PEER]: ')} Receiving Call from: ` + call.peer);
+        console.log(`${chalk.cyan('[PEER]:')} Receiving Call from: ` + call.peer);
       });
     });
 
