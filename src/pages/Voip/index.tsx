@@ -111,7 +111,7 @@ export const Voip = () => {
         call.on('stream', async (stream) => {
           var audio = new Audio()
           audio.srcObject = stream;
-          
+
           scene.addStream(peerId, stream);
         })
       }
@@ -150,7 +150,7 @@ export const Voip = () => {
       
       if (scene) {
         scene.updateListener({x: coords.x, y: coords.y, z: coords.z, angle: 0})
-        scene.render()
+        // scene.render()
       }
     });
   }, [scene])

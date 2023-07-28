@@ -21,18 +21,17 @@ class AudioManager {
     this.renderer.setSize(1, 1);
     
     
-    // this.renderer.setAnimationLoop((time) => {
-      
-    //   console.log(this.camera.position.x, Date.now())
-    // });
-
+    this.renderer.setAnimationLoop((time) => {
+      this.renderer.render(this.scene, this.camera);
+    });
+    
 
     document.body.appendChild(this.renderer.domElement);
   }
 
-  public render () {
-    this.renderer.render(this.scene, this.camera);
-  }
+  // public render () {
+  //   this.renderer.render(this.scene, this.camera);
+  // }
 
   private createAudioSource(stream: MediaStream, uuid: string): THREE.Mesh {
     const sphere = new THREE.SphereGeometry(20, 32, 16);

@@ -39,6 +39,7 @@ async function createWindow() {
     minWidth: 800,
     frame: false,
     resizable: true,
+    roundedCorners: true,
     center: true,
     webPreferences: {
       preload,
