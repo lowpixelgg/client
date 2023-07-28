@@ -27,16 +27,15 @@ import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { MdHeadphones, MdHeadsetOff } from "react-icons/md";
 import { BsGearFill } from "react-icons/bs";
 import useAccount from "@/services/hooks/useAccount";
-import { GamePlayer, StreamPlayer } from "../../../electron/game-props/main";
 import muteSoundFile from "@/assets/sounds/muteSound.mp3";
 import unmuteSoundFile from "@/assets/sounds/unmuteSound.mp3";
-import PlayAudioStream from "./MediaStream";
 import { Socket } from "socket.io";
 import { SocketContext } from "@/contexts/socket";
-import useThreeAudioScene from "@/components/Voip/three";
 import usePeer from "@/hooks/usePeer";
 import { ipcRenderer } from "electron";
+import  {StreamPlayer, GamePlayer} from "../../../electron/game-props/main"
 import { MediaConnection } from "peerjs";
+import AudioManager from "@/components/Voip/three";
 
 
 const MuteSound = new Audio(muteSoundFile);
@@ -53,12 +52,13 @@ const UserIcon = L.icon({
 
 
 export const Voip = () => {
-
+  const [ scene, setScene ] = useState<AudioManager>()
   const { user } = useAccount();
   const [ userPosition, setUserPosition ] =  useState({ x: 0, y: 0, z: 0});
   const [ myPeer, myPeerID ] = usePeer(user._id);
   const socket = useContext(SocketContext) as Socket
 
+  
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
     audioOn: true,
@@ -83,22 +83,41 @@ export const Voip = () => {
     return navigator.mediaDevices.getUserMedia({ audio: true });
   }
 
-  const { addStream, updateListener, removeAudioSource, updateAudioSource, alreadyExistsAudioSource } = useThreeAudioScene();
+
+  
+  useEffect(() => {
+    if (scene) {
+      scene.updateListener({ x: userPosition.x, y: userPosition.y, z: userPosition.z, angle: 0 });
+    }
+  }, [scene, userPosition]);
+
+  useEffect(() => {
+    const three = new AudioManager();
+    setScene(three);
+
+    return () => {
+    };
+  }, []);
+
+
 
   const handleCallEveryone = async (peerId: string)  => {
-    if (myPeer && peerId) {
+    if (myPeer && peerId && scene) {
       const call: MediaConnection = myPeer.call(peerId, await getAudioStream());
      
       if (call) {
+        console.log("[PEER]: Calling to peer: " + peerId);
+        
         call.on('stream', async (stream) => {
           var audio = new Audio()
-          audio.srcObject = stream
-          
-          addStream(peerId, audio.srcObject)
+          audio.srcObject = stream;
+
+          scene.addStream(peerId, stream);
         })
       }
     }
   }
+
 
 
   useEffect(() => {
@@ -108,20 +127,36 @@ export const Voip = () => {
         location,
         streamInPlayers,
       } = (data as unknown) as GamePlayer;
-
+  
       Object.entries(streamInPlayers).map(async (c) => {
-        const entity = c[1];
-        const { x, y, z } = entity.coords
+        const entity = c[1] as StreamPlayer;
 
-        updateAudioSource({uuid: entity.id, x, y, z, angle: 0})
+        if (scene) {
+          if (!scene.isObjectExistent(entity.id)) {
+          
+            await handleCallEveryone(entity.id)
+          
+          } else {
+            scene.updateAudioSource({ 
+              uuid: entity.id, 
+              x: entity.coords.x, 
+              y:entity.coords.y, 
+              z: entity.coords.z, 
+              angle: 0 
+            });
+          }
+        }
       });
-
-      updateListener({x: coords.x, y: coords.y, z: coords.z, angle: 0});
+      
+      if (scene) {
+        scene.updateListener({x: coords.x, y: coords.y, z: coords.z, angle: 0})
+        scene.render()
+      }
     });
-  }, [socket])
+  }, [scene])
 
 
-  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallEveryone('peer'));
+  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallEveryone(peer));
 
   return (
     <>
@@ -129,8 +164,6 @@ export const Voip = () => {
       <TopStatus />
       <SideNav />
       <Footer />
-      {/* {stream && (<PlayAudioStream stream={stream} target={"1"} />)} */}
-
       
       <div className="voiceControls">
         <Avatar size={40} />
@@ -141,7 +174,7 @@ export const Voip = () => {
         </div>
 
         <button
-          onClick={() => { handleCallEveryone('e8718e5b-53a4-43b9-b719-7603bf81ded2') }}
+          onClick={() => { handleCallEveryone('c270d8bf-30c4-441e-8b98-7e8700bc3dfb') }}
           style={{ width: 24, margin: "0 -2px" }}
         >
           {voiceStatus.micOn ? (

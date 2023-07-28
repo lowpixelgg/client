@@ -45,10 +45,11 @@ export default function usePeer(peerId: string) {
       })
 
       peer.on('call', async (call) => {
+        
         call.answer(await getAudioStream());
         
 
-        console.log('[PEER]: Call')
+        console.log('[PEER]: Receiving Call from ' + call.peer)
       });
     });
 
