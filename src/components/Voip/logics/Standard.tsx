@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 
-class AudioManager {
+
+
+export default class StandardAudio {
   private camera: THREE.PerspectiveCamera;
   private scene: THREE.Scene;
   private listener: THREE.AudioListener;
@@ -18,20 +20,14 @@ class AudioManager {
     
     this.camera.add(this.listener);
     this.renderer = new THREE.WebGLRenderer({ antialias: true, });
-    this.renderer.setSize(1, 1);
+    this.renderer.setSize(10, 10);
     
-    
-    this.renderer.setAnimationLoop((time) => {
-      this.renderer.render(this.scene, this.camera);
-    });
-    
-
     document.body.appendChild(this.renderer.domElement);
   }
 
-  // public render () {
-  //   this.renderer.render(this.scene, this.camera);
-  // }
+  public render () {
+    this.renderer.render(this.scene, this.camera);
+  }
 
   private createAudioSource(stream: MediaStream, uuid: string): THREE.Mesh {
     const sphere = new THREE.SphereGeometry(20, 32, 16);
@@ -46,7 +42,6 @@ class AudioManager {
     audioSource.setMaxDistance(50);
 
     object.uuid = uuid;
-
     object.add(audioSource);
 
     return object;
@@ -72,6 +67,8 @@ class AudioManager {
       } else {
         object.material.dispose();
       }
+
+      
       object.geometry.dispose();
       this.scene.remove(object);
     }
@@ -97,5 +94,3 @@ class AudioManager {
     }
   }
 }
-
-export default AudioManager;

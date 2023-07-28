@@ -35,7 +35,7 @@ import usePeer from "@/hooks/usePeer";
 import { ipcRenderer } from "electron";
 import  {StreamPlayer, GamePlayer} from "../../../electron/game-props/main"
 import { MediaConnection } from "peerjs";
-import AudioManager from "@/components/Voip/three";
+import AudioManager from "@/components/Voip/AudioManager";
 
 
 const MuteSound = new Audio(muteSoundFile);
@@ -150,7 +150,8 @@ export const Voip = () => {
       
       if (scene) {
         scene.updateListener({x: coords.x, y: coords.y, z: coords.z, angle: 0})
-        // scene.render()
+        
+        scene.render()
       }
     });
   }, [scene])
@@ -174,7 +175,7 @@ export const Voip = () => {
         </div>
 
         <button
-          onClick={() => { handleCallEveryone('c270d8bf-30c4-441e-8b98-7e8700bc3dfb') }}
+          // onClick={() => { handleCallEveryone('c270d8bf-30c4-441e-8b98-7e8700bc3dfb') }}
           style={{ width: 24, margin: "0 -2px" }}
         >
           {voiceStatus.micOn ? (
