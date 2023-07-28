@@ -63,8 +63,7 @@ class GameProps {
       socket.on('onClientHeartBeat', async (data) => {
         data = JSON.parse(data)[0];
       
-        console.log(data)
-        // this.io.to('frontend').emit('onClientHeartBeat', data)
+        this.io.to('frontend').emit('onClientHeartBeat', data)
       });
       
       
