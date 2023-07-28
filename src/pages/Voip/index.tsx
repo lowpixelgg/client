@@ -36,6 +36,7 @@ import { SocketContext } from "@/contexts/socket";
 import useThreeAudioScene from "@/components/Voip/three";
 import usePeer from "@/hooks/usePeer";
 import { ipcRenderer } from "electron";
+import { MediaConnection } from "peerjs";
 
 
 const MuteSound = new Audio(muteSoundFile);
@@ -52,10 +53,10 @@ const UserIcon = L.icon({
 
 
 export const Voip = () => {
+
   const { user } = useAccount();
   const [ userPosition, setUserPosition ] =  useState({ x: 0, y: 0, z: 0});
   const [ myPeer, myPeerID ] = usePeer(user._id);
-  const { addStream, updateListener, removeAudioSource, updateAudioSource, alreadyExistsAudioSource } = useThreeAudioScene();
   const socket = useContext(SocketContext) as Socket
 
   const [voiceStatus, setVoiceStatus] = useState({
@@ -82,17 +83,18 @@ export const Voip = () => {
     return navigator.mediaDevices.getUserMedia({ audio: true });
   }
 
+  const { addStream, updateListener, removeAudioSource, updateAudioSource, alreadyExistsAudioSource } = useThreeAudioScene();
+
   const handleCallEveryone = async (peerId: string)  => {
     if (myPeer && peerId) {
-      const call = myPeer.call(peerId, await getAudioStream());
-
+      const call: MediaConnection = myPeer.call(peerId, await getAudioStream());
+     
       if (call) {
-        call.on('stream', (stream) => {
-          if (!alreadyExistsAudioSource(peerId)) {
-            addStream(peerId, stream)
-          } else {
-            console.log('Audio stream already exists');
-          }
+        call.on('stream', async (stream) => {
+          var audio = new Audio()
+          audio.srcObject = stream
+          
+          addStream(peerId, audio.srcObject)
         })
       }
     }
@@ -127,7 +129,9 @@ export const Voip = () => {
       <TopStatus />
       <SideNav />
       <Footer />
+      {/* {stream && (<PlayAudioStream stream={stream} target={"1"} />)} */}
 
+      
       <div className="voiceControls">
         <Avatar size={40} />
 

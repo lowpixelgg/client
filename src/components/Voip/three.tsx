@@ -2,49 +2,32 @@ import React, { useRef, useEffect } from 'react';
 import * as THREE from 'three';
 
 const useThreeAudioScene = () => {
-  const camera = useRef<THREE.PerspectiveCamera>();
-  const scene = useRef<THREE.Scene>();
-  const renderer = useRef<THREE.WebGLRenderer>();
-  const listener = useRef<THREE.AudioListener>();
+  const camera = useRef<THREE.PerspectiveCamera>(new THREE.PerspectiveCamera(70, 1, 0.01, 10));
+  const scene = useRef<THREE.Scene>(new THREE.Scene());
+  const renderer = useRef<THREE.WebGLRenderer>(new THREE.WebGLRenderer({ antialias: true }));
+  const listener = useRef<THREE.AudioListener>(new THREE.AudioListener());
 
+  // Renderer setup
   useEffect(() => {
-    camera.current = new THREE.PerspectiveCamera(70, 1, 0.01, 10);
-    scene.current = new THREE.Scene();
-    listener.current = new THREE.AudioListener();
-    camera.current.add(listener.current);
-
-    const rendererInstance = new THREE.WebGLRenderer({ antialias: true });
-    renderer.current = rendererInstance;
+    const rendererInstance = renderer.current;
     rendererInstance.setSize(100, 100);
-
-    const animate = (time: number) => {
-      if (renderer.current && camera.current && scene.current) {
-        renderer.current.render(scene.current, camera.current);
-      }
-
-      requestAnimationFrame(animate);
-    };
-
-    animate(0);
+    document.body.appendChild(rendererInstance.domElement);
 
     return () => {
-      if (renderer.current) {
-        renderer.current.dispose();
-      }
+      rendererInstance.dispose();
+      document.body.removeChild(rendererInstance.domElement);
     };
   }, []);
 
-  useEffect(() => {
-    if (renderer.current) {
-      document.body.appendChild(renderer.current.domElement);
+  // Animation loop
+  const animate = (time: number) => {
+    if (renderer.current && camera.current && scene.current) {
+      renderer.current.render(scene.current, camera.current);
     }
 
-    return () => {
-      if (renderer.current) {
-        document.body.removeChild(renderer.current.domElement);
-      }
-    };
-  }, []);
+    requestAnimationFrame(animate);
+  };
+  animate(0);
 
   const addStream = (uuid: string, stream: MediaStream) => {
     if (scene.current && listener.current) {
