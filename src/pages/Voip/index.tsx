@@ -111,10 +111,7 @@ export const Voip = () => {
         const entity = c[1];
         const { x, y, z } = entity.coords
 
-
-        if (alreadyExistsAudioSource(entity.id))  {
-          updateAudioSource({uuid: entity.id, x, y, z, angle: 0})
-        }
+        updateAudioSource({uuid: entity.id, x, y, z, angle: 0})
       });
 
       updateListener({x: coords.x, y: coords.y, z: coords.z, angle: 0});
@@ -122,7 +119,7 @@ export const Voip = () => {
   }, [socket])
 
 
-  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallEveryone(peer));
+  ipcRenderer.on('onServerCallPeer', async (_, peer) => await handleCallEveryone('peer'));
 
   return (
     <>
@@ -140,7 +137,7 @@ export const Voip = () => {
         </div>
 
         <button
-          // onClick={() => { handleCallPlayer('e8718e5b-53a4-43b9-b719-7603bf81ded2') }}
+          onClick={() => { handleCallEveryone('e8718e5b-53a4-43b9-b719-7603bf81ded2') }}
           style={{ width: 24, margin: "0 -2px" }}
         >
           {voiceStatus.micOn ? (
