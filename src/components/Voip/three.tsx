@@ -1,8 +1,5 @@
 import * as THREE from 'three';
 
-const GTASA_SCALE_FACTOR = 0.01; // Adjust this value as needed
-
-
 class AudioManager {
   private camera: THREE.PerspectiveCamera;
   private scene: THREE.Scene;
@@ -21,7 +18,7 @@ class AudioManager {
     
     this.camera.add(this.listener);
     this.renderer = new THREE.WebGLRenderer({ antialias: true, });
-    this.renderer.setSize(100, 100);
+    this.renderer.setSize(1, 1);
     
     
     // this.renderer.setAnimationLoop((time) => {

@@ -50,13 +50,13 @@ export default function usePeer(peerId: string, scene: AudioManager | undefined)
         call.answer(await getAudioStream());
         
 
-        call.on("stream", (stream) => {
-          if (scene) {
-            if (!scene.isObjectExistent(call.peer)) {
-              scene.addStream(call.peer, stream)
-            }
-          }
-        })
+        // call.on("stream", (stream) => {
+        //   if (scene) {
+        //     if (!scene.isObjectExistent(call.peer)) {
+        //       scene.addStream(call.peer, stream)
+        //     }
+        //   }
+        // })
 
         console.log('[PEER]: Receiving Call from ' + call.peer)
       });
