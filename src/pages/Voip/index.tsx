@@ -137,6 +137,28 @@ export const Voip = () => {
   };
 
   useEffect(() => {
+    if (myPeer) {
+      myPeer.on('call', async (call) => {    
+        call.answer(await getAudioStream());
+
+        await handleCallPlayer({
+          id: call.peer,
+          angle: 0,
+          distance: 0,
+          effect: 0,
+          muted: 0,
+          posX: 0,
+          posY:0,
+          posZ: 0,
+          volume: 0,
+        });
+
+        console.log(`${chalk.cyan('[PEER]:')} Receiving Call from: ` + call.peer);
+      });
+
+
+    }
+    
     socket.on("onClientHeartBeat", (data: HeartBeat) => {
       const { x, y, z, onRangePlayers } = data;
 
@@ -222,7 +244,7 @@ export const Voip = () => {
         <Map userPosition={userPosition} />
 
         
-        {streams.map((s) => <PlayAudioStream stream={s.stream} target={s.id} key={s.id} />)}
+        {streams.map((s, i) => <PlayAudioStream stream={s.stream} target={s.id} key={i} />)}
       </Container>
     </>
   );

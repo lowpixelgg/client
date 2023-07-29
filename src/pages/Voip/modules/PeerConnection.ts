@@ -39,11 +39,6 @@ export default function usePeer(peerId: string) {
 
       peer.on('error', (err) => {
         console.log(err)
-      })
-
-      peer.on('call', async (call) => {    
-        call.answer(await getAudioStream());
-        console.log(`${chalk.cyan('[PEER]:')} Receiving Call from: ` + call.peer);
       });
     });
 
