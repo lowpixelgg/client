@@ -71,8 +71,8 @@ interface HeartBeat {
 export const Voip = () => {
   const { user } = useAccount();
   const [userPosition, setUserPosition] = useState({ x: 0, y: 0, z: 0 });
-  const [myPeer] = usePeer(user._id);
   const [ streams, setStreams ] = useState<onRangePlayer[]>([]);
+  const [myPeer] = usePeer(user._id, streams, setStreams);
   const socket = useContext(SocketContext) as Socket;
 
   const [voiceStatus, setVoiceStatus] = useState({
@@ -136,29 +136,7 @@ export const Voip = () => {
     }
   };
 
-  useEffect(() => {
-    if (myPeer) {
-      myPeer.on('call', async (call) => {    
-        call.answer(await getAudioStream());
-
-        await handleCallPlayer({
-          id: call.peer,
-          angle: 0,
-          distance: 0,
-          effect: 0,
-          muted: 0,
-          posX: 0,
-          posY:0,
-          posZ: 0,
-          volume: 0,
-        });
-
-        console.log(`${chalk.cyan('[PEER]:')} Receiving Call from: ` + call.peer);
-      });
-
-
-    }
-    
+  useEffect(() => {    
     socket.on("onClientHeartBeat", (data: HeartBeat) => {
       const { x, y, z, onRangePlayers } = data;
 
