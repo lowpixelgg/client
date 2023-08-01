@@ -46,6 +46,9 @@ async function createWindow() {
     webPreferences: { 
       preload,
       devTools: true,
+      webgl: true,
+      allowRunningInsecureContent: true,
+      experimentalFeatures: true,
       nodeIntegration: true,
       contextIsolation: false,
     },

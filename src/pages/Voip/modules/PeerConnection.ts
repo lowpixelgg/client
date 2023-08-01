@@ -27,15 +27,9 @@ export function usePeer(peerId: string, addRemoteStream: any, removeRemoteStream
   useEffect(() => {
     import('peerjs').then(() => {
       const Config = {
-        // host: "agenciaab.com.br",
-        // port: 9000,
-        // path: '/peerjs',
-        secure: true,
-        iceServers: [
-            { urls: 'stun:stun.l.google.com:19302'}, 
-            { urls: 'stun:stun1.l.google.com:19302'}, 
-            { urls: 'stun:stun2.l.google.com:19302'}, 
-        ]
+        host: "agenciaab.com.br",
+        port: 9000,
+        path: '/peerjs',
       };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
