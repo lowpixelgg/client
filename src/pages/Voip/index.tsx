@@ -140,33 +140,49 @@ export const Voip = () => {
     }
   };
 
-  useEffect(() => {
-    socket.on("onClientHeartBeat", (data: HeartBeat) => {
-      const { x, y, z, onRangePlayers } = data;
 
-      Object.entries(onRangePlayers).map(async (player) => {
-        const {
-          angle,
-          distance,
-          effect,
-          id,
-          muted,
-          posX,
-          posY,
-          posZ,
-          volume,
-        } = player[1];
-         const remote  = getRemoteStream(id);
+  const test = async (id: string) => {
+    const remote  = getRemoteStream(id);
 
-         if (!remote) {
-          await handleCallEveryone(id);
-         } else {
-          remote.context.setPlayerPosition(x, y, z);
-          remote.context.setAudioPosition(posX, posY, posZ);
-         }
-      });
-    });
-  }, [myPeer]);
+    if (!remote) {
+      console.log("Remote stream not found");
+
+      await handleCallEveryone(id);
+    } else {
+      console.log("Remote stream found: " + remote);
+    }
+  }
+
+  // socket.on("onClientHeartBeat", (data: HeartBeat) => {
+  //   const { x, y, z, onRangePlayers } = data;
+    
+  //   Object.entries(onRangePlayers).map(async (player) => {
+  //     const {
+  //       angle,
+  //       distance,
+  //       effect,
+  //       id,
+  //       muted,
+  //       posX,
+  //       posY,
+  //       posZ,
+  //       volume,
+  //     } = player[1];
+  //      const remote  = getRemoteStream(id);
+  //     console.log(remote, Date.now())
+
+  //     //  if (!remote) {
+  //     //   await handleCallEveryone(id);
+  //     //  } else {
+  //     //   remote.context.setPlayerPosition(x, y, z);
+  //     //   remote.context.setAudioPosition(posX, posY, posZ);
+  //     //  }
+  //   });
+  // });
+
+  // useEffect(() => {
+
+  // }, [myPeer]);
 
   return (
     <>
@@ -184,19 +200,9 @@ export const Voip = () => {
           </div>
 
           <button
-            // onClick={() => {
-            //   handleCallPlayer({
-            //     id: "e8718e5b-53a4-43b9-b719-7603bf81ded2",
-            //     angle: 0,
-            //     distance: 0,
-            //     effect: 0,
-            //     muted: 0,
-            //     posX: 0,
-            //     posY:0,
-            //     posZ: 0,
-            //     volume: 0,
-            //   });
-            // }}
+            onClick={() => {
+              test('e8718e5b-53a4-43b9-b719-7603bf81ded2')
+            }}
             style={{ width: 24, margin: "0 -2px" }}
           >
             {voiceStatus.micOn ? (

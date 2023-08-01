@@ -2,9 +2,6 @@ import { Container } from "./styles";
 import { Footer } from "@/components/Footer";
 import { TopStatus } from "./TopStatus";
 import { Post } from "./Post";
-import { Download } from "./Download";
-
-import { useContext, useEffect } from "react";
 import { SideNav } from "@/components/SideNav";
 
 export const Main = () => {
@@ -18,7 +15,7 @@ export const Main = () => {
         <SideNav />
       </div>
 
-      <Download />
+      {/* <Download /> */}
       <Footer />
 
     </Container>
