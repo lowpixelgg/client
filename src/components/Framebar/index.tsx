@@ -25,7 +25,7 @@ export const Framebar = () => {
           <div className="frameResizableVert frameDragPadder"></div>
           <div id="frameContentWin">
             <div id="frameTitleDock">
-              <span id="frameTitleText">ROCKET CLIENT</span>
+              <span id="frameTitleText">ROCKET CLIENT v0.7.1</span>
             </div>
             <div id="frameButtonDockWin">
               <button
@@ -50,7 +50,7 @@ export const Framebar = () => {
                 </svg>
               </button>
 
-              <button
+              {/* <button
                 className="frameButton fRb"
                 id="frameButton_maximize"
                 onClick={() => action("maximize")}
@@ -71,7 +71,7 @@ export const Framebar = () => {
                     strokeWidth="1.4px"
                   ></rect>
                 </svg>
-              </button>
+              </button> */}
 
               <button
                 className="frameButton fCb"

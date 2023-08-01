@@ -12,25 +12,7 @@ export const Post = () => {
   const [imageKey, setImageKey] = useState(0);
   const [text, setText] = useState(langObj.Main[1][0])
 
-  const handlechangeimage = () => {
-    if (imageKey >= NewsWire.length - 1) {
-      setImageKey(0);
-      setImage(NewsWire[0]);
-      setText(langObj.Main[1][0])
-    } else {
-      setImageKey(imageKey + 1);
-      setImage(NewsWire[imageKey + 1]);
-      setText(langObj.Main[1][imageKey + 1])
-    }
-  };
-  
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handlechangeimage();
-    }, 5000);
-    return () => clearInterval(interval);
-    
-  }, [imageKey]);
+
 
   return (
     <motion.div
@@ -46,14 +28,7 @@ export const Post = () => {
         <span>Newswire:</span>
       </h1>
 
-      <motion.img
-        className="post--image" src={image} 
-        initial={{ opacity: 0.2 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ ease: "easeIn", duration: 0.4 }}
-
-      />
+      <iframe id="frame" width="550" height="285" src="https://www.youtube.com/embed/29VPmn4vvYo" ></iframe>
 
       <motion.p
         className="post--desc"

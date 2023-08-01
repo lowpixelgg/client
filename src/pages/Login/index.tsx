@@ -22,13 +22,14 @@ export const Login = () => {
 
   const buttonAction = async () => {
     setLoading(true);
-    await signIn(email, pass);
-    setLoading(false)
-    // if (email && pass) {
-    //   navigate("/init");
-    // }
+    
+    try {
+      await signIn(email, pass);
+    } catch (error) {
+      console.log("error")
+    }
 
-    // setLoading(false);
+    setLoading(false)
   };
 
   useEffect(() => {
@@ -81,7 +82,7 @@ export const Login = () => {
         </Button>
 
         <div className="forgotPass">
-          <a href="/">
+          <a onClick={() => shell.openExternal("https://play.rocketmta.com/login/recovery")}>
             {langObj.Login[3]}
             <span> {langObj.Login[4]}</span>
           </a>

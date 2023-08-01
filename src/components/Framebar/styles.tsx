@@ -46,7 +46,7 @@ export const Container = styled.div`
 
   #frameTitleText {
     font-size: 11px;
-    font-family: "Avenir Medium";
+    font-family: "Roboto";
     top: -10px;
     color: rgba(212, 212, 212, 0.774);
   }

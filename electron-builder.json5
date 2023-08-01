@@ -4,7 +4,7 @@
 {
   appId: "13",
   productName: "Rocket Client",
-  copyright: "Copyright © 2022 ${author}",
+  copyright: "Copyright © 2023 ${author}",
   asar: false,
   directories: {
     output: "release/${version}",
@@ -12,6 +12,7 @@
   },
   files: ["dist"],
   win: {
+    requestedExecutionLevel: 'requireAdministrator',
     target: [
       {
         target: "nsis",

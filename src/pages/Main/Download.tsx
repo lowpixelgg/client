@@ -1,53 +1,42 @@
 import { motion, AnimatePresence } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TbDownload } from "react-icons/tb";
 import { FaPlay } from "react-icons/fa";
 import { Button } from "@/components/Button";
 import { useContext } from "react";
 import { LangContextTypes, LanguageContext } from "@/global/LanguageContext";
+import { SocketContext } from "@/contexts/socket";
+import { Socket } from "socket.io-client";
+import { ipcRenderer } from "electron";
+
+interface Download {
+  percent: number;
+  string: string;
+}
 
 export const Download = () => {
   const { langObj } = useContext(LanguageContext) as LangContextTypes;
 
-  const [actionBtn, setActionBtn] = useState(langObj.Main[3]);
-  const [downloadFill, setDownloadFill] = useState(0);
+  const [action, setActionButton] = useState<String | null>();
+  const [download, setDownload] = useState<Download | null>();
+  const socket = useContext(SocketContext) as Socket;
 
+  useEffect(() => {
+    socket.emit("checkForUpdates", (state: string) => {
+      if (state == "ClientNeedsDownloadContent") {
+        setActionButton(state);
+      }
+    });
 
-
-  const handleAction = () => {
-    switch (actionBtn) {
-      case langObj.Main[3]:
-        setActionBtn(langObj.Main[4]);
-
-        let init = downloadFill;
-        const timer = setInterval(() => {
-          if (init < 100) {
-            setDownloadFill(init + 1);
-            init++;
-          } else {
-            clearInterval(timer);
-            setDownloadFill(0);
-            setActionBtn(langObj.Main[5]);
-          }
-        }, 100);
-        break;
-
-      case langObj.Main[5]:
-        setActionBtn(langObj.Main[6]);
-        break;
-
-      default:
-        break;
-    }
-  };
-
+    socket.on("onUpdaterProgress", (data: Download) => {
+      setDownload(data);
+    });
+  }, [socket]);
 
   return (
     <div className="download">
-
-        
-      <AnimatePresence>
-        {actionBtn !== langObj.Main[6] && (
+      {download && (
+        <AnimatePresence>
           <motion.div
             initial={{ opacity: 0.2 }}
             animate={{ opacity: 1 }}
@@ -58,42 +47,48 @@ export const Download = () => {
             <span className="downloadBar--bar">
               <strong
                 className="downloadBar--percent"
-                style={{ left: `${downloadFill}%` }}
+                style={{ left: `${download.percent}%` }}
               >
-                {downloadFill}%
+                {Math.floor(download.percent)}%
               </strong>
 
               <span
                 className="downloadBar--fill"
-                style={{ width: `${downloadFill}%` }}
+                style={{ width: `${download.percent}%` }}
               />
 
               <p
                 className="downloadBar--icon"
-                style={{ left: `${downloadFill}%` }}
+                style={{ left: `${download.percent}%` }}
               >
                 🎉
               </p>
             </span>
 
-            <p className="downloadBar--status">1,6/2GB 10MB/s</p>
+            <p className="downloadBar--status">{download.string}</p>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      )}
 
-      <Button
-        active={actionBtn !== langObj.Main[4]}
-        disabled={actionBtn === langObj.Main[4]}
-        className="download--action"
-        onClick={() => handleAction()}
-      >
-        <span>{actionBtn}</span>
-        {actionBtn === langObj.Main[6] ? (
-          <FaPlay size={16} color="#f8f9fa" />
-        ) : (
-          <TbDownload size={20} color="#f8f9fa" />
-        )}
-      </Button>
+      {action && (
+        <Button
+          active={download ? false : true}
+          disabled={download ? true : false}
+          className="download--action"
+          onClick={() => socket.emit(action as string)}
+        >
+          <span>
+            {action == 'ClientNeedsDownloadContent' && langObj.Main[3]}
+            {action == 'ClientNeedsDownloadUpdates' && langObj.Main[6]}
+            {action == 'ClientReadyToPlay' && langObj.Main[7]}
+          </span>
+          {action === langObj.Main[6] ? (
+            <FaPlay size={16} color="#f8f9fa" />
+          ) : (
+            <TbDownload size={20} color="#f8f9fa" />
+          )}
+        </Button>
+      )}
     </div>
   );
 };

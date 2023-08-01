@@ -62,6 +62,7 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
     } catch (err) {
       const { response } = err as AxiosError;
 
+
       switch (response?.status) {
         case 401:
           return toast.error("Senha e/ou email inválidos.");

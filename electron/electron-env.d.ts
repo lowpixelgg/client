@@ -22,3 +22,8 @@ declare namespace NodeJS {
     PUBLIC: string
   }
 }
+
+
+declare module 'easydl/utils' {
+  export function clean(path: string): void; // Replace 'void' with the return type of the function if applicable
+}

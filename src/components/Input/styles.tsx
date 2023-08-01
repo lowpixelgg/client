@@ -18,7 +18,7 @@ export const Container = styled.div`
     justify-content: center;
     align-items: center;
     gap: 8px;
-    border: 1px solid #616161;
+    border: 1px solid #61616155;
     transition: all ease-in-out .4s;
     position: relative;
 

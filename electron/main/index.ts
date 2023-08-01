@@ -11,7 +11,7 @@ import { RichPrecense } from "../game-props/external/rpc"
 import GameProps from "../game-props/main";
 
 const rpc = new RichPrecense();
-let game;
+let game
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
 
@@ -31,17 +31,19 @@ const indexHtml = join(process.env.DIST, "index.html");
 
 async function createWindow() {
   win = new BrowserWindow({
-    title: "Rocket Client",
+    title: "ROCKET CLIENT",
     icon: join(process.env.PUBLIC, "favicon.svg"),
-    width: 980,
-    height: 560,
+    width: 1030,
+    height: 590,
     minHeight: 520,
     minWidth: 800,
     frame: false,
-    resizable: true,
+    resizable: false,
     roundedCorners: true,
     center: true,
-    webPreferences: {
+    fullscreen: false,
+    fullscreenable: false,
+    webPreferences: { 
       preload,
       devTools: true,
       nodeIntegration: true,
@@ -57,6 +59,7 @@ async function createWindow() {
   } else {
     win.loadURL(url);
     win.webContents.openDevTools();
+
   }
 
   win.webContents.on("did-finish-load", () => {

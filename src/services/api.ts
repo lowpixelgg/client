@@ -14,14 +14,16 @@ export function setupApiClient() {
     (response) => {
       return response;
     },
-    (error: AxiosError) => {
-      console.log(error);
-      if (error.response?.status === 401) {
-        return signOut();
+    (error: AxiosError) => { 
+      if (window.location.pathname !== '/') {
+        if (error.response?.status === 401) {
+          return signOut();
+        }
+        if (error.response?.status === 503) {
+          return pageDown();
+        }
       }
-      if (error.response?.status === 503) {
-        return pageDown();
-      }
+
 
       return Promise.reject(error);
     }

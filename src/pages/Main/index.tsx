@@ -19,8 +19,8 @@ export const Main = () => {
       </div>
 
       <Download />
-
       <Footer />
+
     </Container>
   );
 };

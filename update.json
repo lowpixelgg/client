@@ -1,0 +1,9 @@
+{
+  "master_entrypoint": "http://127.0.0.1:4096/v1/launcher/updates/after/",
+  "content": "./content",
+  "stable": {
+    "version": "1.7.2",
+    "sha1": "145279990fe443149777e72c5f6d740b69eb304b",
+    "release": "2020-07-30T18:26:02.648Z"
+  }
+}

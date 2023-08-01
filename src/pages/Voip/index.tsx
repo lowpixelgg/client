@@ -33,7 +33,8 @@ import { StreamSplit } from "./modules/StreamSplit";
 import PlayAudioStream from "./MediaStream";
 import chalk from "chalk";
 
-import usePeer from "./modules/PeerConnection";
+import { usePeer } from "./modules/PeerConnection";
+import useRemoteStreams from "./hooks/useRemoteConnection";
 // import AudioManager from "@/components/Voip/three";
 
 const MuteSound = new Audio(muteSoundFile);
@@ -47,6 +48,7 @@ const UserIcon = L.icon({
   iconSize: [20, 20],
 });
 
+
 interface onRangePlayer {
   id: string;
   volume: number;
@@ -57,9 +59,10 @@ interface onRangePlayer {
   posY: number;
   posZ: number;
   angle: number;
-  context?: StreamSplit;
-  stream?: MediaStream;
+  context: StreamSplit;
+  stream: MediaStream;
 }
+
 
 interface HeartBeat {
   x: number;
@@ -71,8 +74,13 @@ interface HeartBeat {
 export const Voip = () => {
   const { user } = useAccount();
   const [userPosition, setUserPosition] = useState({ x: 0, y: 0, z: 0 });
-  const [ streams, setStreams ] = useState<onRangePlayer[]>([]);
-  const [myPeer] = usePeer(user._id, streams, setStreams);
+  const [
+    remoteStreams,
+    addRemoteStream,
+    removeRemoteStream,
+    getRemoteStream,
+  ] = useRemoteStreams();
+  const [myPeer] = usePeer(user._id, addRemoteStream, removeRemoteStream);
   const socket = useContext(SocketContext) as Socket;
 
   const [voiceStatus, setVoiceStatus] = useState({
@@ -95,48 +103,44 @@ export const Voip = () => {
     }
   };
 
-
-  
   const getAudioStream = () => {
     return navigator.mediaDevices.getUserMedia({ audio: true });
   };
 
-
-  const handleCallPlayer = async (player: any) => {
+  const handleCallEveryone = async (peerId: string) => {
     if (myPeer) {
-      const exists = streams.some((stream) => stream.id === player.id);
-      
-      if (!exists) {
-        const call: MediaConnection = myPeer.call(
-          player.id,
-          await getAudioStream()
+      let call = myPeer.call(peerId, await getAudioStream());
+
+      call.on("stream", (remoteStream) => {
+        console.log(
+          `${chalk.cyan("[PEER]:")} Connected call call to ${call.peer}`
         );
 
-        if (call) {
-          streams.push(player);
+        addRemoteStream(remoteStream, call.peer);
+      });
 
-          console.log(`${chalk.cyan("[PEER]:")} Requested call to: ` + player.id);
-          const index = streams.findIndex(s => s.id === player.id);
+      call.on("close", () => {
+        console.log(
+          `${chalk.cyan("[PEER]:")} Closed call call wtih ${call.peer}`
+        );
 
-          
-          call.on('stream', (stream: MediaStream) => {
+        removeRemoteStream(call.peer);
+        call.close();
+      });
 
-            const newState = [...streams]
-            newState[index].stream = stream
-            newState[index].context = new StreamSplit(stream)
+      call.on("error", (error) => {
+        console.log(
+          `${chalk.cyan("[PEER]:")} Error in call with ${call.peer}`,
+          error
+        );
 
-            setStreams(newState)
-
-            console.log(`${chalk.cyan("[PEER]:")} Created call with: ` + player.id);
-          });
-        }
-      } else {
-        return streams.findIndex(s => s.id === player.id);
-      }
+        removeRemoteStream(call.peer);
+        call.close();
+      });
     }
   };
 
-  useEffect(() => {    
+  useEffect(() => {
     socket.on("onClientHeartBeat", (data: HeartBeat) => {
       const { x, y, z, onRangePlayers } = data;
 
@@ -151,17 +155,15 @@ export const Voip = () => {
           posY,
           posZ,
           volume,
-        } = (player[1] as unknown) as onRangePlayer;
-        const call = await handleCallPlayer(
-          (player[1]) as onRangePlayer
-        ) as unknown as onRangePlayer;
+        } = player[1];
+         const remote  = getRemoteStream(id);
 
-        
-        if (call && call.context) {
-          call.context.setPlayerPosition(x, y, z);          
-          call.context.setAudioPosition(posX, posY, posZ);
-          call.context.setPannerGain(muted);
-        }
+         if (!remote) {
+          await handleCallEveryone(id);
+         } else {
+          remote.context.setPlayerPosition(x, y, z);
+          remote.context.setAudioPosition(posX, posY, posZ);
+         }
       });
     });
   }, [myPeer]);
@@ -173,8 +175,6 @@ export const Voip = () => {
         <SideNav />
         <Footer />
 
-
-
         <div className="voiceControls">
           <Avatar size={40} />
 
@@ -184,19 +184,19 @@ export const Voip = () => {
           </div>
 
           <button
-            onClick={() => {
-              handleCallPlayer({
-                id: "e8718e5b-53a4-43b9-b719-7603bf81ded2",
-                angle: 0,
-                distance: 0,
-                effect: 0,
-                muted: 0,
-                posX: 0,
-                posY:0,
-                posZ: 0,
-                volume: 0,
-              });
-            }}
+            // onClick={() => {
+            //   handleCallPlayer({
+            //     id: "e8718e5b-53a4-43b9-b719-7603bf81ded2",
+            //     angle: 0,
+            //     distance: 0,
+            //     effect: 0,
+            //     muted: 0,
+            //     posX: 0,
+            //     posY:0,
+            //     posZ: 0,
+            //     volume: 0,
+            //   });
+            // }}
             style={{ width: 24, margin: "0 -2px" }}
           >
             {voiceStatus.micOn ? (
@@ -206,7 +206,7 @@ export const Voip = () => {
             )}
           </button>
 
-          <button onClick={() => {console.log(streams[0].stream)}}>
+          <button>
             {voiceStatus.audioOn ? (
               <MdHeadphones size={24} />
             ) : (
@@ -221,8 +221,7 @@ export const Voip = () => {
 
         <Map userPosition={userPosition} />
 
-        
-        {streams.map((s, i) => <PlayAudioStream stream={s.stream} target={s.id} key={i} />)}
+        {remoteStreams.map((s, i) => <PlayAudioStream stream={s.stream} target={s.peerId} key={i} />)}
       </Container>
     </>
   );

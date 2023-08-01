@@ -43,7 +43,6 @@ export class StreamSplit {
       this.gain.gain.value = value;
     }
   }
-
   
   public setPlayerPosition (x: number, y: number, z: number) {
     if (this.panner) {

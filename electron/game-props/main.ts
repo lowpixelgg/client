@@ -2,7 +2,8 @@ import rpc from "discord-rpc"
 import { RichPrecense } from "./external/rpc";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import { app, BrowserWindow, shell, ipcMain } from "electron";
+import { app, BrowserWindow, shell, ipcMain, ipcRenderer } from "electron";
+import Updater from "./updater";
 
 export interface StreamPlayer {
   id: string,
@@ -24,13 +25,15 @@ class GameProps {
   game: GamePlayer;
   rpc: RichPrecense;
   win: any;
-  
+  updater: Updater
   
   constructor (win, rpc: RichPrecense) {
     this.win = win;
-    
+
     const httpServer = createServer();
     this.io = new Server(httpServer, {});
+    this.updater = new Updater(this.io)
+    
     this.rpc = rpc;
     this.events();
     this.game = {
@@ -38,6 +41,8 @@ class GameProps {
       coords: { x: 0, y: 0, z: 0 },
       streamInPlayers: []
     }
+
+    this.win.openDevTools()
   }
   
   public async getUserToken () {
@@ -62,18 +67,32 @@ class GameProps {
       
       socket.on('onClientHeartBeat', async (data) => {
         data = JSON.parse(data)[0];
-      
         this.io.to('frontend').emit('onClientHeartBeat', data)
       });
-      
-      
-      // socket.on('rp_voip:onVoipAddPlayer', async (peer) => {
-      //   this.win.webContents.send("onServerCallPeer", peer);
-      // });
-      
-      // socket.on("rp_voip:onVoipRemovePlayer", async (peer) => {
-      //   this.win.webContents.send("onServerDisconectPeer", peer);
-      // })
+
+
+      socket.on('checkForUpdates', async (cb) => {
+        if (true) {
+          await this.updater.checkForUpdates()
+
+        } else {
+        }
+      })
+
+      socket.on('ClientNeedsDownloadContent', () => {
+
+        this.updater.get.push({
+          dir: './content/',
+          rm: [],
+          sha1: 'sashagray',
+          url: 'https://storage.googleapis.com/rocketmta/gamesa.zip'
+        })
+      });
+
+
+      socket.on('ClientNeedsDownloadUpdates', () => {
+
+      })
     });
   }
 }

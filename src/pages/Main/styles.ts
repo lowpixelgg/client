@@ -10,7 +10,7 @@ export const Container = styled.div`
   padding: 12px 24px;
   overflow-y: auto;
   position: relative;
-
+  
   @media screen and (max-height: 480px) {
     justify-content: flex-start;
   }
@@ -115,7 +115,7 @@ export const Container = styled.div`
   }
 
   .downloadBar {
-    margin-top: 16px;
+    margin-top: 4px;
     flex-grow: 1;
     display: flex;
     flex-direction: column;
@@ -172,8 +172,8 @@ export const Container = styled.div`
     min-width: 120px;
 
     .box {
-      height: 36px;
-      border-radius: 8px;
+      height: 45px;
+      border-radius:6px;
     }
 
     button {
@@ -187,17 +187,21 @@ export const Container = styled.div`
     }
   }
 
+  #frame {
+    border-radius: 5px;
+  }
+
   #footer {
+    height: 100px;
     margin-left: -16px;
+    margin-top: -10px;
     position: static;
 
     a {
       padding: 0 8px;
     }
 
-    @media screen and (max-height: 560px) {
-      margin-top: -8px;
-    }
+
   }
 
   @media screen and (max-width: 768px) {
