@@ -192,16 +192,12 @@ export const Container = styled.div`
   }
 
   #footer {
-    height: 100px;
     margin-left: -16px;
-    margin-top: -10px;
     position: static;
 
     a {
       padding: 0 8px;
     }
-
-
   }
 
   @media screen and (max-width: 768px) {

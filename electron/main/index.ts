@@ -24,7 +24,6 @@ if (!app.requestSingleInstanceLock()) {
 }
 
 let win: BrowserWindow | null = null;
-// Here, you can also use other preload
 const preload = join(__dirname, "../preload/index.js");
 const url = process.env.VITE_DEV_SERVER_URL;
 const indexHtml = join(process.env.DIST, "index.html");
@@ -46,16 +45,13 @@ async function createWindow() {
     webPreferences: { 
       preload,
       devTools: true,
-      webgl: true,
-      allowRunningInsecureContent: true,
-      experimentalFeatures: true,
       nodeIntegration: true,
       contextIsolation: false,
     },
   });
 
   game = new GameProps(win, rpc).io;
-
+  game.listen(3030);
 
   if (app.isPackaged) {
     win.loadFile(indexHtml);
@@ -76,7 +72,7 @@ async function createWindow() {
 
 
 
-  game.listen(3030);
+  
   // rpc.request("Explorando o cliente")
 }
 

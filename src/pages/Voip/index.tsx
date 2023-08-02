@@ -1,11 +1,8 @@
-import { Footer } from "@/components/Footer";
 import { Container } from "./styles";
 import { SideNav } from "@/components/SideNav";
 import { TopStatus } from "../Main/TopStatus";
 import RocketMap from "@/assets/FullMap.png";
 import UIcon from "@/assets/playerMapIcon.png";
-import * as THREE from "three";
-// import PIcon from "@/assets/images/avatar1.png";
 
 import {
   ImageOverlay,
@@ -16,26 +13,19 @@ import {
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import React, { useContext, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { Avatar } from "@/components/Avatar";
 import { FaMicrophone, FaMicrophoneSlash } from "react-icons/fa";
 import { MdHeadphones, MdHeadsetOff } from "react-icons/md";
 import { BsGearFill } from "react-icons/bs";
 import useAccount from "@/services/hooks/useAccount";
+
 import muteSoundFile from "@/assets/sounds/muteSound.mp3";
 import unmuteSoundFile from "@/assets/sounds/unmuteSound.mp3";
-import { Socket } from "socket.io";
 import { SocketContext } from "@/contexts/socket";
-import { ipcRenderer } from "electron";
-import { StreamPlayer, GamePlayer } from "../../../electron/game-props/main";
-import { MediaConnection } from "peerjs";
-import { StreamSplit } from "./modules/StreamSplit";
-import PlayAudioStream from "./MediaStream";
-import chalk from "chalk";
-
-import { usePeer } from "./modules/PeerConnection";
-import useRemoteStreams from "./hooks/useRemoteConnection";
-// import AudioManager from "@/components/Voip/three";
+import usePeer from "@/hooks/usePeer";
+import useRemoteStreams from "@/hooks/useRemoteStream";
+import PlayAudioStream from "@/hooks/useMediaStream";
 
 const MuteSound = new Audio(muteSoundFile);
 const UnmuteSound = new Audio(unmuteSoundFile);
@@ -49,44 +39,51 @@ const UserIcon = L.icon({
 });
 
 
-interface onRangePlayer {
-  id: string;
-  volume: number;
-  effect: string;
-  distance: number;
-  muted: number;
-  posX: number;
-  posY: number;
-  posZ: number;
-  angle: number;
-  context: StreamSplit;
-  stream: MediaStream;
-}
-
-
-interface HeartBeat {
-  x: number;
-  y: number;
-  z: number;
-  onRangePlayers: onRangePlayer[];
-}
 
 export const Voip = () => {
   const { user } = useAccount();
-  const [userPosition, setUserPosition] = useState({ x: 0, y: 0, z: 0 });
-  const [
-    remoteStreams,
-    addRemoteStream,
-    removeRemoteStream,
-    getRemoteStream,
-  ] = useRemoteStreams();
-  const [myPeer] = usePeer(user._id, addRemoteStream, removeRemoteStream);
-  const socket = useContext(SocketContext) as Socket;
+  const [ remoteStreams, addRemoteStream, removeRemoteStream, getRemoteStream ] = useRemoteStreams()
+  const [ myPeer ] = usePeer(user._id, addRemoteStream, removeRemoteStream);
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
     audioOn: true,
   });
+
+
+  const localStream = () => navigator.mediaDevices.getUserMedia({ audio: true })
+
+
+  const handleCallEveryone = async (id: string) => {
+    if (getRemoteStream(id)) {
+      return console.log('Stream already exists');
+    }
+
+    if (myPeer) {
+      let call = myPeer.call(id, await localStream());
+
+      call.on('stream', (stream) => {
+        addRemoteStream(stream, call.peer);
+
+        console.log('connected to ' + call.peer);
+      });
+
+
+      call.on('close', () => {
+        console.log('call closed  with: ' + call.peer);
+        removeRemoteStream(call.peer);
+        call.close();
+      });
+
+
+      call.on('error', (error) => {
+        console.log(error);
+        removeRemoteStream(call.peer);
+        call.close();
+      });
+    }
+  }
+
 
   const handleVoiceAction = (action: string) => {
     if (voiceStatus.micOn || voiceStatus.audioOn) {
@@ -103,186 +100,141 @@ export const Voip = () => {
     }
   };
 
-  const getAudioStream = () => {
-    return navigator.mediaDevices.getUserMedia({ audio: true });
-  };
-
-  const handleCallEveryone = async (peerId: string) => {
-    if (myPeer) {
-      let call = myPeer.call(peerId, await getAudioStream());
-
-      call.on("stream", (remoteStream) => {
-        console.log(
-          `${chalk.cyan("[PEER]:")} Connected call call to ${call.peer}`
-        );
-
-        addRemoteStream(remoteStream, call.peer);
-      });
-
-      call.on("close", () => {
-        console.log(
-          `${chalk.cyan("[PEER]:")} Closed call call wtih ${call.peer}`
-        );
-
-        removeRemoteStream(call.peer);
-        call.close();
-      });
-
-      call.on("error", (error) => {
-        console.log(
-          `${chalk.cyan("[PEER]:")} Error in call with ${call.peer}`,
-          error
-        );
-
-        removeRemoteStream(call.peer);
-        call.close();
-      });
-    }
-  };
-
-
-  const test = async (id: string) => {
-    const remote  = getRemoteStream(id);
-
-    if (!remote) {
-      console.log("Remote stream not found");
-
-      await handleCallEveryone(id);
-    } else {
-      console.log("Remote stream found: " + remote);
-    }
-  }
-
-  // socket.on("onClientHeartBeat", (data: HeartBeat) => {
-  //   const { x, y, z, onRangePlayers } = data;
-    
-  //   Object.entries(onRangePlayers).map(async (player) => {
-  //     const {
-  //       angle,
-  //       distance,
-  //       effect,
-  //       id,
-  //       muted,
-  //       posX,
-  //       posY,
-  //       posZ,
-  //       volume,
-  //     } = player[1];
-  //      const remote  = getRemoteStream(id);
-  //     console.log(remote, Date.now())
-
-  //     //  if (!remote) {
-  //     //   await handleCallEveryone(id);
-  //     //  } else {
-  //     //   remote.context.setPlayerPosition(x, y, z);
-  //     //   remote.context.setAudioPosition(posX, posY, posZ);
-  //     //  }
-  //   });
-  // });
-
-  // useEffect(() => {
-
-  // }, [myPeer]);
-
   return (
-    <>
-      <Container>
-        <TopStatus />
-        <SideNav />
-        <Footer />
+    <Container>
+      <TopStatus />
 
-        <div className="voiceControls">
-          <Avatar size={40} />
+      <SideNav />
 
-          <div className="username">
-            <strong>{user.username}</strong>
-            <p>{user.username}</p>
-          </div>
+      <div className="voiceControls">
+        <Avatar size={40} />
 
-          <button
-            onClick={() => {
-              test('e8718e5b-53a4-43b9-b719-7603bf81ded2')
-            }}
-            style={{ width: 24, margin: "0 -2px" }}
-          >
-            {voiceStatus.micOn ? (
-              <FaMicrophone size={18} />
-            ) : (
-              <FaMicrophoneSlash size={24} />
-            )}
-          </button>
-
-          <button>
-            {voiceStatus.audioOn ? (
-              <MdHeadphones size={24} />
-            ) : (
-              <MdHeadsetOff size={24} />
-            )}
-          </button>
-
-          <button>
-            <BsGearFill size={20} />
-          </button>
+        <div className="username">
+          <strong>{user.username}</strong>
+          <p>{user.username}</p>
         </div>
 
-        <Map userPosition={userPosition} />
+        <button
+          onClick={() => handleCallEveryone('de7a65b6-9cd4-4092-b748-f3bab9e0400d')}
+          style={{ width: 24, margin: "0 -2px" }}
+        >
+          {voiceStatus.micOn ? (
+            <FaMicrophone size={18} />
+          ) : (
+            <FaMicrophoneSlash size={24} />
+          )}
+        </button>
 
-        {remoteStreams.map((s, i) => <PlayAudioStream stream={s.stream} target={s.peerId} key={i} />)}
-      </Container>
-    </>
+        <button onClick={() => handleVoiceAction("audio")}>
+          {voiceStatus.audioOn ? (
+            <MdHeadphones size={24} />
+          ) : (
+            <MdHeadsetOff size={24} />
+          )}
+        </button>
+
+        <button>
+          <BsGearFill size={20} />
+        </button>
+      </div>
+
+      <Map />
+
+      {remoteStreams.map(r => <PlayAudioStream stream={r.stream}  target={r.peerId} key={r.peerId} />)}
+    </Container>
   );
 };
 
-type MapProps = {
-  userPosition: {
-    x: number;
-    y: number;
-  };
-};
+const Map = () => {
+  const [userPosition, setUserPosition] = useState({
+    posX: 161,
+    posY: 98.5,
+  });
 
-const Map = ({ userPosition }: MapProps) => {
   return (
     <MapContainer
       zoom={5}
       zoomControl={false}
       scrollWheelZoom={false}
-      center={[userPosition.x, userPosition.y]}
+      center={[userPosition.posY, userPosition.posX]}
       style={{ height: "100%", width: "100%", zIndex: 1, outline: "none" }}
       dragging={false}
       bounds={[
         [0, 0],
-        [480, 480],
+        [240, 240],
       ]}
       maxBounds={[
         [0, 0],
-        [480, 480],
+        [240, 240],
       ]}
       maxBoundsViscosity={1}
       crs={L.CRS.Simple}
       doubleClickZoom={false}
     >
-      <ImageMap userPosition={userPosition} />
+      <ImageMap userPosition={userPosition} setUserPosition={setUserPosition} />
     </MapContainer>
   );
 };
 
-const ImageMap = ({ userPosition }: MapProps) => {
+type ImageMapProps = {
+  userPosition: {
+    posX: number;
+    posY: number;
+  };
+  setUserPosition: Dispatch<
+    SetStateAction<{
+      posX: number;
+      posY: number;
+    }>
+  >;
+};
+
+const ImageMap = ({ userPosition, setUserPosition }: ImageMapProps) => {
   const [playersList, setPlayerList] = useState([
     {
       id: 1,
-      x: 160,
-      y: 99.5,
+      posX: 160,
+      posY: 99.5,
       isTalking: false,
       name: "lontrinha",
       avatar:
         "https://media.discordapp.net/attachments/916053830272155652/1055839901184163842/FkaPYQdXEAMlFD8.png?width=450&height=437",
     },
+    {
+      id: 2,
+      posX: 160,
+      posY: 97.5,
+      isTalking: true,
+      name: "Bozo",
+      avatar:
+        "https://i.pinimg.com/564x/de/30/d6/de30d6b0e6e02510b7f7d74b56cfeb11.jpg",
+    },
+    {
+      id: 3,
+      posX: 162,
+      posY: 98,
+      isTalking: false,
+      name: "Konima",
+      avatar:
+        "https://i.pinimg.com/564x/e0/73/4c/e0734c4ed53a4dacde032be644c7abc7.jpg",
+    },
+    {
+      id: 4,
+      posX: 162.4,
+      posY: 101.2,
+      isTalking: true,
+      name: "flashii",
+      avatar:
+        "https://i.pinimg.com/564x/84/56/7b/84567be65df5b8663af8bffd49542e01.jpg",
+    },
   ]);
 
   const map = useMap();
 
+
+
   useEffect(() => {
-    map.setView([userPosition.x, userPosition.y]);
+    map.setView([userPosition.posY, userPosition.posX]);
   }, [userPosition]);
 
   return (
@@ -292,14 +244,14 @@ const ImageMap = ({ userPosition }: MapProps) => {
         zIndex={1}
         bounds={[
           [0, 0],
-          [480, 480],
+          [240, 240],
         ]}
         opacity={1}
       />
 
       <Marker
         interactive={false}
-        position={[userPosition.x, userPosition.y]}
+        position={[userPosition.posY, userPosition.posX]}
         icon={UserIcon}
       />
 
@@ -307,7 +259,7 @@ const ImageMap = ({ userPosition }: MapProps) => {
         return (
           <Marker
             key={item.id}
-            position={[item.x, item.y]}
+            position={[item.posY, item.posX]}
             icon={L.icon({
               iconUrl: item.avatar,
               iconSize: [36, 36],

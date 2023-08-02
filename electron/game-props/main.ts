@@ -63,6 +63,16 @@ class GameProps {
       socket.on("onClientPlayerSpawn", async () => {
         this.win.webContents.send("onPlayerSpawn", true);
       });
+
+
+      socket.on("onClientPlayerJoin", (id) => {
+        this.win.webContents.send("onPlayerJoin", id);
+      });
+
+
+      socket.on("onClientPlayerLeave", (id) => {
+        this.win.webContents.send("onPlayerDisconnect", id);
+      })
       
       
       socket.on('onClientHeartBeat', async (data) => {

@@ -1,14 +1,10 @@
-import AudioManager from '@/components/Voip/three';
-import Peer, { CallOption, MediaConnection } from 'peerjs';
-import React, { useState, useEffect } from 'react';
+import Peer from 'peerjs';
+import freeice from "freeice"
+import  { useState, useEffect } from 'react';
 
-function getAudioStream() {
-  return navigator.mediaDevices.getUserMedia({ audio: true });
-}
 
-export default function usePeer(peerId: string, scene: AudioManager | undefined) {
+export default function usePeer(peerId: string, addRemoteStream: (stream: MediaStream, peerId: string) => void, removeRemoteStream: (peerId: string) => void) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
-  const [ myPeerID, setMyPeerID ] = useState(null);
   
 
   const cleanUp = () => {
@@ -17,7 +13,6 @@ export default function usePeer(peerId: string, scene: AudioManager | undefined)
         myPeer.destroy();
     }
     setPeer(null);
-    setMyPeerID(null);
   }
   
  
@@ -26,7 +21,8 @@ export default function usePeer(peerId: string, scene: AudioManager | undefined)
       const Config = {
         host: "agenciaab.com.br",
         port: 9000,
-        path: '/peerjs'
+        path: '/peerjs',
+        iceServers: freeice()
       };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
@@ -46,21 +42,45 @@ export default function usePeer(peerId: string, scene: AudioManager | undefined)
       })
 
       peer.on('call', async (call) => {
-        
-        call.answer(await getAudioStream());
-        
+        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+          call.answer(stream);
+          
+          call.on('stream', (remoteStream) => {
+            addRemoteStream(remoteStream, call.peer);
+          });
 
-        // call.on("stream", (stream) => {
-        //   if (scene) {
-        //     if (!scene.isObjectExistent(call.peer)) {
-        //       scene.addStream(call.peer, stream)
-        //     }
-        //   }
-        // })
+          call.on('close', () => {
+            removeRemoteStream(call.peer);
+          });
 
+
+          call.on('error', (error) => {
+            console.log(error);
+
+            removeRemoteStream(call.peer)
+          });
+        });
+
+        
+        peer.on('disconnected', () => {
+          console.log('[PEER]: Peer disconnected');
+          cleanUp();
+        })
+
+        peer.on('close', () => {
+          console.log('[PEER]: Peer closed');
+          cleanUp();
+        })
+
+
+        peer.on('error', (error) => {
+          console.log(error);
+          cleanUp();
+        })
+        
         console.log('[PEER]: Receiving Call from ' + call.peer)
       });
-    });
+    }).catch(err => console.log(err));
 
     return () => {
       cleanUp();
@@ -68,5 +88,5 @@ export default function usePeer(peerId: string, scene: AudioManager | undefined)
   }, [])
 
 
-  return [ myPeer, myPeerID ];
+  return [ myPeer ];
 }

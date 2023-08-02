@@ -1,13 +1,9 @@
-import React, { useState, useCallback } from 'react';
-import { StreamSplit } from '../modules/StreamSplit';
+import { useState, useCallback } from 'react';
 
 interface RemoteStream {
   peerId: string;
   stream: MediaStream;
-  context: StreamSplit;
 }
-
-
 
 export default function useRemoteStreams(): [
   RemoteStream[],
@@ -22,7 +18,7 @@ export default function useRemoteStreams(): [
       setRemoteStreams(remoteStreams => {
         if (!stream || !peerId) return [...remoteStreams];
         if (remoteStreams.some(remote => remote.peerId === peerId)) return [...remoteStreams];
-        return [...remoteStreams, { peerId: peerId, stream: stream, context: new StreamSplit(stream) }];
+        return [...remoteStreams, { peerId: peerId, stream: stream }];
       });
     },
     [],
@@ -51,5 +47,5 @@ export default function useRemoteStreams(): [
   );
   
 
-  return [remoteStreams, addRemoteStream, removeRemoteStream, getRemoteStream];
+  return [ remoteStreams, addRemoteStream, removeRemoteStream, getRemoteStream ];
 }

@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { TopStatus } from "./TopStatus";
 import { Post } from "./Post";
 import { SideNav } from "@/components/SideNav";
+import { Download } from "./Download";
 
 export const Main = () => {
   return (
@@ -11,11 +12,10 @@ export const Main = () => {
 
       <div className="main">
         <Post />
-
         <SideNav />
       </div>
 
-      {/* <Download /> */}
+      <Download />
       <Footer />
 
     </Container>
