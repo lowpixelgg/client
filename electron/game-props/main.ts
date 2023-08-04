@@ -83,14 +83,17 @@ class GameProps {
 
       socket.on('checkForUpdates', async (cb) => {
         if (true) {
-          await this.updater.checkForUpdates()
-
+          const needsUpdate = await this.updater.checkForUpdates()
+          
+          if (false) {
+          } else {
+            return cb('ClientReadyToPlay')
+          }
         } else {
         }
       })
 
       socket.on('ClientNeedsDownloadContent', () => {
-
         this.updater.get.push({
           dir: './content/',
           rm: [],

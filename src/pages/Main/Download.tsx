@@ -23,9 +23,8 @@ export const Download = () => {
 
   useEffect(() => {
     socket.emit("checkForUpdates", (state: string) => {
-      if (state == "ClientNeedsDownloadContent") {
-        setActionButton(state);
-      }
+      setActionButton(state);
+      console.log(state)
     });
 
     socket.on("onUpdaterProgress", (data: Download) => {
@@ -79,8 +78,8 @@ export const Download = () => {
         >
           <span>
             {action == 'ClientNeedsDownloadContent' && langObj.Main[3]}
-            {action == 'ClientNeedsDownloadUpdates' && langObj.Main[6]}
-            {action == 'ClientReadyToPlay' && langObj.Main[7]}
+            {action == 'ClientNeedsDownloadUpdates' && langObj.Main[5]}
+            {action == 'ClientReadyToPlay' && langObj.Main[6]}
           </span>
           {action === langObj.Main[6] ? (
             <FaPlay size={16} color="#f8f9fa" />

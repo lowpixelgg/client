@@ -26,6 +26,7 @@ import { SocketContext } from "@/contexts/socket";
 import usePeer from "@/hooks/usePeer";
 import useRemoteStreams from "@/hooks/useRemoteStream";
 import PlayAudioStream from "@/hooks/useMediaStream";
+import zIndex from "@mui/material/styles/zIndex";
 
 const MuteSound = new Audio(muteSoundFile);
 const UnmuteSound = new Audio(unmuteSoundFile);
@@ -44,6 +45,7 @@ export const Voip = () => {
   const { user } = useAccount();
   const [ remoteStreams, addRemoteStream, removeRemoteStream, getRemoteStream ] = useRemoteStreams()
   const [ myPeer ] = usePeer(user._id, addRemoteStream, removeRemoteStream);
+  const [audio, setAudio ] = useState<MediaStream>()
 
   const [voiceStatus, setVoiceStatus] = useState({
     micOn: true,
@@ -62,9 +64,8 @@ export const Voip = () => {
     if (myPeer) {
       let call = myPeer.call(id, await localStream());
 
-      call.on('stream', (stream) => {
+      call.on('stream', async (stream) => {
         addRemoteStream(stream, call.peer);
-
         console.log('connected to ' + call.peer);
       });
 
@@ -74,7 +75,6 @@ export const Voip = () => {
         removeRemoteStream(call.peer);
         call.close();
       });
-
 
       call.on('error', (error) => {
         console.log(error);
@@ -115,7 +115,7 @@ export const Voip = () => {
         </div>
 
         <button
-          onClick={() => handleCallEveryone('de7a65b6-9cd4-4092-b748-f3bab9e0400d')}
+          onClick={() => handleCallEveryone('e8718e5b-53a4-43b9-b719-7603bf81ded2')}
           style={{ width: 24, margin: "0 -2px" }}
         >
           {voiceStatus.micOn ? (
@@ -139,8 +139,10 @@ export const Voip = () => {
       </div>
 
       <Map />
+      
 
-      {remoteStreams.map(r => <PlayAudioStream stream={r.stream}  target={r.peerId} key={r.peerId} />)}
+
+      {remoteStreams.map(r => (<PlayAudioStream stream={r.stream}  target={r.peerId} key={r.peerId} />))}
     </Container>
   );
 };

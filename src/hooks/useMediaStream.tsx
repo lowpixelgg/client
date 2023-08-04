@@ -16,7 +16,7 @@ const PlayAudioStream: React.FC<Props> = ({ stream, target }) => {
       videoRef.current.setAttribute('data-peer', target);
       videoRef.current.onloadedmetadata = () => videoRef.current?.play();
       
-      console.log("play")
+      console.log("play");
     }
   }, [stream, target]);
 

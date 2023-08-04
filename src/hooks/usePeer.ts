@@ -2,6 +2,7 @@ import Peer from 'peerjs';
 import freeice from "freeice"
 import  { useState, useEffect } from 'react';
 
+const localStream = () => navigator.mediaDevices.getUserMedia({ audio: true })
 
 export default function usePeer(peerId: string, addRemoteStream: (stream: MediaStream, peerId: string) => void, removeRemoteStream: (peerId: string) => void) {
   const [ myPeer, setPeer ] = useState<Peer | null>(null);
@@ -22,7 +23,11 @@ export default function usePeer(peerId: string, addRemoteStream: (stream: MediaS
         host: "agenciaab.com.br",
         port: 9000,
         path: '/peerjs',
-        iceServers: freeice()
+        iceServers: [
+            { urls: 'stun:stun.l.google.com:19302'}, 
+            { urls: 'stun:stun1.l.google.com:19302'}, 
+            { urls: 'stun:stun2.l.google.com:19302'}, 
+        ]
       };
 
       const peer: Peer = myPeer ? myPeer : new Peer(peerId, Config)
@@ -42,23 +47,22 @@ export default function usePeer(peerId: string, addRemoteStream: (stream: MediaS
       })
 
       peer.on('call', async (call) => {
-        navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
-          call.answer(stream);
+
+        call.answer(await localStream());
           
-          call.on('stream', (remoteStream) => {
-            addRemoteStream(remoteStream, call.peer);
-          });
+        call.on('stream', (remoteStream) => {
+          addRemoteStream(remoteStream, call.peer);
+        });
 
-          call.on('close', () => {
-            removeRemoteStream(call.peer);
-          });
+        call.on('close', () => {
+          removeRemoteStream(call.peer);
+        });
 
 
-          call.on('error', (error) => {
-            console.log(error);
+        call.on('error', (error) => {
+          console.log(error);
 
-            removeRemoteStream(call.peer)
-          });
+          removeRemoteStream(call.peer)
         });
 
         

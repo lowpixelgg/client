@@ -66,16 +66,23 @@ export default class Updater {
 
 
   public async checkForUpdates () {
+    let hasUpdate = false as boolean;
+
     const data = await fetch(this.json.get('master_entrypoint') + this.json.get('stable').release)
     
-    data.json().then((response: Response) => {
+    await data.json().then((response: Response) => {
       if (response.body.length > 0) {
-        this.upcoming = response.body
-        return true
+        this.upcoming = response.body;
+          
+
+        hasUpdate = true;
       } else {
-        return false
+        hasUpdate = false;
       }
     })
+
+    
+    return hasUpdate
   }
   
   
