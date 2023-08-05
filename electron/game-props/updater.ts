@@ -6,7 +6,7 @@ import progress from "request-progress";
 import Queue from "better-queue";
 import zip from "zip-lib";
 import fetch from 'node-fetch'
-import GameProps from "./main";
+import path from "path";
 
 interface  get {
   url: string;
@@ -56,13 +56,21 @@ export default class Updater {
   
   
   public async hasGameContent () {
-    if (fs.existsSync(this.json.get('content'))) {
+    const defaultInstalDir = this.json.get('default_install_dir')
+    const customInstallDir = this.json.get('custom_install_dir')
+    
+    const instalLDir = customInstallDir ? 
+    path.join(customInstallDir, 'game_sa', this.json.get('ROCKET_KNOWN_GTA_FILE_NAME'))
+    : 
+    path.join(path.resolve(defaultInstalDir, 'game_sa', this.json.get('ROCKET_KNOWN_GTA_FILE_NAME')))
+
+
+    if (fs.existsSync(instalLDir)) {
       return true
     } else {
       return false
     }
   }
-
 
 
   public async checkForUpdates () {
@@ -71,7 +79,7 @@ export default class Updater {
     const data = await fetch(this.json.get('master_entrypoint') + this.json.get('stable').release)
     
     await data.json().then((response: Response) => {
-      if (response.body.length > 0) {
+      if (response.body && response.body.length > 0) {
         this.upcoming = response.body;
           
 
@@ -99,8 +107,8 @@ export default class Updater {
         string: `Extraindo arquivos.`
       })
       
-      await zip.extract('./temp/'+{sha1}+'.zip', './' + dir).then(() => {
-        fs.unlinkSync('./temp/'+{sha1}+'.zip');
+      await zip.extract(`./temp/${sha1}.zip`, dir).then(() => {
+        fs.unlinkSync(`./temp/${sha1}.zip`);
         
         
         if (rm.length > 0) {
@@ -108,13 +116,12 @@ export default class Updater {
             fs.unlinkSync('./' + del)
           }
         }
-        
       });
       
       
       return cb(null)
     })
-    .pipe(fs.createWriteStream('./temp/'+{sha1}+'.zip'));
+    .pipe(fs.createWriteStream(`./temp/${sha1}.zip`))
   })
   
 

@@ -50,7 +50,7 @@ async function createWindow() {
     },
   });
 
-  game = new GameProps(win, rpc).io;
+  game = new GameProps(win, rpc, app).io;
   game.listen(3030);
 
   if (app.isPackaged) {

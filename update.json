@@ -1,6 +1,9 @@
 {
-  "master_entrypoint": "http://127.0.0.1:4096/v1/launcher/updates/after/",
-  "content": "./content",
+  "master_entrypoint": "https://saturn-api.rocketmta.com/v1/launcher/updates/after/",
+  "default_install_dir": "content/",
+  "custom_install_dir": false,
+  "ROCKET_KNOWN_GTA_FILE_NAME": "GTAAnimManager.exe",
+  "ROCKET_KNOWN_MTA_FILE_NAME": "GTAAnimManager.exe",
   "stable": {
     "version": "1.7.2",
     "sha1": "145279990fe443149777e72c5f6d740b69eb304b",
