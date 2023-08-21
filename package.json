@@ -4,7 +4,7 @@
   "private": true,
   "version": "2.0.0",
   "description": "Rocket Client",
-  "author": "Vítor Ribeiro <buss.vitorsheik@gmail.com>",
+  "author": "rocketmta.com <buss.vitorsheik@gmail.com>",
   "license": "MIT",
   "main": "dist/electron/main/index.js",
   "scripts": {
@@ -28,6 +28,7 @@
     "fetch": "^1.1.0",
     "framer-motion": "^7.4.0",
     "http": "^0.0.1-security",
+    "is-admin": "^4.0.0",
     "leaflet": "^1.9.4",
     "localstorage-slim": "^2.4.0",
     "peerjs": "^1.4.7",

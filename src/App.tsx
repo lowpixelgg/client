@@ -3,7 +3,6 @@ import { GlobalStyles } from "./global/GlobalStyles";
 import { Framebar } from "./components/Framebar";
 import Router from "./routes";
 import { LanguageProvider } from "./global/LanguageContext";
-import { Voip } from "./pages/Voip";
 import { ipcRenderer } from "electron";
 
 const App = () => {

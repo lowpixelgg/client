@@ -44,9 +44,6 @@ export const Mta = () => {
 
       <p className="tip">
         {langObj.MTA[5]}{" "}
-        <Link to="/voip" style={{ color: "cyan" }}>
-          Voip
-        </Link>
       </p>
 
       <div className="install">

@@ -7,19 +7,9 @@ import { promisified } from "regedit";
 import process from "child_process";
 import path from 'path'
 
-export interface StreamPlayer {
-  id: string;
-  coords: {
-    x: number;
-    y: number;
-    z: number;
-  };
-}
 
 export interface GamePlayer {
   location: string;
-  coords: { x: number; y: number; z: number };
-  streamInPlayers: StreamPlayer[];
 }
 
 class GameProps {
@@ -36,16 +26,24 @@ class GameProps {
     this.win = win;
     this.app = app;
 
+
     const httpServer = createServer();
     this.io = new Server(httpServer, {});
     this.updater = new Updater(this.io);
 
-    this.rpc = rpc;
+    
+    // rpc.create().then(() => {
+    //   this.rpc = rpc;
+    //   console.log("rpc, created connection");
+
+    //   rpc.request("Explorando o cliente")
+    // }).then((err: any) => {
+    // });
+
     this.events();
+    
     this.game = {
       location: "World",
-      coords: { x: 0, y: 0, z: 0 },
-      streamInPlayers: [],
     };
 
     this.win.openDevTools();
@@ -67,7 +65,7 @@ class GameProps {
 
   private events() {
     this.io.on("connection", (socket) => {
-      socket.on("onFrontendConnect", (id) => {
+      socket.on("onFrontendConnect", () => {
         socket.join("frontend");
       });
 
@@ -87,16 +85,13 @@ class GameProps {
         this.win.webContents.send("onPlayerDisconnect", id);
       });
 
-      socket.on("onClientHeartBeat", async (data) => {
-        data = JSON.parse(data)[0];
-        this.io.to("frontend").emit("onClientHeartBeat", data);
-      });
 
       socket.on("checkForUpdates", async (cb) => {
         if (await this.updater.hasGameContent()) {
-          const needsUpdate = await this.updater.checkForUpdates();
+          const needsUpdate = await this.updater.checkForUpdates(await this.getUserToken());
 
           if (needsUpdate) {
+            return cb("ClientNeedsDownloadUpdates");
           } else {
             return cb("ClientReadyToPlay");
           }
@@ -112,17 +107,20 @@ class GameProps {
           .push({
             dir: path.join(installDir),
             rm: [],
-            sha1: "sashagray",
-            url: "https://storage.googleapis.com/rocketmta/gamesa.zip",
+            sha1: "rocketclient-content",
+            url: "https://storage.googleapis.com/rocketmta/content.zip",
+            release: new Date().toISOString(),
+            version: "latest",
           })
           .on("finish", async () => {
+
             await promisified
-              .createKey(["HKLM\\SOFTWARE\\Rocket Client"])
+              .createKey(["HKLM\\SOFTWARE\\WOW6432Node\\Rocket Client"])
               .then(() => {
                 promisified.putValue({
-                  "HKLM\\SOFTWARE\\Rocket Client": {
+                  "HKLM\\SOFTWARE\\WOW6432Node\\Rocket Client": {
                     "GTA:SA Path": {
-                      value: path.join(path.resolve(installDir), 'game_sa', this.updater.json.get('ROCKET_KNOWN_GTA_FILE_NAME')),
+                      value: path.join(path.resolve(installDir), 'game_sa'),
                       type: "REG_SZ",
                     },
                   },
@@ -131,7 +129,17 @@ class GameProps {
           });
       });
 
-      socket.on("ClientNeedsDownloadUpdates", () => {});
+      socket.on("ClientNeedsDownloadUpdates", () => {
+        this.updater.upcoming.map((update) => {
+          this.updater.get.push({
+            url: update.download, 
+            dir: update.directory, 
+            rm: update.rm,
+            release: update.release,
+            version: update.version,
+          })
+        });
+      });
 
       socket.on('ClientReadyToPlay', () => {
         const installDir = this.customDirectory ? this.customDirectory : this.defaultDirectory

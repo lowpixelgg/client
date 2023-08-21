@@ -1,0 +1,37 @@
+{
+  "appId": "13",
+  "productName": "Rocket Client",
+  "copyright": "Copyright © 2023 ${author}",
+  "asar": false,
+  "directories": {
+    "output": "release/${version}",
+    "buildResources": "electron/resources"
+  },
+  "files": ["dist"],
+  "win": {
+    "requestedExecutionLevel": "requireAdministrator",
+    "signAndEditExecutable": true,
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      }
+    ],
+    "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": false,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "deleteAppDataOnUninstall": false
+  },
+  "mac": {
+    "target": ["dmg"],
+    "artifactName": "${productName}-Mac-${version}-Installer.${ext}"
+  },
+  "linux": {
+    "target": ["AppImage"],
+    "artifactName": "${productName}-Linux-${version}.${ext}"
+  }
+}

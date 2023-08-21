@@ -9,6 +9,7 @@ import { release } from "os";
 import { join } from "path";
 import { RichPrecense } from "../game-props/external/rpc"
 import GameProps from "../game-props/main";
+import isAdmin from "is-admin";
 
 const rpc = new RichPrecense();
 let game
@@ -50,6 +51,8 @@ async function createWindow() {
     },
   });
 
+
+  
   game = new GameProps(win, rpc, app).io;
   game.listen(3030);
 
@@ -70,10 +73,9 @@ async function createWindow() {
     return { action: "deny" };
   });
 
-
-
-  
-  // rpc.request("Explorando o cliente")
+  if (!await isAdmin()) {
+    win.close();
+  }
 }
 
 app.whenReady().then(createWindow);
@@ -108,6 +110,9 @@ app.on("second-instance", () => {
 
 app.on("activate", async () => {
   const allWindows = BrowserWindow.getAllWindows();
+  
+
+
   if (allWindows.length) {
     allWindows[0].focus();
   } else {

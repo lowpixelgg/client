@@ -13,6 +13,8 @@ interface  get {
   sha1: string;
   dir: string;
   rm: string[];
+  release: string;
+  version: string;
 }
 
 interface Download {
@@ -44,10 +46,37 @@ export default class Updater {
   json: JsonEditor
   io: Server
   upcoming: Update[] = []
+  customDirectory: string | false;
+  defaultDirectory: string;
   
   constructor (io: Server) {
-    this.json = editor('./update.json');
+    this.json = editor(path.join(path.resolve(), `update.json`));
+    const updateJsonFile = fs.existsSync(path.join(path.resolve(), `update.json`));
+
+    if (!updateJsonFile) {
+      this.json.empty();
+      this.json.set('master_entrypoint', 'https://saturn-api.rocketmta.com/v1/launcher/updates/after/');
+      this.json.set('default_install_dir', 'content/');
+      this.json.set('custom_install_dir', false);
+      this.json.set('ROCKET_KNOWN_GTA_FILE_NAME', 'GTAAnimManager.exe');
+      this.json.set('ROCKET_KNOWN_MTA_FILE_NAME', 'GTAAnimManager.exe');
+      this.json.set('stable.version', 'latest');
+      this.json.set('stable.sha1', '');
+      this.json.set('stable.release', new Date().toISOString());
+
+      this.json.save();      
+    }
+    
+    if (!fs.existsSync(path.join(path.resolve(), `temp`))) {
+      fs.mkdirSync(path.join(path.resolve(), `temp`));
+    }
+
     this.io = io;
+
+    
+
+    this.defaultDirectory = this.json.get('default_install_dir')
+    this.customDirectory = this.json.get('custom_install_dir')
   }
   
   public async checkInstallDir () {
@@ -73,16 +102,21 @@ export default class Updater {
   }
 
 
-  public async checkForUpdates () {
+  public async checkForUpdates (token: string) {
     let hasUpdate = false as boolean;
 
-    const data = await fetch(this.json.get('master_entrypoint') + this.json.get('stable').release)
+    const data = await fetch(this.json.get('master_entrypoint') + this.json.get('stable').release, {
+      headers: {
+        "x-access-token": token
+      }
+    })
     
-    await data.json().then((response: Response) => {
+    await data.json().then((response: any) => {
       if (response.body && response.body.length > 0) {
-        this.upcoming = response.body;
-          
-
+        response.body.map((update) => [
+          this.upcoming.push({...update.props})
+        ])
+        
         hasUpdate = true;
       } else {
         hasUpdate = false;
@@ -94,7 +128,7 @@ export default class Updater {
   }
   
   
-  get = new Queue(({url, dir, sha1, rm}: get, cb) => {
+  get = new Queue(({url, dir, sha1, rm, release, version}: get, cb) => {
     progress(request(url)).on('progress', (state: Download) => {
       this.io.to('frontend').emit('onUpdaterProgress', {
         percent: state.percent = state.percent * 100,
@@ -107,21 +141,19 @@ export default class Updater {
         string: `Extraindo arquivos.`
       })
       
-      await zip.extract(`./temp/${sha1}.zip`, dir).then(() => {
-        fs.unlinkSync(`./temp/${sha1}.zip`);
-        
-        
-        if (rm.length > 0) {
-          for (let del of rm) {
-            fs.unlinkSync('./' + del)
-          }
-        }
+ 
+      await zip.extract(path.join(path.resolve(), `temp/${sha1}.zip`), dir).then(() => {
+        fs.unlinkSync(path.join(path.resolve(), `temp/${sha1}.zip`));
       });
       
-      
+      console.log(this.json.get('stable.release'), release)
+      this.json.set('stable.release', release)
+      this.json.set('stable.version', version)
+      this.json.save()
+
       return cb(null)
     })
-    .pipe(fs.createWriteStream(`./temp/${sha1}.zip`))
+    .pipe(fs.createWriteStream(path.join(path.resolve(), `temp/${sha1}.zip`)))
   })
   
 

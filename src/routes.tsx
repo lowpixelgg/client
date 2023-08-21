@@ -9,16 +9,11 @@ import { Mta } from "./pages/Mta";
 import { SettingsLayout } from "./pages/Settings/Layout";
 import { Voice } from "./pages/Voice";
 import { AuthProvider } from "./global/AuthContext";
-import { Voip } from "./pages/Voip";
 import { ipcRenderer } from "electron";
 
 const Routing = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  ipcRenderer.on('onPlayerSpawn', () => {
-    return navigate('/voip');
-  });
 
   const locationArr = location.pathname?.split("/") ?? [];
   return (
@@ -41,8 +36,6 @@ const Routing = () => {
 
             <Route path="/settings/language" element={<Language />} />
           </Route>
-
-          <Route path="/voip" element={<Voip />} />
         </Routes>
       </AuthProvider>
     </AnimatePresence>
