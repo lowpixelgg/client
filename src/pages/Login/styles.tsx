@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import logo from "../../assets/logos/dreams.png";
+import union from "../../assets/Union.png"
+import rectangle from "../../assets/rectangle.png"
+import rectangleImg from "../../assets/rectangle_img.png"
 
 export const Container = styled.div`
   position: relative;
@@ -49,22 +52,29 @@ export const Container = styled.div`
     top: 289.41px; */
 
     & .rectangle_border {
+      width: 410px;
       position: absolute;
-
+      height: 200px;
+      background-image: url(${rectangle});
+      background-repeat: no-repeat;
       top: 80px;
       animation: floating 5s ease-in-out infinite alternate;
     }
 
     & .rectangle_image {
-      /* position: absolute; */
-      /* left: 542.32px;
-      top: 289.41px; */
+      width: 410px;
+      position: absolute;
+      height: 200px;
+      top: 110px;
+      background-image: url(${rectangleImg});
+      background-repeat: no-repeat;
     }
 
     & .rectangle_union {
-      /* position: absolute; */
-      /* left: 684.42px;
-      top: 154px; */
+      width: 120px;
+      height: 100px;
+      background-image: url(${union});
+      background-repeat: no-repeat;
       animation: floating 8s ease-in-out infinite alternate;
     }
 

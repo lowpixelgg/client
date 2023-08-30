@@ -13,6 +13,9 @@ import isAdmin from "is-admin";
 
 const rpc = new RichPrecense();
 let game
+
+
+
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
 
@@ -73,9 +76,9 @@ async function createWindow() {
     return { action: "deny" };
   });
 
-  if (!await isAdmin()) {
-    win.close();
-  }
+  // if (!await isAdmin()) {
+  //   win.close();
+  // }
 }
 
 app.whenReady().then(createWindow);

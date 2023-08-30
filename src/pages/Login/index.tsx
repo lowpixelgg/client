@@ -103,9 +103,10 @@ export const Login = () => {
         exit={{ opacity: 0 }}
         transition={{ ease: "easeIn", duration: 0.6, delay: 0.2 }}
       >
-        <img className="rectangle_union" src="./src/assets/Union.png" />
-        <img className="rectangle_border" src="./src/assets/rectangle.png" />
-        <img className="rectangle_image" src="./src/assets/rectangle_img.png" />
+        <div className="rectangle_image" />
+        <div className="rectangle_union"/>
+        <div className="rectangle_border" />
+
       </motion.div>
 
       <Footer />

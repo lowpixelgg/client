@@ -10,7 +10,6 @@
   "files": ["dist"],
   "win": {
     "requestedExecutionLevel": "requireAdministrator",
-    "signAndEditExecutable": true,
     "target": [
       {
         "target": "nsis",
@@ -21,9 +20,8 @@
   },
   "nsis": {
     "oneClick": false,
-    "perMachine": false,
+    "perMachine": true,
     "allowElevation": true,
-    "allowToChangeInstallationDirectory": true,
     "deleteAppDataOnUninstall": false
   },
   "mac": {

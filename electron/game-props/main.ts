@@ -3,9 +3,15 @@ import { RichPrecense } from "./external/rpc";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import Updater from "./updater";
-import { promisified } from "regedit";
+import regedit from "regedit";
+// import { addValue } from 'qiao-regedit';
+
+import utils from "windows-registry-napi";
+
+
 import process from "child_process";
 import path from 'path'
+import electron from "electron";
 
 
 export interface GamePlayer {
@@ -32,13 +38,15 @@ class GameProps {
     this.updater = new Updater(this.io);
 
     
-    // rpc.create().then(() => {
-    //   this.rpc = rpc;
-    //   console.log("rpc, created connection");
 
-    //   rpc.request("Explorando o cliente")
-    // }).then((err: any) => {
-    // });
+
+    rpc.create().then(() => {
+      this.rpc = rpc;
+      console.log("rpc, created connection");
+
+      rpc.request("Explorando o cliente")
+    }).then((err: any) => {
+    });
 
     this.events();
     
@@ -54,6 +62,23 @@ class GameProps {
 
     this.defaultDirectory = this.updater.json.get('default_install_dir')
     this.customDirectory = this.updater.json.get('custom_install_dir')
+
+
+    const installDir = this.customDirectory ? this.customDirectory : this.defaultDirectory
+
+    regedit.setExternalVBSLocation('resources/regedit/vbs');
+
+
+    regedit.createKey(['HKLM\\SOFTWARE\\WOW6432Node\\Rocket Client'], () => {
+      regedit.putValue({
+        'HKLM\\SOFTWARE\\WOW6432Node\\Rocket Client': {
+          "GTA:SA Path": {
+            type: 'REG_SZ',
+            value: path.join(path.resolve(installDir), 'game_sa')
+          }
+        }
+      }, () => {console.log("ok")})
+    })
   }
 
   public async getUserToken() {
@@ -108,25 +133,10 @@ class GameProps {
             dir: path.join(installDir),
             rm: [],
             sha1: "rocketclient-content",
-            url: "https://storage.googleapis.com/rocketmta/content.zip",
+            url: "https://storage.googleapis.com/rocketmta/rocketmta.zip",
             release: new Date().toISOString(),
             version: "latest",
           })
-          .on("finish", async () => {
-
-            await promisified
-              .createKey(["HKLM\\SOFTWARE\\WOW6432Node\\Rocket Client"])
-              .then(() => {
-                promisified.putValue({
-                  "HKLM\\SOFTWARE\\WOW6432Node\\Rocket Client": {
-                    "GTA:SA Path": {
-                      value: path.join(path.resolve(installDir), 'game_sa'),
-                      type: "REG_SZ",
-                    },
-                  },
-                });
-              });
-          });
       });
 
       socket.on("ClientNeedsDownloadUpdates", () => {
