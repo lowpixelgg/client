@@ -62,7 +62,7 @@ export default class Updater {
       this.json.set("default_install_dir", "content");
       this.json.set("custom_install_dir", false);
       this.json.set("ROCKET_KNOWN_GTA_FILE_NAME", "gta_sa.exe");
-      this.json.set("ROCKET_KNOWN_MTA_FILE_NAME", "RocketMTA.lnk");
+      this.json.set("ROCKET_KNOWN_MTA_FILE_NAME", "RocketRP.exe");
       this.json.set("stable.version", "latest");
       this.json.set("stable.sha1", "");
       this.json.set("stable.release", new Date().toISOString());

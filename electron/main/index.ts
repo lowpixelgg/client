@@ -8,7 +8,6 @@ import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { release } from "os";
 import { join } from "path";
 import GameProps from "../game-props/main";
-import isAdmin from "is-admin";
 
 let game;
 
@@ -39,7 +38,6 @@ async function createWindow() {
     fullscreenable: false,
     webPreferences: {
       preload,
-      devTools: true,
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -88,8 +86,8 @@ ipcMain.on("window-take-closed", () => {
 });
 
 app.on("window-all-closed", () => {
-  // win = null;
-  // if (process.platform !== "darwin") app.quit();
+  win = null;
+  if (process.platform !== "darwin") app.quit();
 });
 
 app.on("second-instance", () => {

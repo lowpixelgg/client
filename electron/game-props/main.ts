@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import Updater from "./updater";
 
 import path from "path";
-import process from "child_process";
+import { spawn } from "child_process";
 
 export interface GamePlayer {
   location: string;
@@ -104,14 +104,16 @@ class GameProps {
           ? this.customDirectory
           : this.defaultDirectory;
 
-        process.exec(
-          path.join(
-            path.resolve(installDir),
-            "server_sa",
-            this.updater.json.get("ROCKET_KNOWN_MTA_FILE_NAME")
-          ),
-          (error, stdout, stderr) => {}
+        const fullDir = path.join(
+          path.resolve(installDir),
+          "server_sa",
+          this.updater.json.get("ROCKET_KNOWN_MTA_FILE_NAME")
         );
+        const open = spawn(fullDir);
+
+        open.on("error", (err) => {
+          throw err;
+        });
       });
     });
   }

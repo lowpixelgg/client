@@ -9,7 +9,6 @@
   },
   "files": ["dist"],
   "win": {
-    "requestedExecutionLevel": "requireAdministrator",
     "target": [
       {
         "target": "nsis",
@@ -21,16 +20,7 @@
   "nsis": {
     "oneClick": false,
     "include": "resources/installer.nsh",
-    "perMachine": true,
-    "allowElevation": true,
-    "deleteAppDataOnUninstall": false,
-    "displayLanguageSelector": true,
-    "installerLanguages": [
-      "en_US",
-      "pt_BR",
-      "ru_RU",
-      "es_ES"
-    ]
+    "allowElevation": true
   },
   "mac": {
     "target": ["dmg"],

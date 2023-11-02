@@ -61,7 +61,7 @@ function useLoading() {
   background: #282c34;
   z-index: 9;
 }
-    `;
+ `;
   const oStyle = document.createElement("style");
   const oDiv = document.createElement("div");
 

@@ -86,8 +86,7 @@
       ]
     },
     "win": {
-      "icon": "resources/icone.png",
-      "requestedExecutionLevel": "requireAdministrator"
+      "icon": "resources/icone.png"
     },
     "nsis": {
       "oneClick": false,
