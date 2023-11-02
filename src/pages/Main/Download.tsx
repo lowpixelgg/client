@@ -24,7 +24,6 @@ export const Download = () => {
   useEffect(() => {
     socket.emit("checkForUpdates", (state: string) => {
       setActionButton(state);
-      console.log(state)
     });
 
     socket.on("onUpdaterProgress", (data: Download) => {

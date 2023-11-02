@@ -26,7 +26,6 @@ export const Login = () => {
     try {
       await signIn(email, pass);
     } catch (error) {
-      console.log("error")
     }
 
     setLoading(false)

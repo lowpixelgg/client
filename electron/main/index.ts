@@ -7,25 +7,16 @@ process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 import { app, BrowserWindow, shell, ipcMain } from "electron";
 import { release } from "os";
 import { join } from "path";
-import { RichPrecense } from "../game-props/external/rpc"
 import GameProps from "../game-props/main";
 import isAdmin from "is-admin";
 
-const rpc = new RichPrecense();
-let game
-
-
+let game;
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith("6.1")) app.disableHardwareAcceleration();
 
 // Set application name for Windows 10+ notifications
 if (process.platform === "win32") app.setAppUserModelId(app.getName());
-
-if (!app.requestSingleInstanceLock()) {
-  app.quit();
-  process.exit(0);
-}
 
 let win: BrowserWindow | null = null;
 const preload = join(__dirname, "../preload/index.js");
@@ -46,7 +37,7 @@ async function createWindow() {
     center: true,
     fullscreen: false,
     fullscreenable: false,
-    webPreferences: { 
+    webPreferences: {
       preload,
       devTools: true,
       nodeIntegration: true,
@@ -54,9 +45,7 @@ async function createWindow() {
     },
   });
 
-
-  
-  game = new GameProps(win, rpc, app).io;
+  game = new GameProps(win, app).io;
   game.listen(3030);
 
   if (app.isPackaged) {
@@ -64,7 +53,6 @@ async function createWindow() {
   } else {
     win.loadURL(url);
     win.webContents.openDevTools();
-
   }
 
   win.webContents.on("did-finish-load", () => {
@@ -100,8 +88,8 @@ ipcMain.on("window-take-closed", () => {
 });
 
 app.on("window-all-closed", () => {
-  win = null;
-  if (process.platform !== "darwin") app.quit();
+  // win = null;
+  // if (process.platform !== "darwin") app.quit();
 });
 
 app.on("second-instance", () => {
@@ -113,8 +101,6 @@ app.on("second-instance", () => {
 
 app.on("activate", async () => {
   const allWindows = BrowserWindow.getAllWindows();
-  
-
 
   if (allWindows.length) {
     allWindows[0].focus();

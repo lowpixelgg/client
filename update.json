@@ -1,0 +1,12 @@
+{
+  "master_entrypoint": "https://saturn-api.rocketmta.com/v1/game/updates/after/",
+  "default_install_dir": "content",
+  "custom_install_dir": false,
+  "ROCKET_KNOWN_GTA_FILE_NAME": "gta_sa.exe",
+  "ROCKET_KNOWN_MTA_FILE_NAME": "RocketMTA.lnk",
+  "stable": {
+    "version": "latest",
+    "sha1": "",
+    "release": "2023-10-29T16:21:07.182Z"
+  }
+}

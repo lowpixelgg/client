@@ -124,8 +124,6 @@ const CustomSelect = ({ ChangeLang, language }: CustomSelectProps) => {
     } else {
       ChangeLang(language);
     }
-
-    console.log(e.target.value, suportLangs);
   };
 
   return (

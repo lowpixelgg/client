@@ -20,9 +20,17 @@
   },
   "nsis": {
     "oneClick": false,
+    "include": "resources/installer.nsh",
     "perMachine": true,
     "allowElevation": true,
-    "deleteAppDataOnUninstall": false
+    "deleteAppDataOnUninstall": false,
+    "displayLanguageSelector": true,
+    "installerLanguages": [
+      "en_US",
+      "pt_BR",
+      "ru_RU",
+      "es_ES"
+    ]
   },
   "mac": {
     "target": ["dmg"],

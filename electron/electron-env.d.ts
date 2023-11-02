@@ -17,10 +17,8 @@ declare namespace NodeJS {
      * │
      * ```
      */
-    DIST: string
+    DIST: string;
     /** /dist/ or /public/ */
-    PUBLIC: string
+    PUBLIC: string;
   }
 }
-
-declare module 'windows-registry-napi';
