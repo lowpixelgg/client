@@ -25,7 +25,7 @@ export const Framebar = () => {
           <div className="frameResizableVert frameDragPadder"></div>
           <div id="frameContentWin">
             <div id="frameTitleDock">
-              <span id="frameTitleText">ROCKET CLIENT (Public Preview Release, November 2023)</span>
+              <span id="frameTitleText">Low Pixel Client</span>
             </div>
             <div id="frameButtonDockWin">
               <button

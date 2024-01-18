@@ -3,7 +3,7 @@
 </p>
 
 <h1 align="center">
-  Rocket Client
+  LowPixel
 </h1>
 
 <p align="center">
@@ -11,12 +11,12 @@ A Rocket Community é um projeto de alto nível voltado para a plataforma do MTA
 </p>
 
 <p align="center">
-<strong>🚧 Rocket Client still is under development 🚧</strong>
+<strong>🚧 LowPixel Client still is under development 🚧</strong>
 </p>
 
 
 ## Layout
-The rocket client layout is abstract and dark-themed by the team's internal decision we believe that a dark desktop version of the client is the best approach that pleases the eye.
+The LowPixel layout is abstract and dark-themed by the team's internal decision we believe that a dark desktop version of the client is the best approach that pleases the eye.
 
 
 <p align="left">

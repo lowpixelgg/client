@@ -26,7 +26,7 @@ interface AuthContextData {
   user: object | null;
   setUser: React.Dispatch<React.SetStateAction<object | null>>;
   VerifyAuthetication: () => Promise<void>;
-  signOut : () => void;
+  signOut: () => void;
   signIn: (email: string, password: string) => Promise<void>;
 }
 
@@ -38,7 +38,7 @@ export async function signOut() {
 }
 
 export async function pageDown() {
-  return (window.location.href = "/offPage")
+  return (window.location.href = "/offPage");
 }
 
 export const AuthProvider: React.FC<Props> = ({ children }) => {
@@ -58,35 +58,46 @@ export const AuthProvider: React.FC<Props> = ({ children }) => {
 
       ls.set("saturn-api.token", token);
 
-      return navigate("/init");
+      const user = await api.get("/account");
+
+      console.log(user.data.body)
+      if (
+        user.data.body.whitelist == "APROVADO" || user.data.body.whitelist == "ENTREVISTADO"
+      ) {
+        return navigate("/init");
+      } else {
+        localStorage.clear();
+
+        return toast.error(
+          "Você não tem permissão para participar deste teste."
+        );
+      }
     } catch (err) {
       const { response } = err as AxiosError;
 
-
       switch (response?.status) {
         case 401:
-          return toast.error("Senha e/ou email inválidos.");
+          toast.error("Senha e/ou email inválidos.");
         case 403:
-          return toast.error(
+          toast.error(
             "Sem permissão, verifique seu e-mail. nós enviamos um novo token de ativação."
           );
         case 404:
-          return toast.warn("Este usuário ainda não foi cadastrado.");
+          toast.warn("Este usuário ainda não foi cadastrado.");
         default:
-          return toast.error("Problema ao completar esta ação.");
+          toast.error("Problema ao completar esta ação.");
       }
     }
   }
-  
+
   async function VerifyAuthetication() {
     const token = ls.get("saturn-api.token");
-    if(!token) return;
+    if (!token) return;
     try {
       const { data } = await api.get("/account");
-      if(data.body.userid){
+      if (data.body.userid) {
         return navigate("/init");
       }
-     
     } catch (err) {
       ls.removeItem("saturn-api.token");
     }

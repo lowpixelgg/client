@@ -4,7 +4,7 @@ import { Server } from "socket.io";
 import request from "request";
 import progress from "request-progress";
 import Queue from "better-queue";
-import zip from "zip-lib";
+import zip from "yauzl";
 import fetch from "node-fetch";
 import path from "path";
 
@@ -62,7 +62,7 @@ export default class Updater {
       this.json.set("default_install_dir", "content");
       this.json.set("custom_install_dir", false);
       this.json.set("ROCKET_KNOWN_GTA_FILE_NAME", "gta_sa.exe");
-      this.json.set("ROCKET_KNOWN_MTA_FILE_NAME", "RocketRP.exe");
+      this.json.set("ROCKET_KNOWN_MTA_FILE_NAME", "lowpixel.exe");
       this.json.set("stable.version", "latest");
       this.json.set("stable.sha1", "");
       this.json.set("stable.release", new Date().toISOString());
@@ -80,7 +80,7 @@ export default class Updater {
     this.customDirectory = this.json.get("custom_install_dir");
   }
 
-  public async checkInstallDir() {}
+  public async checkInstallDir() { }
 
   public async hasGameContent() {
     const defaultInstalDir = this.json.get("default_install_dir");
@@ -88,17 +88,17 @@ export default class Updater {
 
     const instalLDir = customInstallDir
       ? path.join(
-          customInstallDir,
+        customInstallDir,
+        "game_sa",
+        this.json.get("ROCKET_KNOWN_GTA_FILE_NAME")
+      )
+      : path.join(
+        path.resolve(
+          defaultInstalDir,
           "game_sa",
           this.json.get("ROCKET_KNOWN_GTA_FILE_NAME")
         )
-      : path.join(
-          path.resolve(
-            defaultInstalDir,
-            "game_sa",
-            this.json.get("ROCKET_KNOWN_GTA_FILE_NAME")
-          )
-        );
+      );
 
     if (fs.existsSync(instalLDir)) {
       return true;
@@ -150,24 +150,61 @@ export default class Updater {
           string: `Extraindo arquivos.`,
         });
 
-        await zip
-          .extract(path.join(path.resolve(), `temp/${sha1}.zip`), dir)
-          .then(() => {
-            fs.unlinkSync(path.join(path.resolve(), `temp/${sha1}.zip`));
-          });
+        zip.open(
+          path.join(path.resolve(), `temp/${sha1}.zip`),
+          {
+            lazyEntries: true,
+          },
+          (err, zipfile) => {
+            if (err) throw err;
+
+            zipfile.readEntry();
+
+            zipfile.on("entry", (entry) => {
+              if (/\/$/.test(entry.fileName)) {
+                const dirPath = path.join(dir, entry.fileName);
+                fs.mkdirSync(dirPath, { recursive: true });
+                zipfile.readEntry();
+              } else {
+                zipfile.openReadStream(entry, (err, readStream) => {
+                  if (err) throw err;
+                  this.io.to("frontend").emit("onUpdaterProgress", {
+                    percent: 100,
+                    string: `Extraindo ${entry.fileName}`,
+                  });
+
+                  const filePath = path.join(dir, entry.fileName);
+                  const writeStream = fs.createWriteStream(filePath, {
+                    encoding: "binary",
+                  });
+
+                  readStream.on("end", () => {
+                    writeStream.end();
+                    zipfile.readEntry();
+                  });
+
+                  readStream.pipe(writeStream);
+                });
+              }
+            });
+
+            zipfile.on("end", () => {
+              fs.unlinkSync(path.join(path.resolve(), `temp/${sha1}.zip`));
+              return cb(null);
+            });
+          }
+        );
 
         this.json.set("stable.release", release);
         this.json.set("stable.version", version);
         this.json.save();
-
-        return cb(null);
       })
       .pipe(
         fs.createWriteStream(path.join(path.resolve(), `temp/${sha1}.zip`))
       );
   });
 
-  public async checkFilesIntegrity() {}
+  public async checkFilesIntegrity() { }
 }
 
 function formatBytes(bytes: number): string {

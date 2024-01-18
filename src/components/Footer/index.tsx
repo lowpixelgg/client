@@ -7,9 +7,9 @@ export const Footer = () => {
 
   return (
     <Container id="footer">
-      <a href="/">{langObj.footer[0]}</a>
-      <a href="/">{langObj.footer[1]}</a>
-      <a href="/">{langObj.footer[2]}</a>
+      <a>{langObj.footer[0]}</a>
+      <a>{langObj.footer[1]}</a>
+      <a>{langObj.footer[2]}</a>
     </Container>
   );
 };

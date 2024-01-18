@@ -1,7 +1,7 @@
-import rpc from "discord-rpc";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import Updater from "./updater";
+import mtasa from "mtasa-informations";
 
 import path from "path";
 import { spawn } from "child_process";
@@ -27,7 +27,7 @@ class GameProps {
     this.io = new Server(httpServer, {});
     this.updater = new Updater(this.io);
 
-    this.win.openDevTools();
+    // this.win.openDevTools();
 
     this.updater.get.on("drain", () => {
       this.win.webContents.executeJavaScript("window.location.reload()");
@@ -46,6 +46,19 @@ class GameProps {
     return localStorageValue;
   }
 
+  public async getInformation() {
+    return new Promise((resolve, reject) => {
+      new mtasa({ ip: "195.35.16.107", port: 22003 })
+        .getServerInfo()
+        .then((res) => {
+          return resolve(res);
+        })
+        .catch((err) => {
+          return resolve({});
+        });
+    });
+  }
+
   private events() {
     this.io.on("connection", (socket) => {
       socket.on("onFrontendConnect", () => {
@@ -53,7 +66,13 @@ class GameProps {
       });
 
       socket.on("pixel_core:getUserToken", async () => {
+        console.log("angeloina");
         socket.emit("pixel_core:getUserToken", await this.getUserToken());
+      });
+
+      socket.on("getQuery", async (cb) => {
+        const query = await this.getInformation();
+        return cb(query);
       });
 
       socket.on("checkForUpdates", async (cb) => {
@@ -81,7 +100,7 @@ class GameProps {
           dir: path.join(installDir),
           rm: [],
           sha1: "content",
-          url: "https://storage.googleapis.com/rocketmta/rocketmta.zip",
+          url: "https://lowpixel.nyc3.cdn.digitaloceanspaces.com/latest.zip",
           release: new Date().toISOString(),
           version: "latest",
         });

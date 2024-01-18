@@ -1,6 +1,6 @@
 {
   "appId": "13",
-  "productName": "Rocket Client",
+  "productName": "LowPixel Client",
   "copyright": "Copyright © 2023 ${author}",
   "asar": false,
   "directories": {
@@ -15,6 +15,7 @@
         "arch": ["x64"]
       }
     ],
+    "requestedExecutionLevel": "requireAdministrator",
     "artifactName": "${productName}-Windows-${version}-Setup.${ext}"
   },
   "nsis": {
