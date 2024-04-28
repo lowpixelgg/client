@@ -1,3 +1,6 @@
+Isso não é mais mantido.
+
+
 <p align="center">
   <img src="https://cdn.discordapp.com/attachments/1006782741746040884/1022036369863884840/Group_9.png" width="100" />
 </p>
