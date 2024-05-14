@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
+    "axios": "^1.6.8",
     "@emotion/styled": "^11.10.4",
     "@mui/material": "^5.10.6",
     "@types/adm-zip": "^0.5.3",
