@@ -110,17 +110,15 @@ export default class Updater {
   public async checkForUpdates(token: string) {
     let hasUpdate = false as boolean;
 
-    const data = await fetch(
+    axios.get(
       this.json.get("master_entrypoint") + this.json.get("stable").release,
       {
         headers: {
           "x-access-token": token,
         },
       }
-    );
-
-    await data.json().then((response: any) => {
-      if (response.body && response.body.length > 0) {
+    ).then((response: any) => {
+        if (response.body && response.body.length > 0) {
         response.body.map((update) => [
           this.upcoming.push({ ...update.props }),
         ]);
@@ -131,9 +129,10 @@ export default class Updater {
       }
     });
 
+
     return hasUpdate;
   }
-
+  
   get = new Queue(({ url, dir, sha1, rm, release, version }: get, cb) => {
     progress(request(url))
       .on("progress", (state: Download) => {
